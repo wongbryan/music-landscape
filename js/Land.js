@@ -20,7 +20,9 @@ var Land = (function(options){
 	var geom = new THREE.PlaneGeometry(width, height, 256, 256),
 	mat = new THREE.MeshBasicMaterial({
 		color : color,
-		side : THREE.DoubleSide
+		side : THREE.DoubleSide,
+		transparent : true,
+		wireframe : true
 	});
 
 	var mesh = new THREE.Mesh(geom, mat);
@@ -29,7 +31,7 @@ var Land = (function(options){
 	mesh.options = options;
 	mesh.testVector = new THREE.Vector3();
 
-	mesh.rotation.x = Math.PI/2 + Math.PI/6;
+	// mesh.rotation.x = Math.PI/2 + Math.PI/6;
 	return mesh;
 })(Options['Land']);
 
@@ -52,9 +54,9 @@ Land.resetForce = function(){
 
 Land.update = function(){
 	this.resetForce();
-	this.applyForce(this.testVector, 2.5);
+	this.applyForce(Avatar.position, 1);
 
-	this.testVector.x += .005;
+	// this.testVector.x += .005;
 }
 
 

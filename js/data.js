@@ -4,5 +4,9 @@ var Options = {
 		stepsX : 100,
 		stepsY : 100,
 		stepSize : 1
+	},
+	'Avatar' : {
+		color : new THREE.Color(0xffffff),
+		radius : 1,
 	}
 }

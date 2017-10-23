@@ -26,25 +26,24 @@ function init() {
 
 	scene = new THREE.Scene();
 
-	var directionalLight = new THREE.DirectionalLight(0xffffff, .7);
-	directionalLight.position.set(1, -1, 0).normalize();
+	var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
+	directionalLight.position.set(-10, 10, 0);
 	directionalLight.castShadow = true;
-	var ambientLight = new THREE.AmbientLight(0xffffff);
-	var pointLight = new THREE.PointLight(0xffffff);
-	pointLight.position.set(0, 0, 0);
+	var ambientLight = new THREE.AmbientLight(0xffeff3);
 
 	scene.add(ambientLight);
 	scene.add(directionalLight);
-	scene.add(pointLight);
 
 	scene.add(Land);
+	scene.add(Avatar);
 
 	window.addEventListener('resize', resize);
 }
 
 function update(){
 	controls.update();
-	// Land.update();
+	Avatar.move();
+	Land.update();
 }
 
 function animate(){
