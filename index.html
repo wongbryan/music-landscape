@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Balls</title>
+</head>
+
+<style>
+	body{
+		margin: 0;
+		overflow: hidden;
+	}
+
+	#description{
+		position: absolute;
+		bottom: 10px;
+		left: 10px;
+		color: black;
+		font-family: Helvetica, sans-serif;
+	}
+</style>
+<body>
+	<div id="container"></div>
+	<div id="description">
+		Procedurally generated shape using 2D noise and fractal brownian motion
+	</div>
+</body>
+
+<script src="bower_components/three.js/build/three.js"></script>
+<script src="bower_components/three.js/examples/js/controls/TrackballControls.js"></script>
+<script src="js/MarchingCubesData.js"></script>
+<script src="js/Metaball.js"></script>
+<script>
+	var camera, scene, renderer, controls, gui;
+	var angle = 0;
+	var clock = new THREE.Clock();
+	var time; var startTime = new Date().getTime();
+
+	var box;
+	var shape;
+
+	var middleBall = .01, isolevel = .51;
+
+	function resize(){
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+
+	function init() {
+		var container = document.getElementById( 'container' );
+		renderer = new THREE.WebGLRenderer({antialias: true});
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = THREE.PCSoftShadowMap;
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight);
+		renderer.setClearColor(0xededed);
+		container.appendChild( renderer.domElement );
+		
+		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+		camera.position.set(0, 0, 10);
+		controls = new THREE.TrackballControls(camera, renderer.domElement);
+		controls.rotateSpeed = 2.0;
+		controls.panSpeed = 0.8;
+		controls.zoomSpeed = 1.5;
+
+		scene = new THREE.Scene();
+
+		var directionalLight = new THREE.DirectionalLight(0xffffff, .7);
+		directionalLight.position.set(1, -1, 0).normalize();
+		directionalLight.castShadow = true;
+		var ambientLight = new THREE.AmbientLight(0xffffff);
+		var pointLight = new THREE.PointLight(0xffffff);
+		pointLight.position.set(0, 0, 0);
+
+		scene.add(ambientLight);
+		scene.add(directionalLight);
+		scene.add(pointLight);
+
+		var texture = new THREE.TextureLoader().load('assets/rain.jpg');
+		texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
+		var geom = new THREE.PlaneBufferGeometry(1, 1, 256, 256);
+		// var geom = new THREE.SphereBufferGeometry(1, 1, 256, 256);
+		shapeMat = new THREE.MeshBasicMaterial({color : 0xff0000 });
+
+		var ballPositions = [
+			new THREE.Vector3(0,3.5,0),
+			new THREE.Vector3(0,0,0),
+			new THREE.Vector3(-1,-1,0)
+		];
+
+		shape = new Metaball(.51, ballPositions);
+		scene.add(shape.mesh);
+
+		window.addEventListener('resize', resize);
+	}
+
+	function update(){
+		controls.update();
+
+		var time = clock.getElapsedTime();
+		shape.update(time);
+	}
+
+	function animate(){
+		update();
+		renderer.render(scene, camera);
+		window.requestAnimationFrame(animate);
+	}
+
+	init();
+	animate();
+</script>
+</html>
