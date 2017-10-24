@@ -11,7 +11,7 @@ var Avatar = (function(options){
 	});
 
 	var mesh = new THREE.Mesh(geom, mat);
-	mesh.position.z = 1;
+	mesh.position.z = radius+1;
 	
 	mesh.options = options;
 
@@ -19,5 +19,6 @@ var Avatar = (function(options){
 })(Options['Avatar']);
 
 Avatar.move = function(){
-	this.position.y += .01;
+	this.position.y += .02;
+
 }

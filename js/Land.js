@@ -1,28 +1,40 @@
 var Land = (function(options){
 	console.log(options);
-	var width = options.stepsX * options.stepSize,
-	height = options.stepsY * options.stepSize,
-	color = options.color;
+	var stepsX = options.stepsX, stepsY = options.stepsY;
+	var width = stepsX * options.stepSize,
+	height = stepsY * options.stepSize,
+	color = options.color,
+	amp = options.amp;
 
 	var points = new THREE.Geometry();
 
-	for (var i=0; i<options.stepsX; i++){
-		for (var j=0; j<options.stepsY; j++){
-			var xPos = (i * options.stepSize) - (width/2);
-			var yPos = (j * options.stepSize) - (height/2);
-			var zPos = 0;
+	var geom = new THREE.PlaneGeometry(width, height, stepsX, stepsY);
 
-			var vertex = new THREE.Vector3(xPos, yPos, zPos);
-     		points.vertices.push(vertex);
+	noise.seed(Math.random());
+
+	var index = 0;
+	for (var i=0; i<stepsX; i++){
+		for (var j=0; j<stepsY; j++){
+			var n = noise.perlin2(i/16, j/16);
+			geom.vertices[index].z += amp*n*n;
+			index++;
 		}
 	}
 
-	var geom = new THREE.PlaneGeometry(width, height, 256, 256),
-	mat = new THREE.MeshBasicMaterial({
-		color : color,
-		side : THREE.DoubleSide,
-		transparent : true,
-		wireframe : true
+	geom.verticesNeedUpdate = true;
+
+	// mat = new THREE.ShaderMaterial({
+	// 	wireframe : true,
+	// 	vertexShader : document.getElementById('vertexShader').textContent,
+	// 	fragmentShader : document.getElementById('fragmentShader').textContent
+	// });
+
+	mat = new THREE.MeshPhongMaterial({
+		color : new THREE.Color(0xff7eca),
+		emissive : new THREE.Color(0x89174d),
+		specular : new THREE.Color(0xbe045b),
+		shininess : 100,
+		flatShading : true
 	});
 
 	var mesh = new THREE.Mesh(geom, mat);
@@ -30,6 +42,7 @@ var Land = (function(options){
 	mesh.points = points;
 	mesh.options = options;
 	mesh.testVector = new THREE.Vector3();
+	mesh.originalGeometry = geom.clone();
 
 	// mesh.rotation.x = Math.PI/2 + Math.PI/6;
 	return mesh;
@@ -39,7 +52,7 @@ Land.applyForce = function(center, strength){
 	for (var i=0; i<this.geometry.vertices.length; i++){
 		var dist = this.geometry.vertices[i].distanceTo(center);
 
-		this.geometry.vertices[i].z -= (strength * 10) / Math.sqrt(dist * 2 ) - (strength * 2);
+		this.geometry.vertices[i].z -= (strength * 10) / Math.sqrt(dist * 5 ) - (strength * 2);
 	}
 
 	this.geometry.verticesNeedUpdate = true;
@@ -47,16 +60,14 @@ Land.applyForce = function(center, strength){
 
 Land.resetForce = function(){
 	for (var i=0; i<this.geometry.vertices.length; i++){
-		this.geometry.vertices[i].z = 0;
+		this.geometry.vertices[i].z = this.originalGeometry.vertices[i].z;
 	}
 	this.geometry.verticesNeedUpdate = true;
 }
 
 Land.update = function(){
 	this.resetForce();
-	this.applyForce(Avatar.position, 1);
-
-	// this.testVector.x += .005;
+	this.applyForce(Avatar.position, 7);
 }
 
 
