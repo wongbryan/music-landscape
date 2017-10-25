@@ -1,6 +1,7 @@
 var camera, scene, renderer, controls;
 var clock = new THREE.Clock();
 var pointLight;
+var pov;
 
 function resize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -39,18 +40,32 @@ function init() {
 	scene.add(Land);
 	scene.add(Avatar);
 
+    var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+
 	window.addEventListener('resize', resize);
+	domEvents.addEventListener(Avatar, 'click', function() {
+	    pov = true;
+    });
 
     loop();
+}
+
+// placeholder for now before figuring out how to structure Camera class
+function updateCamera() {
+    if (pov) {
+        camera.position.copy(Avatar.position).add(new THREE.Vector3( 0, 5, 10 ));
+
+    } else {
+        camera.lookAt(Avatar.position);
+        camera.position.copy(Avatar.position).sub(new THREE.Vector3( 0, 10, -10 ));
+    }
 }
 
 function update() {
 	// controls.update();
 	Avatar.move();
 	Land.update();
-	camera.lookAt(Avatar.position);
-	camera.position.copy(Avatar.position).sub(new THREE.Vector3( 0, 10, -10 ));
-
+    updateCamera();
 	pointLight.position.copy(Avatar.position);
 }
 
