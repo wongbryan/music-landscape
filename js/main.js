@@ -2,7 +2,7 @@ var camera, scene, renderer, controls;
 var clock = new THREE.Clock();
 var pointLight;
 
-function resize(){
+function resize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -18,12 +18,12 @@ function init() {
 	renderer.setClearColor(0xbfe7ff);
 	container.appendChild( renderer.domElement );
 	
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+	camera = new THREE.PerspectiveCamera( 105, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.set(0, -25, 20);
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
-	controls.rotateSpeed = 2.0;
-	controls.panSpeed = 0.8;
-	controls.zoomSpeed = 1.5;
+	// controls = new THREE.OrbitControls(camera, renderer.domElement);
+	// controls.rotateSpeed = 2.0;
+	// controls.panSpeed = 0.8;
+	// controls.zoomSpeed = 1.5;
 
 	scene = new THREE.Scene();
 
@@ -36,27 +36,28 @@ function init() {
 	scene.add(ambientLight);
 	scene.add(directionalLight);
 	scene.add(pointLight);
-
 	scene.add(Land);
 	scene.add(Avatar);
 
 	window.addEventListener('resize', resize);
+
+    loop();
 }
 
-function update(){
-	controls.update();
+function update() {
+	// controls.update();
 	Avatar.move();
 	Land.update();
+	camera.lookAt(Avatar.position);
+	camera.position.copy(Avatar.position).sub(new THREE.Vector3( 0, 10, -10 ));
 
-	if (pointLight != undefined)
-		pointLight.position.copy(Avatar.position);
+	pointLight.position.copy(Avatar.position);
 }
 
-function animate(){
+function loop() {
 	update();
 	renderer.render(scene, camera);
-	window.requestAnimationFrame(animate);
+	window.requestAnimationFrame(loop);
 }
 
 init();
-animate();

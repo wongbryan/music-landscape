@@ -1,6 +1,6 @@
 var Avatar = (function(options){
 	var radius = options['radius'],
-	color = options['color'];
+		color = options['color'];
 
 	var geom = new THREE.SphereGeometry(radius, 256, 256),
 	mat = new THREE.MeshPhongMaterial({
@@ -20,5 +20,4 @@ var Avatar = (function(options){
 
 Avatar.move = function(){
 	this.position.y += .02;
-
 }
