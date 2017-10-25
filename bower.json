@@ -1,0 +1,22 @@
+{
+  "name": "music-landscape",
+  "homepage": "https://github.com/wongbryan/music-landscape",
+  "authors": [
+    "Chang Liu <shampliu@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "three.js-examples": "^0.87.0",
+    "threex.domevents": "*",
+    "three.js": "^0.87.0"
+  }
+}
