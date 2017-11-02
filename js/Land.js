@@ -67,7 +67,7 @@ Land.resetForce = function(){
 
 Land.update = function(){
 	this.resetForce();
-	this.applyForce(Avatar.position, 7);
+	this.applyForce(Avatar.mesh.position, 7);
 }
 
 
