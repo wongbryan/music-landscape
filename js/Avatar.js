@@ -1,13 +1,12 @@
-var Avatar = (function () {
-  this.mesh = null;
+var Avatar;
+var InitAvatar = function(mesh) {
+    // domEvents.addEventListener(mesh, 'click', function () {
+    //     pov = true;
+    // });
 
-  this.move = function() {
-    this.mesh.position.y += .02;
-  }
+    mesh.update = function() {
+        mesh.position.y += .02;
+    }
 
-  this.createMesh = function (mesh) {
-    this.mesh = mesh;
-  };
-	
-  return this;
-})();
+    return mesh;
+}

@@ -1,5 +1,4 @@
 var Land = (function(options){
-	console.log(options);
 	var stepsX = options.stepsX, stepsY = options.stepsY;
 	var width = stepsX * options.stepSize,
 	height = stepsY * options.stepSize,
@@ -67,7 +66,7 @@ Land.resetForce = function(){
 
 Land.update = function(){
 	this.resetForce();
-	this.applyForce(Avatar.mesh.position, 7);
+	this.applyForce(Avatar.position, 7);
 }
 
 
