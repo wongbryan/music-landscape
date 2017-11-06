@@ -24,8 +24,8 @@ function update() {
     // loop thru objects
     Avatar.update();
     Land.update();
-    updateCamera();
-    pointLight.position.copy(Avatar.position);
+    // updateCamera();
+    // pointLight.position.copy(Avatar.position);
 
 }
 
@@ -48,19 +48,35 @@ function init() {
     camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.set(0, -25, 20);
 
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
     scene = new THREE.Scene();
 
-    var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
-    directionalLight.position.set(-5, 5, 1);
-    directionalLight.castShadow = true;
-    var ambientLight = new THREE.AmbientLight(0x4f1830);
-    pointLight = new THREE.PointLight(0xe1e1e1, .5, 0, 2);
+    scene.fog = new THREE.FogExp2(0x8adcff, .015);
 
-    domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+	var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
+	directionalLight.position.set(-5, 5, 1);
+	directionalLight.castShadow = true;
+	var ambientLight = new THREE.AmbientLight(0xfa7cf2);
+	var pointLights = [];
+	var decayDist = 100;
+	pointLights[0] = new THREE.PointLight(0xffffff, 1, decayDist);
+	pointLights[1] = new THREE.PointLight(0xffffff, 1, decayDist);
+	pointLights[2] = new THREE.PointLight(0xffffff, 1, decayDist);
 
-    scene.add(ambientLight);
-    scene.add(directionalLight);
-    scene.add(pointLight);
+	pointLights[0].position.set(0, 50, 50);
+	pointLights[1].position.set(-50, 0, 50);
+	pointLights[2].position.set(50, -50, 50);
+
+	for (var i=0; i<pointLights.length; i++){
+		scene.add(pointLights[i]);
+		var helper = new THREE.PointLightHelper(pointLights[i], 1);
+		scene.add(helper);
+	}
+
+	scene.add(ambientLight);
+	scene.add(directionalLight);
+
     scene.add(Land);
 
     for (obj in LOADED_OBJECTS) {
