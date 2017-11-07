@@ -31,16 +31,6 @@ var InitPlanet = (function(modelGeom) {
 
 	var sprite = new THREE.TextureLoader().load('assets/images/circle.png');
 
-	// var mat = new THREE.ShaderMaterial({
-	// 	vertexShader : SHADERS['instancing'].vertex,
-	// 	fragmentShader : SHADERS['instancing'].fragment,
-	// 	uniforms : {
-	// 		'time' : { 'value' : 0. },
-	// 		'minX' : { 'value' : minX },
-	// 		'length' : { 'value' : length },
-	// 		'map' : { 'value' : sprite }
-	// 	}
-	// });
 
 	var mat = MATERIALS['bubbleGum'].clone();
 	mat.flatShading = true;
@@ -76,6 +66,8 @@ var InitPlanet = (function(modelGeom) {
 
 		var e = new Ellipse(5, 5, Math.PI/3*(i+1));
 		ellipseCurves.push(e);
+
+		group.add(pointLight);
 	}
 
 	var time = 0;
@@ -94,22 +86,14 @@ var InitPlanet = (function(modelGeom) {
 
 	function update(){
 		time += .001;
-		updateLights();
+		// updateLights();
 		// console.log(pointLights[0].position);
 		// mesh.material.uniforms['time'].value = time;;
 	}
 
-	function addToScene(){
-		scene.add(mesh);
-		for (var i=0; i<pointLights.length; i++){
-			scene.add(pointLights[i]);
-		}
-	}
-
 	return {
-		mesh: mesh,
+		mesh: group,
 		pointLights: pointLights,
-		addToScene: addToScene,
 		update: update
 	}
 

@@ -43,9 +43,10 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
-    camera.position.set(0, 0, 10);
+    camera.position.set(0, 5, 10);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     scene = new THREE.Scene();
 
@@ -75,10 +76,96 @@ function init() {
 	scene.add(directionalLight);
 
 	var bananaGeom = MODEL_DATA['banana'].geometry;
-    Planet = InitPlanet(bananaGeom);
-  	Planet.addToScene();
+	var RADIUS = 25, numPlanets = 5;
+	for (var obj in OBJECTS){
+		switch(obj){
+			case('Universe'):
+				var universe = InitUniverse(RADIUS, numPlanets, camera);
+				scene.add(universe.mesh);
+				OBJECTS[obj] = universe;
+				break;
+			case('Planet'):
+				var planet = InitPlanet(bananaGeom);
+				var index = 0;
 
-    OBJECTS['Planet'] = Planet;
+				var angle = 2*Math.PI/numPlanets * index, 
+				posX = RADIUS*Math.cos(angle),
+				posZ = RADIUS*Math.sin(angle);
+
+				planet.mesh.position.x = posX;
+				planet.mesh.position.z = posZ;
+
+				scene.add(planet.mesh);
+
+				OBJECTS[obj] = planet;
+				break;
+			case('Planet2'):
+				var planet = InitPlanet(bananaGeom);
+				var index = 1;
+
+				var angle = 2*Math.PI/numPlanets * index, 
+				posX = RADIUS*Math.cos(angle),
+				posZ = RADIUS*Math.sin(angle);
+
+				planet.mesh.position.x = posX;
+				planet.mesh.position.z = posZ;
+
+				scene.add(planet.mesh);
+
+				OBJECTS[obj] = planet;
+				break;
+			case('Planet3'):
+				var planet = InitPlanet(bananaGeom);
+				var index = 2;
+
+				var angle = 2*Math.PI/numPlanets * index, 
+				posX = RADIUS*Math.cos(angle),
+				posZ = RADIUS*Math.sin(angle);
+
+				planet.mesh.position.x = posX;
+				planet.mesh.position.z = posZ;
+
+				scene.add(planet.mesh);
+
+				OBJECTS[obj] = planet;
+				break;
+			case('Planet4'):
+				var planet = InitPlanet(bananaGeom);
+				var index = 3;
+
+				var angle = 2*Math.PI/numPlanets * index, 
+				posX = RADIUS*Math.cos(angle),
+				posZ = RADIUS*Math.sin(angle);
+
+				planet.mesh.position.x = posX;
+				planet.mesh.position.z = posZ;
+
+				scene.add(planet.mesh);
+
+				OBJECTS[obj] = planet;
+				break;
+			case('Planet5'):
+				var planet = InitPlanet(bananaGeom);
+				var index = 4;
+
+				var angle = 2*Math.PI/numPlanets * index, 
+				posX = RADIUS*Math.cos(angle),
+				posZ = RADIUS*Math.sin(angle);
+
+				planet.mesh.position.x = posX;
+				planet.mesh.position.z = posZ;
+
+				scene.add(planet.mesh);
+
+				OBJECTS[obj] = planet;
+				break;
+			case('CenterPlanet'):
+				CenterPlanet = InitCenterPlanet(bananaGeom);
+			    scene.add(CenterPlanet.mesh);
+			    OBJECTS['CenterPlanet'] = CenterPlanet;
+				break;
+		}
+	}
 
     window.addEventListener('resize', resize);
 

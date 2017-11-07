@@ -18,5 +18,11 @@ var MATERIALS = {
 }
 
 var OBJECTS = {
+	'CenterPlanet': null,
 	'Planet': null,
+	'Planet2': null,
+	'Planet3': null,
+	'Planet4': null,
+	'Planet5': null,
+	'Universe': null,
 }

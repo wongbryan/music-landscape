@@ -18,7 +18,7 @@ const SHADERS = {
 				"vec3 trTime = vec3(translate.x + time, translate.y + time,translate.z + time);",
 				"float scale = abs(cos( 3.14159*trTime.x / (length*3.) )) + sin( trTime.y * 3.2 ) + sin(trTime.z * 4.);",
 				"vScale = scale;",
-				"mvPosition.xyz += position * scale * .05;",
+				"mvPosition.xyz += position * scale * .1;",
 				"gl_Position = projectionMatrix * mvPosition;",
 			"}"
 		].join( "\n" ),
