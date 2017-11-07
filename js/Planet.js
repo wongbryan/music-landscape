@@ -31,25 +31,85 @@ var InitPlanet = (function(modelGeom) {
 
 	var sprite = new THREE.TextureLoader().load('assets/images/circle.png');
 
-	var mat = new THREE.ShaderMaterial({
-		vertexShader : document.getElementById('planetVertex').textContent,
-		fragmentShader : document.getElementById('planetFragment').textContent,
-		uniforms : {
-			'time' : { 'value' : 0. },
-			'minX' : { 'value' : minX },
-			'length' : { 'value' : length },
-			'map' : { 'value' : sprite }
-		}
-	});
+	// var mat = new THREE.ShaderMaterial({
+	// 	vertexShader : SHADERS['instancing'].vertex,
+	// 	fragmentShader : SHADERS['instancing'].fragment,
+	// 	uniforms : {
+	// 		'time' : { 'value' : 0. },
+	// 		'minX' : { 'value' : minX },
+	// 		'length' : { 'value' : length },
+	// 		'map' : { 'value' : sprite }
+	// 	}
+	// });
 
-	var mesh = new THREE.Mesh(geometry, mat);
+	var mat = MATERIALS['bubbleGum'].clone();
+	mat.flatShading = true;
+	// var mesh = new THREE.Mesh(geometry, mat);
+	// modelGeom = new THREE.TorusKnotGeometry(1.5, .5);
+	var mesh = new THREE.Mesh(modelGeom, mat);
+	mesh.rotation.z = Math.PI/6;
+
+	var group = new THREE.Group();
+	group.add(mesh);
+
+	/*put lights hovering around the banana*/
+	
+	// var ellipseCurve = new THREE.EllipseCurve(
+	// 	0, 0,			  //cx, cy
+	// 	15, 10,           // xRadius, yRadius
+	// 	0,  2 * Math.PI,  // aStartAngle, aEndAngle
+	// 	false,            // aClockwise
+	// 	Math.PI/4                 // aRotation
+	// );
+
+	var pointLights = [];
+	var ellipseCurves = [];
+	var decayDist = 9;
+	var sphereGeom = new THREE.SphereGeometry(.25, 10, 10);
+
+	for (var i=0; i<3; i++){
+		var pointLight = new THREE.PointLight(0xffffff, 1, decayDist);
+		var sphereMat = new THREE.MeshBasicMaterial();
+		var sphere = new THREE.Mesh(sphereGeom, sphereMat);
+		pointLight.add(sphere);
+		pointLights.push(pointLight);
+
+		var e = new Ellipse(5, 5, Math.PI/3*(i+1));
+		ellipseCurves.push(e);
+	}
+
+	var time = 0;
+
+	function updateLights(){
+		// console.log(p);
+		for (var i=0; i<pointLights.length; i++){
+			var speed = 3;
+			var offset = i*(.3 + .2*i*i);
+			var p = ellipseCurves[i].getPoint(speed*time+offset);
+			pointLights[i].position.x = p.x;
+			pointLights[i].position.y = p.y;
+			pointLights[i].position.z = p.z;
+		}
+	}
 
 	function update(){
-		mesh.material.uniforms['time'] += .01;
+		time += .001;
+		updateLights();
+		// console.log(pointLights[0].position);
+		// mesh.material.uniforms['time'].value = time;;
+	}
+
+	function addToScene(){
+		scene.add(mesh);
+		for (var i=0; i<pointLights.length; i++){
+			scene.add(pointLights[i]);
+		}
 	}
 
 	return {
 		mesh: mesh,
+		pointLights: pointLights,
+		addToScene: addToScene,
 		update: update
 	}
 

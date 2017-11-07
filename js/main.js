@@ -42,7 +42,7 @@ function init() {
     renderer.setClearColor(0xbfe7ff);
     container.appendChild(renderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
     camera.position.set(0, 0, 10);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -76,13 +76,9 @@ function init() {
 
 	var bananaGeom = MODEL_DATA['banana'].geometry;
     Planet = InitPlanet(bananaGeom);
-    scene.add(Planet.mesh);
+  	Planet.addToScene();
 
     OBJECTS['Planet'] = Planet;
-
-    var test = new THREE.Mesh(new THREE.SphereGeometry(5), new THREE.MeshBasicMaterial());
-    scene.add(test);
-
 
     window.addEventListener('resize', resize);
 

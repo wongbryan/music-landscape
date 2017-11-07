@@ -11,8 +11,9 @@ var MATERIALS = {
 		color : new THREE.Color(0xff7eca),
 		emissive : new THREE.Color(0x89174d),
 		specular : new THREE.Color(0xbe045b),
+		side : THREE.DoubleSide,
 		shininess : 100,
-		flatShading : true
+		// flatShading : true
 	}),
 }
 
