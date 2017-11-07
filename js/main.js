@@ -20,13 +20,10 @@ function updateCamera() {
     }
 }
 
-function update() {
-    // // loop thru objects
-    // Avatar.update();
-    // Land.update();
-    // updateCamera();
-    // pointLight.position.copy(Avatar.position);
-
+function update() {	
+	for (var obj in OBJECTS){
+		OBJECTS[obj].update();
+	}
 }
 
 function loop() {
@@ -46,7 +43,7 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(0, -25, 20);
+    camera.position.set(0, 0, 10);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -77,13 +74,15 @@ function init() {
 	scene.add(ambientLight);
 	scene.add(directionalLight);
 
-    scene.add(Land);
+	var bananaGeom = MODEL_DATA['banana'].geometry;
+    Planet = InitPlanet(bananaGeom);
+    scene.add(Planet.mesh);
 
-    for (obj in LOADED_OBJECTS) {
-        if (LOADED_OBJECTS.hasOwnProperty(obj)) {
-            scene.add(LOADED_OBJECTS[obj])
-        }
-    }
+    OBJECTS['Planet'] = Planet;
+
+    var test = new THREE.Mesh(new THREE.SphereGeometry(5), new THREE.MeshBasicMaterial());
+    scene.add(test);
+
 
     window.addEventListener('resize', resize);
 

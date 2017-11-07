@@ -11,7 +11,6 @@ var Loader = (function () {
     };
 
     manager.onLoad = function () {
-        initObjects();
         init();
     };
 
