@@ -1,8 +1,9 @@
-var camera, scene, renderer, controls;
+var camera, outerCamera, scene, renderer, controls;
 var clock = new THREE.Clock();
 var pointLight;
 var pov;
 var domEvents;
+var activeCamera;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -28,7 +29,7 @@ function update() {
 
 function loop() {
     update();
-    renderer.render(scene, camera);
+    renderer.render(scene, activeCamera);
     window.requestAnimationFrame(loop);
 }
 
@@ -46,9 +47,15 @@ function init() {
     camera.position.set(0, 5, 10);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    // controls = new THREE.OrbitControls(camera, renderer.domElement);
+    outerCamera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
+	outerCamera.position.set(0, 0, 10);
+
+    controls = new THREE.OrbitControls(outerCamera, renderer.domElement);
 
     scene = new THREE.Scene();
+
+    scene.add(camera);
+	scene.add(outerCamera);
 
     scene.fog = new THREE.FogExp2(0x8adcff, .015);
 

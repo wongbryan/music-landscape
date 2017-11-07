@@ -2,8 +2,15 @@ var Universe
 var InitUniverse = (function(radius, numPlanets) {
 
 	var RADIUS = radius;
+
+	var avatarMat = MATERIALS['bubbleGum'].clone();
+	avatarMat.side = THREE.FrontSide;
+	var avatar = new THREE.Mesh(new THREE.SphereGeometry(.5, 64, 64), avatarMat);
+	camera.add(avatar);
 	camera.position.set(0, 0, RADIUS);
 
+	activeCamera = camera;
+	
 	var group = new THREE.Group();
 
 	var space = 2;	
@@ -39,16 +46,16 @@ var InitUniverse = (function(radius, numPlanets) {
 	function update(){
 		time += .005;
 		angle += .01;
-		theta = 2*Math.PI/10000;
+		theta = 2*Math.PI/1000;
 
 		var x = camera.position.x;
 		var z = camera.position.z;
 
-		camera.lookAt(origin);
-
 		camera.position.x = x * Math.cos(theta) + z * Math.sin(theta);
 		camera.position.y = 0;
 		camera.position.z = z * Math.cos(theta) - x * Math.sin(theta);
+
+		camera.lookAt(origin);
 	}
 
 	return {
