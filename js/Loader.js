@@ -11,13 +11,20 @@ var Loader = (function () {
     };
 
     manager.onLoad = function () {
+        initObjects();
         init();
     };
 
-    this.loadModel = function(file, material = null) {
-        loader.load(
+    this.loadModel = function(file) {
+        loader.load( 
             ASSETS_PATH + file + '.json',
-            meshLoader(file, material)
+
+            function(geometry, materials){
+                MODEL_DATA[file].geometry = geometry;
+
+                if(materials!==undefined)
+                    MODEL_DATA[file].materials = materials;
+            }
         );
     };
 
@@ -43,3 +50,11 @@ var Loader = (function () {
 
     return this;
 }());
+
+// MODEL_DATA.forEach(obj => {
+//     Loader.loadModel(obj.name, obj.material);
+// });
+
+for (var obj in MODEL_DATA ){
+    Loader.loadModel(obj);
+}

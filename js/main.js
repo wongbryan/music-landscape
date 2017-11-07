@@ -21,9 +21,9 @@ function updateCamera() {
 }
 
 function update() {
-    // loop thru objects
-    Avatar.update();
-    Land.update();
+    // // loop thru objects
+    // Avatar.update();
+    // Land.update();
     // updateCamera();
     // pointLight.position.copy(Avatar.position);
 
@@ -89,7 +89,3 @@ function init() {
 
     loop();
 }
-
-OBJECTS_TO_LOAD.forEach(obj => {
-    Loader.loadModel(obj.name, obj.material);
-});
