@@ -21,6 +21,10 @@ function updateCamera() {
     }
 }
 
+function toggleCamera(){
+	activeCamera = (activeCamera == camera) ? outerCamera : camera;
+}
+
 function update() {	
 	for (var obj in OBJECTS){
 		OBJECTS[obj].update();
@@ -48,7 +52,7 @@ function init() {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     outerCamera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
-	outerCamera.position.set(0, 0, 10);
+	outerCamera.position.set(0, 10, 15);
 
     controls = new THREE.OrbitControls(outerCamera, renderer.domElement);
 
@@ -175,6 +179,6 @@ function init() {
 	}
 
     window.addEventListener('resize', resize);
-
+    window.addEventListener('mousedown', toggleCamera);
     loop();
 }
