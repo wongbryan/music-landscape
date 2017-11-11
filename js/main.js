@@ -1,9 +1,18 @@
+'use strict';
+
+Physijs.scripts.worker = '../bower_components/Physijs/physijs_worker.js';
+Physijs.scripts.ammo = 'examples/js/ammo.js';
+
+var initScene, render, box, loader,
+		renderer, scene, ground_material, ground, light, camera;
+
 var camera, outerCamera, scene, renderer, controls;
 var clock = new THREE.Clock();
 var pointLight;
 var pov;
 var domEvents;
 var activeCamera;
+var force, offset;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -26,14 +35,12 @@ function toggleCamera(){
 }
 
 function update() {	
-	for (var obj in OBJECTS){
-		OBJECTS[obj].update();
-	}
+
 }
 
 function loop() {
     update();
-    renderer.render(scene, activeCamera);
+    renderer.render(scene, camera);
     window.requestAnimationFrame(loop);
 }
 
@@ -51,15 +58,19 @@ function init() {
     camera.position.set(0, 5, 10);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    outerCamera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
-	outerCamera.position.set(0, 10, 15);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    controls = new THREE.OrbitControls(outerCamera, renderer.domElement);
-
-    scene = new THREE.Scene();
+    scene = new Physijs.Scene;
+	scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+	scene.addEventListener(
+		'update',
+		function() {
+			scene.simulate( undefined, 1 );
+			// physics_stats.update();
+		}
+	);
 
     scene.add(camera);
-	scene.add(outerCamera);
 
     scene.fog = new THREE.FogExp2(0x8adcff, .015);
 
@@ -77,108 +88,48 @@ function init() {
 	pointLights[1].position.set(-50, 0, 50);
 	pointLights[2].position.set(50, -50, 50);
 
-	for (var i=0; i<pointLights.length; i++){
-		scene.add(pointLights[i]);
-		var helper = new THREE.PointLightHelper(pointLights[i], 1);
-		scene.add(helper);
-	}
-
 	scene.add(ambientLight);
 	scene.add(directionalLight);
 
-	var bananaGeom = MODEL_DATA['banana'].geometry;
-	var RADIUS = 25, numPlanets = 5;
-	for (var obj in OBJECTS){
-		switch(obj){
-			case('Universe'):
-				var universe = InitUniverse(RADIUS, numPlanets, camera);
-				scene.add(universe.mesh);
-				OBJECTS[obj] = universe;
-				break;
-			case('Planet'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 0;
+	// Ground
+	ground_material = Physijs.createMaterial(
+		new THREE.MeshLambertMaterial(),
+		.8, // high friction
+		.3 // low restitution
+	);
+	
+	ground = new Physijs.BoxMesh(
+		new THREE.BoxGeometry(100, 1, 100),
+		ground_material,
+		0 // mass
+	);
+	ground.receiveShadow = true;
+	scene.add(ground);
 
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
+	var box_geometry = new THREE.BoxGeometry(5, 5, 5);
+	var box_material = MATERIALS['bubbleGum'].clone();
+	box = new Physijs.BoxMesh(
+		box_geometry,
+		box_material
+	);
+	box.addEventListener('collision', (collided_with, linearVelocity, angularVelocity)=>{
+		console.log(collided_with);
+		console.log(linearVelocity);
+		console.log(angularVelocity);
+	});
+	box.position.set(0, 5, 0);
+	box.rotation.set(Math.PI/3, Math.PI/6, 0);
+	box.castShadow = true;
 
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
+	force = new THREE.Vector3(0, 3000, 0);
+	offset = new THREE.Vector3(1, 0, 0);
 
-				scene.add(planet.mesh);
+	scene.add(box);
 
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet2'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 1;
-
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
-
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
-
-				scene.add(planet.mesh);
-
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet3'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 2;
-
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
-
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
-
-				scene.add(planet.mesh);
-
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet4'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 3;
-
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
-
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
-
-				scene.add(planet.mesh);
-
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet5'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 4;
-
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
-
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
-
-				scene.add(planet.mesh);
-
-				OBJECTS[obj] = planet;
-				break;
-			case('CenterPlanet'):
-				CenterPlanet = InitCenterPlanet(bananaGeom);
-			    scene.add(CenterPlanet.mesh);
-			    OBJECTS['CenterPlanet'] = CenterPlanet;
-				break;
-		}
-	}
-
+	scene.simulate();
+	window.addEventListener('mousedown', function(){
+		box.applyImpulse(force, offset);
+	});
     window.addEventListener('resize', resize);
-    window.addEventListener('mousedown', toggleCamera);
     loop();
 }
