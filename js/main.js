@@ -117,14 +117,29 @@ function init() {
 		console.log(linearVelocity);
 		console.log(angularVelocity);
 	});
-	box.position.set(0, 5, 0);
-	box.rotation.set(Math.PI/3, Math.PI/6, 0);
+	box.position.set(0, 4, 0);
+	box.rotation.set(Math.PI/2, Math.PI/2, 0);
 	box.castShadow = true;
 
 	force = new THREE.Vector3(0, 3000, 0);
-	offset = new THREE.Vector3(1, 0, 0);
+	offset = new THREE.Vector3(2, 2, 2);
 
 	scene.add(box);
+
+	var linear_lower = new THREE.Vector3(0, -5, 0),
+	linear_upper = new THREE.Vector3(-10, -5, 0),
+	angular_lower = new THREE.Vector3(10, 25, 0),
+	angular_upper = new THREE.Vector3(2*Math.PI, 2*Math.PI, 2*Math.PI);
+
+	var constraint = new Physijs.DOFConstraint(
+	    box, // First object to be constrained
+	    null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+	    new THREE.Vector3( 0, 0, 0 ), // point in the scene to apply the constraint
+	);
+
+	scene.addConstraint( constraint );
+	constraint.setLinearLowerLimit( new THREE.Vector3( -10, -5, 0 ) ); // sets the lower end of the linear movement along the x, y, and z axes.
+	constraint.setLinearUpperLimit( new THREE.Vector3( 10, 25, 0 ) ); // sets the upper end of the linear movement along the x, y, and z axes.
 
 	scene.simulate();
 	window.addEventListener('mousedown', function(){
