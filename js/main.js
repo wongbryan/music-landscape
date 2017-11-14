@@ -13,6 +13,7 @@ var pov;
 var domEvents;
 var activeCamera;
 var force, offset;
+var boxes = [];
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -72,7 +73,7 @@ function init() {
 
     scene.add(camera);
 
-    scene.fog = new THREE.FogExp2(0x8adcff, .015);
+    // scene.fog = new THREE.FogExp2(0x8adcff, .015);
 
 	var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
 	directionalLight.position.set(-5, 5, 1);
@@ -107,14 +108,23 @@ function init() {
 	scene.add(ground);	
 
 	var mat = new THREE.MeshBasicMaterial();
-	var pos = new THREE.Vector3(0, 0, 0);
-	box = CreateCube(MODEL_DATA['banana'].geometry, mat, pos);
-	scene.add(box.mesh);
+
+	for (var i=0; i<5; i++){
+		var x = 10*(i-Math.floor(5/2));
+		var pos = new THREE.Vector3(x, 5, 0);
+		console.log(pos);
+		boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, mat, pos);
+		scene.add(boxes[i].mesh);
+		scene.addConstraint(boxes[i].constraint);
+		var linear_lower = new THREE.Vector3(0, -5, 0),
+		linear_upper = new THREE.Vector3(-10, -5, 0);
+
+		boxes[i].constraint.setLinearLowerLimit( linear_lower );
+		boxes[i].constraint.setLinearUpperLimit( linear_upper );
+	}
 
 	scene.simulate();
-	// window.addEventListener('mousedown', function(){
-	// 	box.applyImpulse(force, offset);
-	// });
+
     window.addEventListener('resize', resize);
     loop();
 }

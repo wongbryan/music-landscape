@@ -21,24 +21,29 @@ var CreateCube = function(morphGeom, material, position){
 	var mesh = new Physijs.BoxMesh(morphGeom, mat);
 	mesh.morphTargetInfluences[0] = 1;
 
+	mesh.__dirtyPosition = true;
+	mesh.position.set(position.x, position.y, position.z);
+
 	/* Define physics */
 
-	// var linear_lower = new THREE.Vector3(0, -5, 0),
-	// linear_upper = new THREE.Vector3(-10, -5, 0);
+	var linear_lower = new THREE.Vector3(0, -5, 0),
+	linear_upper = new THREE.Vector3(-10, -5, 0);
 
-	// var constraint = new Physijs.DOFConstraint(
-	//     mesh, // First object to be constrained
-	//     null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
-	//     position, // point in the scene to apply the constraint
-	// );
+	var constraint = new Physijs.DOFConstraint(
+	    mesh, // First object to be constrained
+	    null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+	    position, // point in the scene to apply the constraint
+	);
 
+	console.log(constraint);
 	// scene.add(mesh);
 	// scene.addConstraint( constraint );
 	// constraint.setLinearLowerLimit( linear_lower ); // sets the lower end of the linear movement along the x, y, and z axes.
 	// constraint.setLinearUpperLimit( linear_upper ); // sets the upper end of the linear movement along the x, y, and z axes.
 
 	var force = new THREE.Vector3(0, 3000, 0), 
-	offset = new THREE.Vector3(2, 2, 2);
+	offset = new THREE.Vector3(.1, 0, 0);
+
 	function applyImpulse(){
 		mesh.applyImpulse(force, offset);
 	}
@@ -57,11 +62,17 @@ var CreateCube = function(morphGeom, material, position){
 		tween.start();
 	}
 
+	function pop(){
+		applyImpulse(force, offset);
+		morph();
+	}
+
 	return {
 		applyImpulse: applyImpulse,
 		mesh: mesh,
 		force: force,
 		offset: offset,
-		morph: morph
+		pop: pop,
+		constraint: constraint
 	}
 }
