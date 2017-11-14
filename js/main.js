@@ -75,19 +75,30 @@ function init() {
 
     // scene.fog = new THREE.FogExp2(0x8adcff, .015);
 
+    var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
+
 	var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
 	directionalLight.position.set(-5, 5, 1);
 	directionalLight.castShadow = true;
 	var ambientLight = new THREE.AmbientLight(0xfa7cf2);
 	var pointLights = [];
-	var decayDist = 100;
-	pointLights[0] = new THREE.PointLight(0xffffff, 1, decayDist);
-	pointLights[1] = new THREE.PointLight(0xffffff, 1, decayDist);
-	pointLights[2] = new THREE.PointLight(0xffffff, 1, decayDist);
 
-	pointLights[0].position.set(0, 50, 50);
-	pointLights[1].position.set(-50, 0, 50);
-	pointLights[2].position.set(50, -50, 50);
+	var distDecay = 20, decay = 2;
+	pointLights[0] = new THREE.PointLight(0xffffff, 1, distDecay, decay);
+	pointLights[1] = new THREE.PointLight(0xffffff, 1, distDecay, decay);
+	pointLights[2] = new THREE.PointLight(0xffffff, 1, distDecay, decay);
+
+	pointLights[0].position.set(-5, 10, 10);
+	pointLights[1].position.set(-15, 5, 7);
+	pointLights[2].position.set(15, 10, -5);
+
+	for (var i=0; i<pointLights.length; i++){
+		scene.add(pointLights[i]);
+		var s = sphere.clone();
+		var p =pointLights[i].position;
+		s.position.set(p.x, p.y, p.z);
+		scene.add(s);
+	}
 
 	scene.add(ambientLight);
 	scene.add(directionalLight);

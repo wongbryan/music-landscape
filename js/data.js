@@ -12,14 +12,17 @@ var MODEL_DATA = {
 }
 
 var MATERIALS = {
-	'bubbleGum': new THREE.MeshPhongMaterial({
-		color : new THREE.Color(0xff7eca),
-		emissive : new THREE.Color(0x89174d),
-		specular : new THREE.Color(0xbe045b),
+	'bubbleGum': new THREE.MeshStandardMaterial({
+		color : new THREE.Color(0xf572bf),
+		emissive : new THREE.Color(0x8c1228),
+		roughness : .05,
+		metalness : .48,
 		side : THREE.DoubleSide,
-		shininess : 100,
-		// flatShading : true
-	}),
+		flatShading : true,
+		morphTargets : true,
+		// map : texture
+	})
+
 }
 
 var OBJECTS = {
