@@ -18,7 +18,7 @@ var CreateCube = function(morphGeom, material, position){
 	cubeGeom.computeMorphNormals();
 
 	var mesh = new Physijs.BoxMesh(cubeGeom, mat);
-	mesh.morphTargetInfluences[0] = 1;
+	mesh.morphTargetInfluences[0] = 0;
 
 	/* Define physics */
 
@@ -43,7 +43,17 @@ var CreateCube = function(morphGeom, material, position){
 	}
 
 	function morph(){
-		var tween 
+		var target = (mesh.morphTargetInfluences[0] > 0) ? 0 : 1;
+		var cur = { value : mesh.morphTargetInfluences[0] };
+		var targetMagnitude = { value : target };	
+
+		var tween = new TWEEN.Tween(cur).to(targetMagnitude, 1500);
+		tween.onUpdate(function(){
+			mesh.morphTargetInfluences[0] = cur.value;
+		})
+		tween.easing(TWEEN.Easing.Elastic.Out);
+
+		tween.start();
 	}
 
 	return {
@@ -51,5 +61,6 @@ var CreateCube = function(morphGeom, material, position){
 		mesh: mesh,
 		force: force,
 		offset: offset,
+		morph: morph
 	}
 }

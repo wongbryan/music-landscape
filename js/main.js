@@ -35,7 +35,7 @@ function toggleCamera(){
 }
 
 function update() {	
-
+	TWEEN.update();
 }
 
 function loop() {
