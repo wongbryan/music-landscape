@@ -109,19 +109,30 @@ function init() {
 
 	var mat = new THREE.MeshBasicMaterial();
 
-	for (var i=0; i<5; i++){
-		var x = 10*(i-Math.floor(5/2));
-		var pos = new THREE.Vector3(x, 5, 0);
-		console.log(pos);
-		boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, mat, pos);
-		scene.add(boxes[i].mesh);
-		scene.addConstraint(boxes[i].constraint);
-		var linear_lower = new THREE.Vector3(0, -5, 0),
+	var linear_lower = new THREE.Vector3(0, -5, 0),
 		linear_upper = new THREE.Vector3(-10, -5, 0);
 
-		boxes[i].constraint.setLinearLowerLimit( linear_lower );
-		boxes[i].constraint.setLinearUpperLimit( linear_upper );
-	}
+	// for (var i=0; i<5; i++){
+	// 	var x = 10*(i-Math.floor(5/2));
+	// 	var pos = new THREE.Vector3(x, 5, 0);
+	// 	console.log(pos);
+	// 	boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, mat, pos);
+	// 	scene.add(boxes[i].mesh);
+
+	// }
+
+	box = new Physijs.BoxMesh(new THREE.BoxGeometry(5, 5, 5), mat);
+
+	var constraint = new Physijs.DOFConstraint(
+	    box, // First object to be constrained
+	    null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+	    new THREE.Vector3(0, 0, 0), // point in the scene to apply the constraint
+	);
+
+	scene.add(box);
+	scene.addConstraint(constraint);
+	constraint.setLinearLowerLimit( linear_lower );
+	constraint.setLinearUpperLimit( linear_upper );
 
 	scene.simulate();
 
