@@ -11,14 +11,14 @@ var CreateCube = function(morphGeom, material, position){
 	);
 
 	var s = 5;
-	var cubeGeom = new THREE.BoxGeometry(s, s, s, 100, 100);
+	var cubeGeom = new THREE.BoxGeometry(s, s, s, 128, 128);
 	console.log(cubeGeom.vertices);
 	console.log(morphGeom.vertices);
-	cubeGeom.morphTargets[0] = { name : 't1', vertices : morphGeom.vertices};
-	cubeGeom.computeMorphNormals();
+	morphGeom.morphTargets[0] = { name : 't1', vertices : cubeGeom.vertices};
+	morphGeom.computeMorphNormals();
 
-	var mesh = new Physijs.BoxMesh(cubeGeom, mat);
-	mesh.morphTargetInfluences[0] = 0;
+	var mesh = new Physijs.BoxMesh(morphGeom, mat);
+	mesh.morphTargetInfluences[0] = 1;
 
 	/* Define physics */
 
