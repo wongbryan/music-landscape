@@ -104,47 +104,17 @@ function init() {
 		0 // mass
 	);
 	ground.receiveShadow = true;
-	scene.add(ground);
+	scene.add(ground);	
 
-	var box_geometry = new THREE.BoxGeometry(5, 5, 5);
-	var box_material = MATERIALS['bubbleGum'].clone();
-	box = new Physijs.BoxMesh(
-		box_geometry,
-		box_material
-	);
-	box.addEventListener('collision', (collided_with, linearVelocity, angularVelocity)=>{
-		console.log(collided_with);
-		console.log(linearVelocity);
-		console.log(angularVelocity);
-	});
-	box.position.set(0, 4, 0);
-	box.rotation.set(Math.PI/2, Math.PI/2, 0);
-	box.castShadow = true;
-
-	force = new THREE.Vector3(0, 3000, 0);
-	offset = new THREE.Vector3(2, 2, 2);
-
-	scene.add(box);
-
-	var linear_lower = new THREE.Vector3(0, -5, 0),
-	linear_upper = new THREE.Vector3(-10, -5, 0),
-	angular_lower = new THREE.Vector3(10, 25, 0),
-	angular_upper = new THREE.Vector3(2*Math.PI, 2*Math.PI, 2*Math.PI);
-
-	var constraint = new Physijs.DOFConstraint(
-	    box, // First object to be constrained
-	    null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
-	    new THREE.Vector3( 0, 0, 0 ), // point in the scene to apply the constraint
-	);
-
-	scene.addConstraint( constraint );
-	constraint.setLinearLowerLimit( new THREE.Vector3( -10, -5, 0 ) ); // sets the lower end of the linear movement along the x, y, and z axes.
-	constraint.setLinearUpperLimit( new THREE.Vector3( 10, 25, 0 ) ); // sets the upper end of the linear movement along the x, y, and z axes.
+	var mat = new THREE.MeshBasicMaterial();
+	var pos = new THREE.Vector3(0, 0, 0);
+	box = CreateCube(MODEL_DATA['banana'].geometry, mat, pos);
+	scene.add(box.mesh);
 
 	scene.simulate();
-	window.addEventListener('mousedown', function(){
-		box.applyImpulse(force, offset);
-	});
+	// window.addEventListener('mousedown', function(){
+	// 	box.applyImpulse(force, offset);
+	// });
     window.addEventListener('resize', resize);
     loop();
 }
