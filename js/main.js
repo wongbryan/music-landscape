@@ -62,7 +62,7 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     scene = new Physijs.Scene;
-	scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+	scene.setGravity(new THREE.Vector3( 0, -60, 0 ));
 	scene.addEventListener(
 		'update',
 		function() {
@@ -93,46 +93,31 @@ function init() {
 	scene.add(directionalLight);
 
 	// Ground
+	var mat = new THREE.MeshBasicMaterial();
 	ground_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial(),
-		.8, // high friction
-		.3 // low restitution
+		1., // high friction
+		1. // low restitution
 	);
 	
 	ground = new Physijs.BoxMesh(
 		new THREE.BoxGeometry(100, 1, 100),
-		ground_material,
+		mat,
 		0 // mass
 	);
 	ground.receiveShadow = true;
 	scene.add(ground);	
 
-	var mat = new THREE.MeshBasicMaterial();
-
 	var linear_lower = new THREE.Vector3(0, -5, 0),
 		linear_upper = new THREE.Vector3(-10, -5, 0);
 
-	// for (var i=0; i<5; i++){
-	// 	var x = 10*(i-Math.floor(5/2));
-	// 	var pos = new THREE.Vector3(x, 5, 0);
-	// 	console.log(pos);
-	// 	boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, mat, pos);
-	// 	scene.add(boxes[i].mesh);
-
-	// }
-
-	box = new Physijs.BoxMesh(new THREE.BoxGeometry(5, 5, 5), mat);
-
-	var constraint = new Physijs.DOFConstraint(
-	    box, // First object to be constrained
-	    null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
-	    new THREE.Vector3(0, 0, 0), // point in the scene to apply the constraint
-	);
-
-	scene.add(box);
-	scene.addConstraint(constraint);
-	constraint.setLinearLowerLimit( linear_lower );
-	constraint.setLinearUpperLimit( linear_upper );
+	for (var i=0; i<5; i++){
+		var x = 10*(i-Math.floor(5/2));
+		var pos = new THREE.Vector3(x, 6, 0);
+		boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone(), pos);
+		scene.add(boxes[i].mesh);
+		boxes[i].defineConstraint();
+	}
 
 	scene.simulate();
 

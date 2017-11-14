@@ -3,6 +3,11 @@ var MODEL_DATA = {
 		url: 'assets/models/blueberry.json',
 		geometry: null,
 		materials: null
+	},
+	'blueberry' : {
+		url: 'assets/models/blueberry.json',
+		geometry: null,
+		materials: null
 	}
 }
 
