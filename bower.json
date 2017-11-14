@@ -1,23 +1,11 @@
 {
-  "name": "music-landscape",
+  "name": "Music Box",
   "homepage": "https://github.com/wongbryan/music-landscape",
   "authors": [
-    "Chang Liu <shampliu@gmail.com>"
+    "Bryan Wong <bryanw0ng@ucla.edu>"
   ],
-  "description": "",
+  "description": "Interactive MIDI keyboard",
   "main": "",
   "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "three.js-examples": "^0.87.0",
-    "threex.domevents": "*",
-    "three.js": "^0.87.0",
-    "jquery": "^3.2.1"
-  }
+  "private": true
 }
