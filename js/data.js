@@ -1,11 +1,13 @@
 var MODEL_DATA = {
 	'banana' : {
-		url: 'assets/models/blueberry.json',
 		geometry: null,
 		materials: null
 	},
 	'blueberry' : {
-		url: 'assets/models/blueberry.json',
+		geometry: null,
+		materials: null
+	},
+	'banana_cube' : {
 		geometry: null,
 		materials: null
 	}

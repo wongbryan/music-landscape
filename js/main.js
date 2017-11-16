@@ -131,7 +131,7 @@ function init() {
 	}
 
 	scene.simulate();
-
+	
     window.addEventListener('resize', resize);
     loop();
 }
