@@ -1,3 +1,4 @@
+var modifier = new THREE.BufferSubdivisionModifier( 4 );
 var CreateCube = function(morphGeom, material, position){
 
 	/* Create mesh with morph targets */
@@ -12,6 +13,7 @@ var CreateCube = function(morphGeom, material, position){
 
 	var s = 5;
 	var cubeGeom = new THREE.BoxGeometry(s, s, s, 128, 128);
+	// var cubeGeom = new THREE.RoundedBoxGeometry(5, s);
 	console.log(morphGeom.faces);
 	morphGeom.morphTargets[0] = { name : 't1', vertices : cubeGeom.vertices};
 	morphGeom.computeMorphNormals();

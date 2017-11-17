@@ -1,9 +1,11 @@
-const ASSETS_PATH = '/assets/models/';
+const ASSETS_PATH = 'assets/models/';
+const TEXTURE_ASSETS_PATH = 'assets/images/';
 const LOADED_OBJECTS = {};
 
 var Loader = (function () {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.JSONLoader(manager);
+    const textureLoader = new THREE.TextureLoader(manager);
 
     manager.onProgress = function (item, loaded, total) {
         console.log(item, loaded, total);
@@ -26,6 +28,17 @@ var Loader = (function () {
             }
         );
     };
+
+    this.loadTexture = function(file){
+        textureLoader.load(
+            TEXTURE_ASSETS_PATH + file + '.png',
+
+            function(texture){
+                TEXTURE_DATA[file] = texture;
+                MATERIALS[file] = new THREE.MeshPhongMaterial({map: texture});
+            }
+        )
+    }
 
     function meshLoader(file, customMaterials) {
         return function (geometry, materials) {
@@ -57,3 +70,8 @@ var Loader = (function () {
 for (var obj in MODEL_DATA ){
     Loader.loadModel(obj);
 }
+
+for (var key in TEXTURE_DATA ){
+    Loader.loadTexture(key);
+}
+

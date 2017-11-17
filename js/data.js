@@ -3,6 +3,10 @@ var MODEL_DATA = {
 		geometry: null,
 		materials: null
 	},
+	'banana-low' : {
+		geometry: null,
+		materials: null
+	},
 	'blueberry' : {
 		geometry: null,
 		materials: null
@@ -10,7 +14,19 @@ var MODEL_DATA = {
 	'banana_cube' : {
 		geometry: null,
 		materials: null
-	}
+	},
+	'apple' : {
+		geometry: null,
+		materials: null
+	},
+	'jelly' : {
+		geometry: null,
+		materials: null
+	},
+}
+
+var TEXTURE_DATA = {
+	'blueberry' : null,
 }
 
 var MATERIALS = {
@@ -23,7 +39,9 @@ var MATERIALS = {
 		flatShading : true,
 		morphTargets : true,
 		// map : texture
-	})
+	}),
+
+	'blueberry' : null,
 
 }
 
