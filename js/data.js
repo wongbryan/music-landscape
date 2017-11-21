@@ -27,6 +27,8 @@ var MODEL_DATA = {
 
 var TEXTURE_DATA = {
 	'blueberry' : null,
+	'apple' : null,
+	'banana' : null,
 }
 
 var MATERIALS = {

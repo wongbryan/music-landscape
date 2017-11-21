@@ -84,19 +84,22 @@ function init() {
 
 	var shadowLight = new THREE.DirectionalLight(0xfff9ed, .45);
 
-	shadowLight.position.set(-240, 200, -45);
+	shadowLight.position.set(-35, 25, -15);
 
 	// shadowLight.castShadow = true;
 
-	// shadowLight.shadow.camera.left = -50;
-	// shadowLight.shadow.camera.right = 50;
-	// shadowLight.shadow.camera.top = 50;
-	// shadowLight.shadow.camera.bottom = -50;
+	// shadowLight.shadow.camera.left = -25;
+	// shadowLight.shadow.camera.right = 25;
+	// shadowLight.shadow.camera.top = 25;
+	// shadowLight.shadow.camera.bottom = -25;
 	// shadowLight.shadow.camera.near = .01;
-	// shadowLight.shadow.camera.far = 1000;
+	// shadowLight.shadow.camera.far = 500;
 
-	// shadowLight.shadow.mapSize.width = 2048;
-	// shadowLight.shadow.mapSize.height = 2048;
+	// shadowLight.shadow.mapSize.width = 512;
+	// shadowLight.shadow.mapSize.height = 512;
+
+	// var helper = new THREE.CameraHelper( shadowLight.shadow.camera );
+	// scene.add( helper );
 
 	scene.add(hemisphereLight);
 	scene.add(shadowLight);
@@ -149,11 +152,11 @@ function init() {
 					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
 					break;
 				case(1):
-					texture = TEXTURE_DATA['blueberry'];
+					texture = TEXTURE_DATA['banana'];
 					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
 					break;
 				case(2):
-					texture = TEXTURE_DATA['blueberry'];
+					texture = TEXTURE_DATA['apple'];
 					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
 					break;
 				case(3):
