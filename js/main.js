@@ -14,7 +14,7 @@ var domEvents;
 var activeCamera;
 var force, offset;
 var jelly;
-var boxes = [];
+var boxes = [], fruits = [];
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -56,7 +56,7 @@ function init() {
     renderer.setClearColor(0xbfe7ff);
     container.appendChild(renderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
     camera.position.set(0, 5, 10);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -78,91 +78,37 @@ function init() {
 
     var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
 
-	// var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
-	// directionalLight.position.set(-5, 5, 1);
-	// directionalLight.castShadow = true;
-	// var ambientLight = new THREE.AmbientLight(0xfa7cf2);
-	// var pointLights = [];
-
-	// var distDecay = 20, decay = 2;
-	// pointLights[0] = new THREE.PointLight(0xffffff, 1, distDecay, decay);
-	// pointLights[1] = new THREE.PointLight(0xffffff, 1, distDecay, decay);
-	// pointLights[2] = new THREE.PointLight(0xffffff, 1, distDecay, decay);
-
-	// pointLights[0].position.set(-5, 10, 10);
-	// pointLights[1].position.set(-15, 5, 7);
-	// pointLights[2].position.set(15, 10, -5);
-
-	// for (var i=0; i<pointLights.length; i++){
-	// 	scene.add(pointLights[i]);
-	// 	var s = sphere.clone();
-	// 	var p =pointLights[i].position;
-	// 	s.position.set(p.x, p.y, p.z);
-	// 	scene.add(s);
-	// }
-
-	// scene.add(ambientLight);
-	// scene.add(directionalLight);
-
 	var hemisphereLight = new THREE.HemisphereLight(0xffe6c9, 0x474747, .2);
-                
-    // hemisphereLight.position.set( 25, 67, 10 );
-    hemisphereLight.position.set(0, 70, 0);
-    
-    // A directional light shines from a specific direction.
-    // It acts like the sun, that means that all the rays produced are parallel.
-    var shadowLight = new THREE.DirectionalLight(0xfff9ed, .45);
-    
-    // Set the direction of the light
-    shadowLight.position.set(-240, 200, -45);
-    
-    // Allow shadow casting
-    shadowLight.castShadow = true;
-    
-    // Define the visible area of the projected shadow
-    shadowLight.shadow.camera.left = -100;
-    shadowLight.shadow.camera.right = 100;
-    shadowLight.shadow.camera.top = 100;
-    shadowLight.shadow.camera.bottom = -100;
-    shadowLight.shadow.camera.near = 1;
-    shadowLight.shadow.camera.far = 1000;
-    
-    // define the resolution of the shadow; the higher the better,
-    // but also the more expensive and less performant
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
-    
-//                var spotLight = new THREE.SpotLight( 0xffffff );
-//                spotLight.position.set( -800, 120, -100);
-//
-//                spotLight.castShadow = true;
-//
-//                spotLight.shadow.mapSize.width = 10000;
-//                spotLight.shadow.mapSize.height = 10000;
-//
-//                spotLight.shadow.camera.near = 500;
-//                spotLight.shadow.camera.far = 4000;
-//                spotLight.shadow.camera.fov = 30;
 
-    //scene.add( spotLight );
-    
-    // to activate the lights, just add them to the scene
-    scene.add(hemisphereLight);
-    scene.add(shadowLight);
-    
-    // an ambient light modifies the global color of the scene and makes shadows softer
-    var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
-    ambientLight.position.set( 20,-55,-20 );
-    scene.add(ambientLight);
+	hemisphereLight.position.set( 25, 67, 10 );
 
+	var shadowLight = new THREE.DirectionalLight(0xfff9ed, .45);
 
-	// Ground
+	shadowLight.position.set(-240, 200, -45);
+
+	// shadowLight.castShadow = true;
+
+	// shadowLight.shadow.camera.left = -50;
+	// shadowLight.shadow.camera.right = 50;
+	// shadowLight.shadow.camera.top = 50;
+	// shadowLight.shadow.camera.bottom = -50;
+	// shadowLight.shadow.camera.near = .01;
+	// shadowLight.shadow.camera.far = 1000;
+
+	// shadowLight.shadow.mapSize.width = 2048;
+	// shadowLight.shadow.mapSize.height = 2048;
+
+	scene.add(hemisphereLight);
+	scene.add(shadowLight);
+
+	var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
+	ambientLight.position.set( 20,-55,-20 );
+	scene.add(ambientLight);
+
 	var groundMat = new THREE.MeshPhongMaterial({
         color: 0xf4ade4, 
         shading: THREE.FlatShading,
-        shininess: 20
-        // roughness: 1,
-        // metalness: 0.43
+        shininess: 20,
     });
 
 	ground_material = Physijs.createMaterial(
@@ -182,13 +128,74 @@ function init() {
 	var linear_lower = new THREE.Vector3(0, -5, 0),
 		linear_upper = new THREE.Vector3(-10, -5, 0);
 
-	for (var i=0; i<5; i++){
-		var x = 10*(i-Math.floor(5/2));
-		var pos = new THREE.Vector3(x, 6, 0);
-		boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone(), pos);
-		scene.add(boxes[i].mesh);
-		boxes[i].defineConstraint();
-		boxes[i].pop();
+	// for (var i=0; i<5; i++){
+	// 	var x = 10*(i-Math.floor(5/2));
+	// 	var pos = new THREE.Vector3(x, 6, 0);
+	// 	boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone(), pos);
+	// 	scene.add(boxes[i].mesh);
+	// 	boxes[i].defineConstraint();
+	// 	boxes[i].pop();
+	// }
+
+	var rows = 3, cols = 3;
+	var sp = 10;
+	var index = 0;
+	for (var i=0; i<rows; i++){
+		for(var j=0; j<cols; j++){
+			var texture, fruit;
+			switch(index){
+				case(0):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(1):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(2):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(3):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(4):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(5):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(6):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(7):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+				case(8):
+					texture = TEXTURE_DATA['blueberry'];
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					break;
+			}
+			var c = CreateStaticCube(5, texture);
+			var x = sp*(i-Math.floor(rows/2)),
+			y = 3,
+			z = sp*(j-Math.floor(cols/2));
+
+			c.mesh.position.set(x, y, z);
+			boxes.push(c);
+			scene.add(c.mesh);
+
+			fruit.mesh.position.set(x, 0, z);
+			fruits.push(fruit);
+			scene.add(fruit.mesh);
+			fruit.defineConstraint();
+			index++;
+		}
 	}
 
 	// jelly = new THREE.Mesh(MODEL_DATA['jelly'].geometry, MATERIALS['bubbleGum'].clone());
