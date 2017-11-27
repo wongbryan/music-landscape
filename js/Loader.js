@@ -34,6 +34,9 @@ var Loader = (function () {
 
             LOADED_OBJECTS[file] = mesh;
 
+            // KEY_MAPPINGS[key] = mesh;
+            // use eval for switch function?
+
             switch(file) {
                 case 'banana':
                     Avatar = new InitAvatar(mesh);
@@ -49,10 +52,6 @@ var Loader = (function () {
 
     return this;
 }());
-
-// MODEL_DATA.forEach(obj => {
-//     Loader.loadModel(obj.name, obj.material);
-// });
 
 for (var obj in MODEL_DATA ){
     Loader.loadModel(obj);

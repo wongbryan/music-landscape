@@ -1,0 +1,18 @@
+{
+  "name": "music-landscape",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/wongbryan/music-landscape.git",
+  "author": "Chang Liu <shampliu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-uglify-es": "^0.1.6",
+    "gulp-util": "^3.0.8"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-webserver": "^0.9.1"
+  }
+}
