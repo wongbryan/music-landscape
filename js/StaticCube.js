@@ -1,8 +1,8 @@
 var CreateStaticCube = function(s, texture){
 	var geom = new THREE.BoxGeometry(s, s, s);
-	var mat = new THREE.MeshStandardMaterial({
+	var mat = new THREE.MeshPhongMaterial({
 		map: texture,
-		// emissive: ,
+		emissive: 0x040505,
 		roughness: 0,
 		metalness: .8,
 	});

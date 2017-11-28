@@ -98,8 +98,8 @@ function init() {
 	// shadowLight.shadow.mapSize.width = 512;
 	// shadowLight.shadow.mapSize.height = 512;
 
-	// var helper = new THREE.CameraHelper( shadowLight.shadow.camera );
-	// scene.add( helper );
+	var helper = new THREE.CameraHelper( shadowLight.shadow.camera );
+	scene.add( helper );
 
 	scene.add(hemisphereLight);
 	scene.add(shadowLight);
