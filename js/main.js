@@ -1,9 +1,18 @@
+'use strict';
+
+Physijs.scripts.worker = '../lib/Physijs/physijs_worker.js';
+Physijs.scripts.ammo = 'examples/js/ammo.js';
+
+var initScene, render, box, loader, renderer, scene, ground_material, ground, light, camera;
+
 var camera, outerCamera, scene, renderer, controls;
 var clock = new THREE.Clock();
 var pointLight;
 var pov;
 var domEvents;
 var activeCamera;
+var force, offset;
+var boxes = [], fruits = [];
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -26,14 +35,12 @@ function toggleCamera(){
 }
 
 function update() {	
-	for (var obj in OBJECTS){
-		OBJECTS[obj].update();
-	}
+	TWEEN.update();
 }
 
 function loop() {
     update();
-    renderer.render(scene, activeCamera);
+    renderer.render(scene, camera);
     window.requestAnimationFrame(loop);
 }
 
@@ -47,145 +54,124 @@ function init() {
     renderer.setClearColor(0xbfe7ff);
     container.appendChild(renderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
     camera.position.set(0, 5, 10);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    outerCamera = new THREE.PerspectiveCamera(105, window.innerWidth / window.innerHeight, .0001, 10000);
-	outerCamera.position.set(0, 10, 15);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    controls = new THREE.OrbitControls(outerCamera, renderer.domElement);
-
-    scene = new THREE.Scene();
+    scene = new Physijs.Scene;
+	scene.setGravity(new THREE.Vector3( 0, -60, 0 ));
+	scene.addEventListener(
+		'update',
+		function() {
+			scene.simulate( undefined, 1 );
+			// physics_stats.update();
+		}
+	);
 
     scene.add(camera);
-	scene.add(outerCamera);
 
-    scene.fog = new THREE.FogExp2(0x8adcff, .015);
+    // scene.fog = new THREE.FogExp2(0x8adcff, .015);
 
-	var directionalLight = new THREE.DirectionalLight(0xfff4f6, .7);
-	directionalLight.position.set(-5, 5, 1);
-	directionalLight.castShadow = true;
-	var ambientLight = new THREE.AmbientLight(0xfa7cf2);
-	var pointLights = [];
-	var decayDist = 100;
-	pointLights[0] = new THREE.PointLight(0xffffff, 1, decayDist);
-	pointLights[1] = new THREE.PointLight(0xffffff, 1, decayDist);
-	pointLights[2] = new THREE.PointLight(0xffffff, 1, decayDist);
+    var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
 
-	pointLights[0].position.set(0, 50, 50);
-	pointLights[1].position.set(-50, 0, 50);
-	pointLights[2].position.set(50, -50, 50);
+	// var hemisphereLight = new THREE.HemisphereLight(0xffe6c9, 0x474747, .2);
 
-	for (var i=0; i<pointLights.length; i++){
-		scene.add(pointLights[i]);
-		var helper = new THREE.PointLightHelper(pointLights[i], 1);
-		scene.add(helper);
-	}
+	// hemisphereLight.position.set( 25, 67, 10 );
 
-	scene.add(ambientLight);
-	scene.add(directionalLight);
+	// var spotLight1 = new THREE.SpotLight(0xffffff, .15, 0, .59, 1, 2);
+ //    spotLight1.position.set(-50, 52, -31);
+ //    spotLight1.castShadow = true;
+ //    scene.add(spotLight1);
 
-	var bananaGeom = new THREE.MeshPhongMaterial({
-        color : new THREE.Color(0xff7eca),
-        emissive : new THREE.Color(0x89174d),
-        specular : new THREE.Color(0xbe045b),
-        side : THREE.DoubleSide,
-        shininess : 100,
-        // flatShading : true
+    var spotLight2 = new THREE.SpotLight(0xffffff, .15, 0, .234, 1, 2);
+    spotLight2.position.set(20, 80, -36);
+    spotLight2.castShadow = true;
+    spotLight2.shadow.mapSize.width = 1024;
+	spotLight2.shadow.mapSize.height = 1024;
+
+	spotLight2.shadow.camera.near = 1;
+	spotLight2.shadow.camera.far = 200;
+	spotLight2.shadow.camera.fov = 30;
+
+    scene.add(spotLight2);
+
+	// scene.add(hemisphereLight);
+
+	// var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
+	// ambientLight.position.set( 20,-55,-20 );
+	// scene.add(ambientLight);
+
+	var groundMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff, 
+        emissive: 0xfcc8ed,
+        metalness: 0,
+        roughness: 0,
+        side: THREE.DoubleSide
     });
-	var RADIUS = 25, numPlanets = 5;
-	for (var obj in OBJECTS){
-		switch(obj){
-			case('Universe'):
-				var universe = InitUniverse(RADIUS, numPlanets, camera);
-				scene.add(universe.mesh);
-				OBJECTS[obj] = universe;
-				break;
-			case('Planet'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 0;
 
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
+	ground_material = Physijs.createMaterial(
+		groundMat,
+		1., // high friction
+		1. // low restitution
+	);
+	
+	ground = new Physijs.BoxMesh(
+		new THREE.BoxGeometry(100, 1, 100),
+		ground_material,
+		0 // mass
+	);
+	ground.receiveShadow = true;
+	scene.add(ground);	
 
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
+	var linear_lower = new THREE.Vector3(0, -5, 0),
+		linear_upper = new THREE.Vector3(-10, -5, 0);
 
-				scene.add(planet.mesh);
+	for (var obj in MODEL_DATA) {
+	    if (MODEL_DATA.hasOwnProperty(obj)) {
+            let fruit = CreateFruit(MODEL_DATA[obj].geometry, MATERIALS['banana'].clone());
+	        // need to add sound
 
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet2'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 1;
+            LOADED_OBJECTS[MODEL_DATA[obj].key] = fruit;
+        }
+    }
 
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
+    const ROWS = 3;
+	const COLS = 4;
+	const SP = 10;
 
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
+    for (let i = 0; i < ACTIVE_KEYS.length; i++) {
+	    let k = ACTIVE_KEYS[i];
 
-				scene.add(planet.mesh);
+	    let r = i / ROWS;
+	    let c = i % COLS;
 
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet3'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 2;
+        let x = SP * (r - Math.floor(ROWS / 2));
+        let z = SP * (c - Math.floor(COLS / 2));
 
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
+	    let fruit = LOADED_OBJECTS[k];
+        fruit.mesh.position.set(x, 0, z);
+        scene.add(fruit.mesh);
+        fruit.defineConstraint();
+    }
 
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
+    document.addEventListener('keydown', (e) => {
+        if ( !e.metaKey ) {
+            e.preventDefault();
+        }
 
-				scene.add(planet.mesh);
+        let key = codeToKey(e.keyCode);
+        if (key) {
+            let obj = LOADED_OBJECTS[key];
+            if (obj) {
+                obj.play();
+            }
+        }
+    });
 
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet4'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 3;
-
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
-
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
-
-				scene.add(planet.mesh);
-
-				OBJECTS[obj] = planet;
-				break;
-			case('Planet5'):
-				var planet = InitPlanet(bananaGeom);
-				var index = 4;
-
-				var angle = 2*Math.PI/numPlanets * index, 
-				posX = RADIUS*Math.cos(angle),
-				posZ = RADIUS*Math.sin(angle);
-
-				planet.mesh.position.x = posX;
-				planet.mesh.position.z = posZ;
-
-				scene.add(planet.mesh);
-
-				OBJECTS[obj] = planet;
-				break;
-			case('CenterPlanet'):
-				CenterPlanet = InitCenterPlanet(bananaGeom);
-			    scene.add(CenterPlanet.mesh);
-			    OBJECTS['CenterPlanet'] = CenterPlanet;
-				break;
-		}
-	}
-
+	scene.simulate();
+	
     window.addEventListener('resize', resize);
-    window.addEventListener('mousedown', toggleCamera);
     loop();
 }

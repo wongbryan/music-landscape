@@ -1,10 +1,10 @@
 {
-  "name": "music-landscape",
+  "name": "Music Box",
   "homepage": "https://github.com/wongbryan/music-landscape",
   "authors": [
-    "Chang Liu <shampliu@gmail.com>"
+    "Bryan Wong <bryanw0ng@ucla.edu>"
   ],
-  "description": "",
+  "description": "Interactive MIDI keyboard",
   "main": "",
   "license": "MIT",
   "ignore": [

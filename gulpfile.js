@@ -7,11 +7,13 @@ var rename = require('gulp-rename');
 
 gulp.task('lib', function () {
     return gulp.src([
-        'bower_components/tween.js/src/Tween.js',
+        'lib/tween.js/src/Tween.js',
         'bower_components/three.js/three.js',
         'bower_components/threex.domevents/threex.domevents.js',
         'bower_components/jquery/dist/jquery.min.js',
+        'bower_components/three.js/examples/js/modifiers/BufferSubdivisionModifier.js',
         'bower_components/three.js-examples/examples/js/controls/OrbitControls.js',
+        'lib/Physijs/physi.js'
     ])
         .pipe(concat('lib.js'))
         .pipe(uglify())
@@ -23,14 +25,9 @@ gulp.task('lib', function () {
 
 gulp.task('js', function () {
     return gulp.src([
-        'js/perlin.js',
-        'js/Shaders.js',
         'js/data.js',
-        'js/Ellipse.js',
-        'js/Universe.js',
-        'js/CenterPlanet.js',
-        'js/Planet.js',
-        'js/Avatar.js',
+        'js/Cube.js',
+        'js/StaticCube.js',
         'js/Loader.js',
         'js/main.js',
     ])
