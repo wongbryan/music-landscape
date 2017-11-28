@@ -1,6 +1,72 @@
 const ASSETS_PATH = '/assets/models/';
 const LOADED_OBJECTS = {};
 
+const KEYCODES = {
+    32 : "spacebar",
+    37 : "left arrow",
+    38 : "up arrow",
+    39 : "right arrow",
+    40 : "down arrow",
+    48 : "0",
+    49 : "1",
+    50 : "2",
+    51 : "3",
+    52 : "4",
+    53 : "5",
+    54 : "6",
+    55 : "7",
+    56 : "8",
+    57 : "9",
+    65 : "a",
+    66 : "b",
+    67 : "c",
+    68 : "d",
+    69 : "e",
+    70 : "f",
+    71 : "g",
+    72 : "h",
+    73 : "i",
+    74 : "j",
+    75 : "k",
+    76 : "l",
+    77 : "m",
+    78 : "n",
+    79 : "o",
+    80 : "p",
+    81 : "q",
+    82 : "r",
+    83 : "s",
+    84 : "t",
+    85 : "u",
+    86 : "v",
+    87 : "w",
+    88 : "x",
+    89 : "y",
+    90 : "z",
+};
+
+function keyToCode(key) {
+    return Object.keys(KEYCODES)[Object.values(KEYCODES).indexOf(key)];
+}
+
+function codeToKey(code) {
+    return KEYCODES[code];
+}
+
+document.addEventListener('keydown', (e) => {
+    if ( !e.metaKey ) {
+        e.preventDefault();
+    }
+
+    let key = codeToKey(e.keyCode);
+    if (key) {
+        let obj = KEYCODES[key];
+        if (obj) {
+            obj.play();
+        }
+    }
+});
+
 var Loader = (function () {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.JSONLoader(manager);
@@ -21,7 +87,7 @@ var Loader = (function () {
             function(geometry, materials){
                 MODEL_DATA[file].geometry = geometry;
 
-                if(materials!==undefined)
+                if(materials !== undefined)
                     MODEL_DATA[file].materials = materials;
             }
         );
@@ -53,6 +119,6 @@ var Loader = (function () {
     return this;
 }());
 
-for (var obj in MODEL_DATA ){
+for (var obj in MODEL_DATA ) {
     Loader.loadModel(obj);
 }

@@ -86,7 +86,14 @@ function init() {
 	scene.add(ambientLight);
 	scene.add(directionalLight);
 
-	var bananaGeom = MODEL_DATA['banana'].geometry;
+	var bananaGeom = new THREE.MeshPhongMaterial({
+        color : new THREE.Color(0xff7eca),
+        emissive : new THREE.Color(0x89174d),
+        specular : new THREE.Color(0xbe045b),
+        side : THREE.DoubleSide,
+        shininess : 100,
+        // flatShading : true
+    });
 	var RADIUS = 25, numPlanets = 5;
 	for (var obj in OBJECTS){
 		switch(obj){

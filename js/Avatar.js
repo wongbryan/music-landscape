@@ -6,7 +6,11 @@ var InitAvatar = function(mesh) {
 
     mesh.update = function() {
         mesh.position.y += .02;
-    }
+    };
+
+    mesh.play = function() {
+        console.log('playing');
+    };
 
     return mesh;
 }

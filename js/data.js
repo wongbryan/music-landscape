@@ -1,10 +1,20 @@
-var MODEL_DATA = {
-	'banana' : {
+// var MODEL_DATA = {
+// 	'banana' : {
+// 		url: 'assets/models/banana.json',
+// 		geometry: null,
+// 		materials: null
+// 	}
+// };
+
+var MODEL_DATA = [
+	{
 		url: 'assets/models/banana.json',
 		geometry: null,
-		materials: null
+		key: 'a',
+		materials: null,
+		sound: ''
 	}
-}
+];
 
 var MATERIALS = {
 	'bubbleGum': new THREE.MeshPhongMaterial({
