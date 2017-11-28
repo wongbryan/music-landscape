@@ -35,7 +35,6 @@ var Loader = (function () {
 
             function(texture){
                 TEXTURE_DATA[file] = texture;
-                MATERIALS[file] = new THREE.MeshPhongMaterial({map: texture});
             }
         )
     }

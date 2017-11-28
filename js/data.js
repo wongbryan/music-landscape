@@ -43,7 +43,19 @@ var MATERIALS = {
 		// map : texture
 	}),
 
-	'blueberry' : null,
+	'banana' : new THREE.MeshPhongMaterial({
+		color: new THREE.Color(0xfef45d),
+		emissive: new THREE.Color(0xf5d44f)
+	}),
+
+	'blueberry' : new THREE.MeshPhongMaterial({
+		color: 0x57fcfe,
+		emissive: 0x7e95f6,
+		specular: 0x593453,
+		shininess: 27,
+	}),
+
+	
 
 }
 

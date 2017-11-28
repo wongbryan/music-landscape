@@ -78,40 +78,39 @@ function init() {
 
     var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
 
-	var hemisphereLight = new THREE.HemisphereLight(0xffe6c9, 0x474747, .2);
+	// var hemisphereLight = new THREE.HemisphereLight(0xffe6c9, 0x474747, .2);
 
-	hemisphereLight.position.set( 25, 67, 10 );
+	// hemisphereLight.position.set( 25, 67, 10 );
 
-	var shadowLight = new THREE.DirectionalLight(0xfff9ed, .45);
+	// var spotLight1 = new THREE.SpotLight(0xffffff, .15, 0, .59, 1, 2);
+ //    spotLight1.position.set(-50, 52, -31);
+ //    spotLight1.castShadow = true;
+ //    scene.add(spotLight1);
 
-	shadowLight.position.set(-35, 25, -15);
+    var spotLight2 = new THREE.SpotLight(0xffffff, .15, 0, .234, 1, 2);
+    spotLight2.position.set(20, 80, -36);
+    spotLight2.castShadow = true;
+    spotLight2.shadow.mapSize.width = 1024;
+	spotLight2.shadow.mapSize.height = 1024;
 
-	// shadowLight.castShadow = true;
+	spotLight2.shadow.camera.near = 1;
+	spotLight2.shadow.camera.far = 200;
+	spotLight2.shadow.camera.fov = 30;
 
-	// shadowLight.shadow.camera.left = -25;
-	// shadowLight.shadow.camera.right = 25;
-	// shadowLight.shadow.camera.top = 25;
-	// shadowLight.shadow.camera.bottom = -25;
-	// shadowLight.shadow.camera.near = .01;
-	// shadowLight.shadow.camera.far = 500;
+    scene.add(spotLight2);
 
-	// shadowLight.shadow.mapSize.width = 512;
-	// shadowLight.shadow.mapSize.height = 512;
+	// scene.add(hemisphereLight);
 
-	var helper = new THREE.CameraHelper( shadowLight.shadow.camera );
-	scene.add( helper );
+	// var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
+	// ambientLight.position.set( 20,-55,-20 );
+	// scene.add(ambientLight);
 
-	scene.add(hemisphereLight);
-	scene.add(shadowLight);
-
-	var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
-	ambientLight.position.set( 20,-55,-20 );
-	scene.add(ambientLight);
-
-	var groundMat = new THREE.MeshPhongMaterial({
-        color: 0xf4ade4, 
-        shading: THREE.FlatShading,
-        shininess: 20,
+	var groundMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff, 
+        emissive: 0xfcc8ed,
+        metalness: 0,
+        roughness: 0,
+        side: THREE.DoubleSide
     });
 
 	ground_material = Physijs.createMaterial(
@@ -134,7 +133,7 @@ function init() {
 	// for (var i=0; i<5; i++){
 	// 	var x = 10*(i-Math.floor(5/2));
 	// 	var pos = new THREE.Vector3(x, 6, 0);
-	// 	boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone(), pos);
+	// 	boxes[i] = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone(), pos);
 	// 	scene.add(boxes[i].mesh);
 	// 	boxes[i].defineConstraint();
 	// 	boxes[i].pop();
@@ -146,42 +145,43 @@ function init() {
 	for (var i=0; i<rows; i++){
 		for(var j=0; j<cols; j++){
 			var texture, fruit;
+			console.log(MATERIALS);
 			switch(index){
 				case(0):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(1):
 					texture = TEXTURE_DATA['banana'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['blueberry'].geometry, MATERIALS['blueberry'].clone());
 					break;
 				case(2):
 					texture = TEXTURE_DATA['apple'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(3):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(4):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(5):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(6):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(7):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 				case(8):
 					texture = TEXTURE_DATA['blueberry'];
-					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['bubbleGum'].clone());
+					fruit = CreateCube(MODEL_DATA['banana'].geometry, MATERIALS['banana'].clone());
 					break;
 			}
 			var c = CreateStaticCube(5, texture);
@@ -191,7 +191,7 @@ function init() {
 
 			c.mesh.position.set(x, y, z);
 			boxes.push(c);
-			scene.add(c.mesh);
+			// scene.add(c.mesh);
 
 			fruit.mesh.position.set(x, 0, z);
 			fruits.push(fruit);
@@ -201,7 +201,7 @@ function init() {
 		}
 	}
 
-	// jelly = new THREE.Mesh(MODEL_DATA['jelly'].geometry, MATERIALS['bubbleGum'].clone());
+	// jelly = new THREE.Mesh(MODEL_DATA['jelly'].geometry, MATERIALS['banana'].clone());
 	// jelly.position.set(0, 1, 0);
 	// jelly.geometry.computeVertexNormals();
 	// scene.add(jelly);
