@@ -1,5 +1,5 @@
 var modifier = new THREE.BufferSubdivisionModifier( 4 );
-var CreateCube = function(morphGeom, material){
+var CreateCube = function(morphGeom, material, key, sound){
 
 	/* Create mesh with morph targets */
 
@@ -22,6 +22,7 @@ var CreateCube = function(morphGeom, material){
 
 	var scale = .5;
 	var mesh = new Physijs.BoxMesh(morphGeom, mat);
+	mesh.castShadow = true;
 	mesh.scale.set(scale, scale, scale);
 	// mesh.morphTargetInfluences[0] = 1;
 
