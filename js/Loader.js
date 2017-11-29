@@ -1,9 +1,12 @@
-const ASSETS_PATH = '/assets/models/';
-const LOADED_OBJECTS = {};
+const ASSETS_PATH = 'assets/models/';
+const FONT_ASSETS_PATH = 'assets/fonts/';
+const TEXTURE_ASSETS_PATH = 'assets/images/';
 
 var Loader = (function () {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.JSONLoader(manager);
+    const fontLoader = new THREE.FontLoader(manager);
+    const textureLoader = new THREE.TextureLoader(manager);
 
     manager.onProgress = function (item, loaded, total) {
         console.log(item, loaded, total);
@@ -21,38 +24,44 @@ var Loader = (function () {
             function(geometry, materials){
                 MODEL_DATA[file].geometry = geometry;
 
-                if(materials!==undefined)
+                if (materials !== undefined)
                     MODEL_DATA[file].materials = materials;
             }
         );
     };
 
-    function meshLoader(file, customMaterials) {
-        return function (geometry, materials) {
-            const mat = customMaterials || materials;
-            const mesh = new THREE.Mesh(geometry, mat);
+    this.loadTexture = function(file){
+        textureLoader.load(
+            TEXTURE_ASSETS_PATH + file + '.png',
 
-            LOADED_OBJECTS[file] = mesh;
-
-            // KEY_MAPPINGS[key] = mesh;
-            // use eval for switch function?
-
-            switch(file) {
-                case 'banana':
-                    Avatar = new InitAvatar(mesh);
-                    LOADED_OBJECTS[file] = Avatar;
-                    break;
-                default:
-                    break;
+            function(texture){
+                TEXTURE_DATA[file] = texture;
             }
+        )
+    };
 
-            return mesh;
-        }
+    this.loadFont = function(file) {
+        fontLoader.load(
+            FONT_ASSETS_PATH + file + '.typeface.json',
+
+            function(font) {
+                FONTS_DATA[file].font = font;
+            }
+        );
     };
 
     return this;
 }());
 
-for (var obj in MODEL_DATA ){
+for (var obj in MODEL_DATA) {
     Loader.loadModel(obj);
 }
+
+for (var key in TEXTURE_DATA) {
+    Loader.loadTexture(key);
+}
+
+for (var key in FONTS_DATA) {
+    Loader.loadFont(key);
+}
+

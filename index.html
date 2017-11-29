@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Landscape</title>
+    <title>Landscape</title>
 </head>
 
 <style>
-	body{
-		margin: 0;
-		overflow: hidden;
-	}
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
 
-	#description{
-		position: absolute;
-		bottom: 10px;
-		left: 10px;
-		color: black;
-		font-family: Helvetica, sans-serif;
-	}
+    #description {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        color: black;
+        font-family: Helvetica, sans-serif;
+    }
 </style>
 <body>
-	<div id="container"></div>
-	<script src="dist/lib.js"></script>
-	<script src="dist/bundle.js"></script>
+<div id="container"></div>
+<script type="vsh" id="vertexShader">
+	void main(){
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+	}
+
+</script>
+<script type="fsh" id="fragmentShader">
+
+	void main(){
+		vec4 color = vec4(1., 0., 0., 0.);
+		gl_FragColor = color;
+	}
+
+</script>
+<script src="dist/lib.js"></script>
+<script src="dist/bundle.js"></script>
 </body>
+
+
 </html>
