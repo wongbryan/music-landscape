@@ -137,8 +137,8 @@ function init() {
 
         // add keyboard overlay
         let y = 0.75;
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(
+        var keyGeometry = new THREE.Geometry();
+        keyGeometry.vertices.push(
             new THREE.Vector3( -4, y, 0 ),
             new THREE.Vector3( 0, y, 0 ),
             new THREE.Vector3( 0, y, -4 ),
@@ -146,9 +146,23 @@ function init() {
             new THREE.Vector3( -4, y, 0 ),
         );
 
-        let key = new THREE.Line( geometry, MATERIALS['line'] );
+        let key = new THREE.Line( keyGeometry, MATERIALS['line'] );
         key.position.set(x + 2, 0, z + 2);
         scene.add(key);
+
+        // draw text
+        var textGeometry = new THREE.TextGeometry(k, {
+            font: FONTS_DATA['helvetiker_bold'].font,
+            size: 2,
+            height: 0.01,
+            curveSegments: 2
+        });
+        textGeometry.computeBoundingBox();
+
+        var text = new THREE.Mesh( textGeometry, MATERIALS['text'] );
+        text.position.set(x - 1, 0.75, z + 1);
+        text.rotation.x = -Math.PI / 2;
+        scene.add(text);
 
     }
 
