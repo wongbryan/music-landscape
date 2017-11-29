@@ -12,7 +12,6 @@ var pov;
 var domEvents;
 var activeCamera;
 var force, offset;
-var boxes = [], fruits = [];
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -170,8 +169,13 @@ function init() {
             if (objs.fruit) {
                 objs.fruit.play();
             }
+
             if (objs.text) {
                 objs.text.play();
+            }
+
+            if (objs.border) {
+                objs.border.play();
             }
         }
     });
