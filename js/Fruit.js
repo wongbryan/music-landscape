@@ -1,4 +1,3 @@
-var modifier = new THREE.BufferSubdivisionModifier( 4 );
 var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 
 	var mat = Physijs.createMaterial(
