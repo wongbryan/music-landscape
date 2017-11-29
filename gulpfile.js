@@ -8,6 +8,7 @@ var rename = require('gulp-rename');
 gulp.task('lib', function () {
     return gulp.src([
         'lib/tween.js/src/Tween.js',
+        'bower_components/jquery/dist/jquery.slim.js',
         'bower_components/three.js/three.js',
         'bower_components/threex.domevents/threex.domevents.js',
         'bower_components/jquery/dist/jquery.min.js',
