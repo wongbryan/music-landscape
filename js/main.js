@@ -148,7 +148,7 @@ function init() {
 		0 // mass
 	);
 
-	ground.position.y = -(platformHeight/2)+.5;
+	ground.position.y = -(platformHeight/2)+.7;
 	ground.receiveShadow = true;
 	scene.add(ground);
 
@@ -204,6 +204,11 @@ function init() {
         text.mesh.rotation.x = -Math.PI / 2;
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);
+
+        let path = 'assets/sounds/' + k + '.wav';
+        let audio = CreateAudio(path);
+        KEY_MAPPINGS[k].audio = audio;
+
     }
 
     document.addEventListener('keydown', (e) => {
@@ -225,6 +230,10 @@ function init() {
 
             if (objs.border) {
                 objs.border.play();
+            }
+
+            if (objs.audio){
+            	objs.audio.play();
             }
         }
     });
