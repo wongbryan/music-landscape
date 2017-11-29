@@ -118,6 +118,11 @@ var MATERIALS = {
         specular: 0x593453,
         shininess: 27,
     }),
+
+    'line': new THREE.LineBasicMaterial({
+        color: 0x0000ff,
+        linewidth: 4
+    })
 };
 
 const LOADED_OBJECTS = {
