@@ -27,6 +27,7 @@ gulp.task('js', function () {
     return gulp.src([
         'js/data.js',
         'js/Cube.js',
+        'js/Cloud.js',
         'js/StaticCube.js',
         'js/Loader.js',
         'js/main.js',

@@ -12,7 +12,9 @@ var pov;
 var domEvents;
 var activeCamera;
 var force, offset;
-var boxes = [], fruits = [];
+var boxes = [], fruits = [], clouds = [], pivots = [];
+
+const WORLD_RADIUS = 150;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -35,6 +37,14 @@ function toggleCamera(){
 }
 
 function update() {	
+	for(var i=0; i<pivots.length; i++){
+		pivots[i].rotation.y += .001 * pivots[i].speed;
+	}
+
+	for(var i=0; i<clouds.length; i++){
+		clouds[i].update();
+	}
+
 	TWEEN.update();
 }
 
@@ -72,44 +82,78 @@ function init() {
 
     scene.add(camera);
 
-    // scene.fog = new THREE.FogExp2(0x8adcff, .015);
+    var numClouds = 7+Math.floor(Math.random()*7);
+    var numPivots = 3;
+
+    for(var i=0; i<numPivots; i++){
+    	pivots[i] = new THREE.Object3D();
+    	pivots[i].speed = 1 + Math.random()*2;
+    }
+
+    for(var i=0; i<numClouds; i++){
+    	var index = Math.floor(Math.random()*numPivots);
+    	console.log(index);
+   
+    	var angle = Math.random()*Math.PI*2;
+    	var x = WORLD_RADIUS*Math.cos(angle),
+    	y = Math.random()*50+10,
+    	z = WORLD_RADIUS*Math.sin(angle)
+    	var cloud = CreateCloud(pivots[index], x, y, z);
+
+    	clouds.push(cloud);
+    	scene.add(cloud.mesh);
+    }
+
 
     var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
 
-	// var hemisphereLight = new THREE.HemisphereLight(0xffe6c9, 0x474747, .2);
+    var hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9)
+	
+	// A directional light shines from a specific direction. 
+	// It acts like the sun, that means that all the rays produced are parallel. 
+	var shadowLight = new THREE.DirectionalLight(0xffffff, .9);
 
-	// hemisphereLight.position.set( 25, 67, 10 );
+	// Set the direction of the light  
+	shadowLight.position.set(150, 150, 150);
+	
+	// Allow shadow casting 
+	shadowLight.castShadow = true;
 
-	// var spotLight1 = new THREE.SpotLight(0xffffff, .15, 0, .59, 1, 2);
- //    spotLight1.position.set(-50, 52, -31);
- //    spotLight1.castShadow = true;
- //    scene.add(spotLight1);
+	// define the visible area of the projected shadow
+	shadowLight.shadow.camera.left = -400;
+	shadowLight.shadow.camera.right = 400;
+	shadowLight.shadow.camera.top = 400;
+	shadowLight.shadow.camera.bottom = -400;
+	shadowLight.shadow.camera.near = 1;
+	shadowLight.shadow.camera.far = 1000;
 
-    var spotLight2 = new THREE.SpotLight(0xffffff, .15, 0, .234, 1, 2);
-    spotLight2.position.set(20, 80, -36);
-    spotLight2.castShadow = true;
-    spotLight2.shadow.mapSize.width = 1024;
-	spotLight2.shadow.mapSize.height = 1024;
+	// define the resolution of the shadow; the higher the better, 
+	// but also the more expensive and less performant
+	shadowLight.shadow.mapSize.width = 2048;
+	shadowLight.shadow.mapSize.height = 2048;
+	
+	// to activate the lights, just add them to the scene
+	scene.add(hemisphereLight);  
+	scene.add(shadowLight);
 
-	spotLight2.shadow.camera.near = 1;
-	spotLight2.shadow.camera.far = 200;
-	spotLight2.shadow.camera.fov = 30;
+	const platformWidth = 40,
+	platformDepth = 25, 
+	platformHeight = 150;
 
-    scene.add(spotLight2);
+	// var groundMat = new THREE.MeshPhongMaterial({
+ //        color: 0xffc6ff, 
+ //        emissive: 0xc195c1,
+ //        // metalness: 0,
+ //        // roughness: 0,
+ //        // side: THREE.DoubleSide
+ //    });
 
-	// scene.add(hemisphereLight);
-
-	// var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
-	// ambientLight.position.set( 20,-55,-20 );
-	// scene.add(ambientLight);
-
-	var groundMat = new THREE.MeshStandardMaterial({
-        color: 0xffffff, 
-        emissive: 0xfcc8ed,
-        metalness: 0,
-        roughness: 0,
-        side: THREE.DoubleSide
-    });
+ 	var groundMat = new THREE.MeshPhongMaterial({
+		color: 0xd1e8ff,
+		transparent:true,
+		opacity:.8,
+		shading:THREE.FlatShading,
+	});
 
 	ground_material = Physijs.createMaterial(
 		groundMat,
@@ -118,10 +162,12 @@ function init() {
 	);
 	
 	ground = new Physijs.BoxMesh(
-		new THREE.BoxGeometry(100, 1, 100),
+		new THREE.BoxGeometry(platformWidth, platformHeight, platformDepth),
 		ground_material,
 		0 // mass
 	);
+
+	ground.position.y = -(platformHeight/2+5);
 	ground.receiveShadow = true;
 	scene.add(ground);	
 
