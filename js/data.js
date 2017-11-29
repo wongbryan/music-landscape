@@ -129,7 +129,7 @@ const MATERIALS = {
         shininess: 27,
     }),
 
-    'line': new THREE.LineBasicMaterial({
+    'border': new THREE.LineBasicMaterial({
         color: 0x0000ff,
         linewidth: 4
     }),
@@ -140,8 +140,8 @@ const MATERIALS = {
     })
 };
 
-const LOADED_OBJECTS = {
-    // 'a' : Fruit
+const KEY_MAPPINGS = {
+    // 'a' : { fruit: Fruit, text: Text, border: Border }
 };
 
 const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 'a', 's'];

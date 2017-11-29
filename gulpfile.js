@@ -26,7 +26,9 @@ gulp.task('lib', function () {
 gulp.task('js', function () {
     return gulp.src([
         'js/data.js',
-        'js/Cube.js',
+        'js/Fruit.js',
+        'js/Text.js',
+        'js/Border.js',
         'js/StaticCube.js',
         'js/Loader.js',
         'js/main.js',

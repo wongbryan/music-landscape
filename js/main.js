@@ -111,7 +111,11 @@ function init() {
             let fruit = CreateFruit(MODEL_DATA[obj].geometry, MATERIALS['banana'].clone());
 	        // need to add sound
 
-            LOADED_OBJECTS[MODEL_DATA[obj].key] = fruit;
+            KEY_MAPPINGS[MODEL_DATA[obj].key] = {
+                fruit: fruit,
+                text: null,
+                border: null
+            };
         }
     }
 
@@ -130,40 +134,22 @@ function init() {
         let z = SP * (r - Math.floor(ROWS / 2));
         // x -= (c * ROW_OFFSET);
 
-	    let fruit = LOADED_OBJECTS[k];
+	    let fruit = KEY_MAPPINGS[k].fruit;
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
         fruit.defineConstraint();
 
-        // add keyboard overlay
-        let y = 0.75;
-        var keyGeometry = new THREE.Geometry();
-        keyGeometry.vertices.push(
-            new THREE.Vector3( -4, y, 0 ),
-            new THREE.Vector3( 0, y, 0 ),
-            new THREE.Vector3( 0, y, -4 ),
-            new THREE.Vector3( -4, y, -4 ),
-            new THREE.Vector3( -4, y, 0 ),
-        );
-
-        let key = new THREE.Line( keyGeometry, MATERIALS['line'] );
-        key.position.set(x + 2, 0, z + 2);
-        scene.add(key);
+        let border = CreateBorder();
+        border.mesh.position.set(x + 2, 0, z + 2);
+        KEY_MAPPINGS[k].border = border;
+        scene.add(border.mesh);
 
         // draw text
-        var textGeometry = new THREE.TextGeometry(k, {
-            font: FONTS_DATA['helvetiker_bold'].font,
-            size: 2,
-            height: 0.01,
-            curveSegments: 2
-        });
-        textGeometry.computeBoundingBox();
-
-        var text = new THREE.Mesh( textGeometry, MATERIALS['text'] );
-        text.position.set(x - 1, 0.75, z + 1);
-        text.rotation.x = -Math.PI / 2;
-        scene.add(text);
-
+        let text = CreateText(k);
+        text.mesh.position.set(x - 1, 0.75, z + 1);
+        text.mesh.rotation.x = -Math.PI / 2;
+        KEY_MAPPINGS[k].text = text;
+        scene.add(text.mesh);
     }
 
     document.addEventListener('keydown', (e) => {
@@ -173,9 +159,9 @@ function init() {
 
         let key = codeToKey(e.keyCode);
         if (key) {
-            let obj = LOADED_OBJECTS[key];
-            if (obj) {
-                obj.play();
+            let objs = KEY_MAPPINGS[key];
+            if (objs.fruit) {
+                objs.fruit.play();
             }
         }
     });
