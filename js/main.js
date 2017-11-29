@@ -160,8 +160,12 @@ function init() {
         let key = codeToKey(e.keyCode);
         if (key) {
             let objs = KEY_MAPPINGS[key];
+
             if (objs.fruit) {
                 objs.fruit.play();
+            }
+            if (objs.text) {
+                objs.text.play();
             }
         }
     });

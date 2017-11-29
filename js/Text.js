@@ -10,8 +10,13 @@ var CreateText = function(letter) {
     let mesh = new THREE.Mesh( textGeometry, MATERIALS['text'] );
 
     function play() {
+        // need to tween this
+        mesh.material.color = new THREE.Color(0xffffff);
+        setTimeout(() => {
+            mesh.material.color = new THREE.Color(0x0000ff);
+        }, 2000)
 
-    }
+    };
 
     return {
         mesh: mesh,

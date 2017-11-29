@@ -137,7 +137,7 @@ const MATERIALS = {
     'text': new THREE.MeshBasicMaterial({
         color: 0x0000ff,
         overdraw: 0.5
-    })
+    }),
 };
 
 const KEY_MAPPINGS = {
