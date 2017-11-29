@@ -107,14 +107,14 @@ function init() {
 
     var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
 
-    var hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9)
+    var hemisphereLight = new THREE.HemisphereLight(0xfceafc,0x000000, .8)
 	
 	// A directional light shines from a specific direction. 
 	// It acts like the sun, that means that all the rays produced are parallel. 
 	var shadowLight = new THREE.DirectionalLight(0xffffff, .9);
 
 	// Set the direction of the light  
-	shadowLight.position.set(150, 150, 150);
+	shadowLight.position.set(150, 75, 150);
 	
 	// Allow shadow casting 
 	shadowLight.castShadow = true;
@@ -149,7 +149,7 @@ function init() {
  //    });
 
  	var groundMat = new THREE.MeshPhongMaterial({
-		color: 0xd1e8ff,
+		color: 0xffd3ff,
 		transparent:true,
 		opacity:.8,
 		shading:THREE.FlatShading,
