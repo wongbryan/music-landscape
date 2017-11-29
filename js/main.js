@@ -72,19 +72,6 @@ function init() {
 
     scene.add(camera);
 
-    // scene.fog = new THREE.FogExp2(0x8adcff, .015);
-
-    var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
-
-	// var hemisphereLight = new THREE.HemisphereLight(0xffe6c9, 0x474747, .2);
-
-	// hemisphereLight.position.set( 25, 67, 10 );
-
-	// var spotLight1 = new THREE.SpotLight(0xffffff, .15, 0, .59, 1, 2);
- //    spotLight1.position.set(-50, 52, -31);
- //    spotLight1.castShadow = true;
- //    scene.add(spotLight1);
-
     var spotLight2 = new THREE.SpotLight(0xffffff, .15, 0, .234, 1, 2);
     spotLight2.position.set(20, 80, -36);
     spotLight2.castShadow = true;
@@ -96,12 +83,6 @@ function init() {
 	spotLight2.shadow.camera.fov = 30;
 
     scene.add(spotLight2);
-
-	// scene.add(hemisphereLight);
-
-	// var ambientLight = new THREE.AmbientLight(0xaaaaaa, .97);
-	// ambientLight.position.set( 20,-55,-20 );
-	// scene.add(ambientLight);
 
 	var groundMat = new THREE.MeshStandardMaterial({
         color: 0xffffff, 
@@ -123,37 +104,52 @@ function init() {
 		0 // mass
 	);
 	ground.receiveShadow = true;
-	scene.add(ground);	
-
-	var linear_lower = new THREE.Vector3(0, -5, 0),
-		linear_upper = new THREE.Vector3(-10, -5, 0);
+	scene.add(ground);
 
 	for (var obj in MODEL_DATA) {
 	    if (MODEL_DATA.hasOwnProperty(obj)) {
             let fruit = CreateFruit(MODEL_DATA[obj].geometry, MATERIALS['banana'].clone());
 	        // need to add sound
 
-            LOADED_OBJECTS[MODEL_DATA[obj].key] = fruit;
+            KEY_MAPPINGS[MODEL_DATA[obj].key] = {
+                fruit: fruit,
+                text: null,
+                border: null
+            };
         }
     }
 
     const ROWS = 3;
+	// const ROW_OFFSET = 1.5;
 	const COLS = 4;
-	const SP = 10;
+	const SP = 4;
 
     for (let i = 0; i < ACTIVE_KEYS.length; i++) {
 	    let k = ACTIVE_KEYS[i];
 
-	    let r = i / ROWS;
-	    let c = i % COLS;
+	    let r = parseInt(i / COLS, 10);
+	    let c = parseInt(i % COLS, 10);
 
-        let x = SP * (r - Math.floor(ROWS / 2));
-        let z = SP * (c - Math.floor(COLS / 2));
+        let x = SP * (c - Math.floor(COLS / 2));
+        let z = SP * (r - Math.floor(ROWS / 2));
+        // x -= (c * ROW_OFFSET);
 
-	    let fruit = LOADED_OBJECTS[k];
+	    let fruit = KEY_MAPPINGS[k].fruit;
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
         fruit.defineConstraint();
+
+        let border = CreateBorder();
+        border.mesh.position.set(x + 2, 0, z + 2);
+        KEY_MAPPINGS[k].border = border;
+        scene.add(border.mesh);
+
+        // draw text
+        let text = CreateText(k);
+        text.mesh.position.set(x - 1, 0.75, z + 1);
+        text.mesh.rotation.x = -Math.PI / 2;
+        KEY_MAPPINGS[k].text = text;
+        scene.add(text.mesh);
     }
 
     document.addEventListener('keydown', (e) => {
@@ -163,9 +159,13 @@ function init() {
 
         let key = codeToKey(e.keyCode);
         if (key) {
-            let obj = LOADED_OBJECTS[key];
-            if (obj) {
-                obj.play();
+            let objs = KEY_MAPPINGS[key];
+
+            if (objs.fruit) {
+                objs.fruit.play();
+            }
+            if (objs.text) {
+                objs.text.play();
             }
         }
     });

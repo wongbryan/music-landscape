@@ -50,7 +50,7 @@ function codeToKey(code) {
     return KEYCODES[code];
 }
 
-var MODEL_DATA = {
+const MODEL_DATA = {
     'banana': {
         geometry: null,
         materials: null,
@@ -89,13 +89,23 @@ var MODEL_DATA = {
     },
 };
 
-var TEXTURE_DATA = {
+const TEXTURE_DATA = {
     'blueberry': null,
     'apple': null,
     'banana': null,
 };
 
-var MATERIALS = {
+const FONTS_DATA = {
+    'helvetiker_bold': {
+        font: null,
+        size: 80,
+        height: 20,
+        curveSegments: 2
+    }
+
+};
+
+const MATERIALS = {
     'bubbleGum': new THREE.MeshStandardMaterial({
         color: new THREE.Color(0xf572bf),
         emissive: new THREE.Color(0x8c1228),
@@ -118,10 +128,20 @@ var MATERIALS = {
         specular: 0x593453,
         shininess: 27,
     }),
+
+    'border': new THREE.LineBasicMaterial({
+        color: 0x0000ff,
+        linewidth: 4
+    }),
+
+    'text': new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        overdraw: 0.5
+    }),
 };
 
-const LOADED_OBJECTS = {
-    // 'a' : Fruit
+const KEY_MAPPINGS = {
+    // 'a' : { fruit: Fruit, text: Text, border: Border }
 };
 
 const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 'a', 's'];

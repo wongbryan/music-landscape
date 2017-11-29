@@ -1,9 +1,11 @@
 const ASSETS_PATH = 'assets/models/';
+const FONT_ASSETS_PATH = 'assets/fonts/';
 const TEXTURE_ASSETS_PATH = 'assets/images/';
 
 var Loader = (function () {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.JSONLoader(manager);
+    const fontLoader = new THREE.FontLoader(manager);
     const textureLoader = new THREE.TextureLoader(manager);
 
     manager.onProgress = function (item, loaded, total) {
@@ -38,14 +40,28 @@ var Loader = (function () {
         )
     };
 
+    this.loadFont = function(file) {
+        fontLoader.load(
+            FONT_ASSETS_PATH + file + '.typeface.json',
+
+            function(font) {
+                FONTS_DATA[file].font = font;
+            }
+        );
+    };
+
     return this;
 }());
 
-for (var obj in MODEL_DATA ) {
+for (var obj in MODEL_DATA) {
     Loader.loadModel(obj);
 }
 
-for (var key in TEXTURE_DATA ){
+for (var key in TEXTURE_DATA) {
     Loader.loadTexture(key);
+}
+
+for (var key in FONTS_DATA) {
+    Loader.loadFont(key);
 }
 
