@@ -125,7 +125,7 @@ function init() {
     }
 
     const ROWS = 3;
-	// const ROW_OFFSET = 1.5;
+	const ROW_OFFSET = 2;
 	const COLS = 4;
 	const SP = 4;
 
@@ -137,7 +137,7 @@ function init() {
 
         let x = SP * (c - Math.floor(COLS / 2));
         let z = SP * (r - Math.floor(ROWS / 2));
-        // x -= (c * ROW_OFFSET);
+        x += (r * ROW_OFFSET);
 
 	    let fruit = KEY_MAPPINGS[k].fruit;
         fruit.mesh.position.set(x, 0, z);
