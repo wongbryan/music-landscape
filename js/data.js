@@ -76,6 +76,7 @@ const MODEL_DATA = {
         sound: ''
     },
     'apple': {
+        scale: 0.1,
         geometry: null,
         materials: null,
         key: 'a',
@@ -87,6 +88,12 @@ const MODEL_DATA = {
         key: 's',
         sound: ''
     },
+    'grapes': {
+        geometry: null,
+        materials: null,
+        key: 'd',
+        sound: ''
+    }
 };
 
 const TEXTURE_DATA = {
@@ -144,4 +151,4 @@ const KEY_MAPPINGS = {
     // 'a' : { fruit: Fruit, text: Text, border: Border }
 };
 
-const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 'a', 's'];
+const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 'a', 's', 'd'];

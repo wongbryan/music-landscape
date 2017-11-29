@@ -1,5 +1,5 @@
 var modifier = new THREE.BufferSubdivisionModifier( 4 );
-var CreateFruit = function(morphGeom, material, key, sound){
+var CreateFruit = function(morphGeom, material, scale = .5, sound){
 
 	var mat = Physijs.createMaterial(
 		material,	
@@ -7,7 +7,6 @@ var CreateFruit = function(morphGeom, material, key, sound){
 		.3 // low restitution
 	);
 
-	var scale = .5;
 	var mesh = new Physijs.BoxMesh(morphGeom, mat);
 	mesh.castShadow = true;
 	mesh.scale.set(scale, scale, scale);

@@ -9,8 +9,7 @@ var Loader = (function () {
     const textureLoader = new THREE.TextureLoader(manager);
 
     manager.onProgress = function (item, loaded, total) {
-        console.log(item, loaded, total);
-        //make a model from mesh, push to objects
+        console.log((loaded / total * 100) + '%');
     };
 
     manager.onLoad = function () {

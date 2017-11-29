@@ -108,7 +108,13 @@ function init() {
 
 	for (var obj in MODEL_DATA) {
 	    if (MODEL_DATA.hasOwnProperty(obj)) {
-            let fruit = CreateFruit(MODEL_DATA[obj].geometry, MATERIALS['banana'].clone());
+            let fruit = CreateFruit(
+                MODEL_DATA[obj].geometry,
+                MATERIALS['banana'].clone(),
+                MODEL_DATA[obj].scale,
+                null
+            );
+
 	        // need to add sound
 
             KEY_MAPPINGS[MODEL_DATA[obj].key] = {
