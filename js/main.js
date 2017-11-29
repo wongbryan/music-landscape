@@ -12,7 +12,6 @@ var pov;
 var domEvents;
 var activeCamera;
 var force, offset;
-var boxes = [], fruits = [];
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -108,7 +107,14 @@ function init() {
 
 	for (var obj in MODEL_DATA) {
 	    if (MODEL_DATA.hasOwnProperty(obj)) {
-            let fruit = CreateFruit(MODEL_DATA[obj].geometry, MATERIALS['banana'].clone());
+            let fruit = CreateFruit(
+                MODEL_DATA[obj].geometry,
+                MATERIALS['banana'].clone(),
+                MODEL_DATA[obj].scale,
+                MODEL_DATA[obj].force,
+                null
+            );
+
 	        // need to add sound
 
             KEY_MAPPINGS[MODEL_DATA[obj].key] = {
@@ -120,7 +126,7 @@ function init() {
     }
 
     const ROWS = 3;
-	// const ROW_OFFSET = 1.5;
+	const ROW_OFFSET = 2;
 	const COLS = 4;
 	const SP = 4;
 
@@ -132,7 +138,7 @@ function init() {
 
         let x = SP * (c - Math.floor(COLS / 2));
         let z = SP * (r - Math.floor(ROWS / 2));
-        // x -= (c * ROW_OFFSET);
+        x += (r * ROW_OFFSET);
 
 	    let fruit = KEY_MAPPINGS[k].fruit;
         fruit.mesh.position.set(x, 0, z);
@@ -164,8 +170,13 @@ function init() {
             if (objs.fruit) {
                 objs.fruit.play();
             }
+
             if (objs.text) {
                 objs.text.play();
+            }
+
+            if (objs.border) {
+                objs.border.play();
             }
         }
     });

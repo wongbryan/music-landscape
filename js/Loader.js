@@ -7,10 +7,21 @@ var Loader = (function () {
     const loader = new THREE.JSONLoader(manager);
     const fontLoader = new THREE.FontLoader(manager);
     const textureLoader = new THREE.TextureLoader(manager);
+    const $progress = $('#progress');
+
 
     manager.onProgress = function (item, loaded, total) {
-        console.log(item, loaded, total);
-        //make a model from mesh, push to objects
+        let percent = Math.ceil(loaded / total * 100);
+
+
+        $progress.find('.percent').html(percent + '%');
+        $progress.find('.bar').css({ 'height':  percent + '%' });
+
+        if (percent >= 100) {
+            setTimeout(() => {
+                $('#progress').fadeOut()
+            }, 350);
+        }
     };
 
     manager.onLoad = function () {

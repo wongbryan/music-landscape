@@ -2,22 +2,13 @@
 <html>
 <head>
     <title>Landscape</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<style>
-    body {
-        margin: 0;
-        overflow: hidden;
-    }
-
-    #description {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        color: black;
-        font-family: Helvetica, sans-serif;
-    }
-</style>
 <body>
+<div id="progress">
+    <div class="percent">0%</div>
+    <div class="bar"></div>
+</div>
 <div id="container"></div>
 </body>
 <script type="vsh" id="vertexShader">
@@ -31,6 +22,7 @@
 		gl_FragColor = color;
 	}
 </script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="lib/tween.js/src/Tween.js"></script>
 <script src="bower_components/three.js/build/three.js"></script>
 <script src="lib/Physijs/physi.js"></script>
