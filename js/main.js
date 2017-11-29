@@ -12,6 +12,9 @@ var pov;
 var domEvents;
 var activeCamera;
 var force, offset;
+var boxes = [], fruits = [], clouds = [], pivots = [];
+
+const WORLD_RADIUS = 150;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -34,6 +37,14 @@ function toggleCamera(){
 }
 
 function update() {	
+	for(var i=0; i<pivots.length; i++){
+		pivots[i].rotation.y += .001 * pivots[i].speed;
+	}
+
+	for(var i=0; i<clouds.length; i++){
+		clouds[i].update();
+	}
+
 	TWEEN.update();
 }
 
@@ -65,31 +76,65 @@ function init() {
 		'update',
 		function() {
 			scene.simulate( undefined, 1 );
-			// physics_stats.update();
 		}
 	);
 
     scene.add(camera);
 
-    var spotLight2 = new THREE.SpotLight(0xffffff, .15, 0, .234, 1, 2);
-    spotLight2.position.set(20, 80, -36);
-    spotLight2.castShadow = true;
-    spotLight2.shadow.mapSize.width = 1024;
-	spotLight2.shadow.mapSize.height = 1024;
+    var numClouds = 7+Math.floor(Math.random()*7);
+    var numPivots = 3;
 
-	spotLight2.shadow.camera.near = 1;
-	spotLight2.shadow.camera.far = 200;
-	spotLight2.shadow.camera.fov = 30;
+    for(var i=0; i<numPivots; i++){
+    	pivots[i] = new THREE.Object3D();
+    	pivots[i].speed = 1 + Math.random()*2;
+    }
 
-    scene.add(spotLight2);
+    for(var i=0; i<numClouds; i++){
+    	var index = Math.floor(Math.random()*numPivots);
+   
+    	var angle = Math.random()*Math.PI*2;
+    	var x = WORLD_RADIUS*Math.cos(angle),
+    	y = Math.random()*50+10,
+    	z = WORLD_RADIUS*Math.sin(angle)
+    	var cloud = CreateCloud(pivots[index], x, y, z);
 
-	var groundMat = new THREE.MeshStandardMaterial({
-        color: 0xffffff, 
-        emissive: 0xfcc8ed,
-        metalness: 0,
-        roughness: 0,
-        side: THREE.DoubleSide
-    });
+    	clouds.push(cloud);
+    	scene.add(cloud.mesh);
+    }
+
+    var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
+
+    var hemisphereLight = new THREE.HemisphereLight(0xfceafc,0x000000, .8)
+	
+	var shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+
+	shadowLight.position.set(150, 75, 150);
+	
+	shadowLight.castShadow = true;
+
+	shadowLight.shadow.camera.left = -400;
+	shadowLight.shadow.camera.right = 400;
+	shadowLight.shadow.camera.top = 400;
+	shadowLight.shadow.camera.bottom = -400;
+	shadowLight.shadow.camera.near = 1;
+	shadowLight.shadow.camera.far = 1000;
+
+	shadowLight.shadow.mapSize.width = 2048;
+	shadowLight.shadow.mapSize.height = 2048;
+	
+	scene.add(hemisphereLight);  
+	scene.add(shadowLight);
+
+	const platformWidth = 40,
+	platformDepth = 25, 
+	platformHeight = 150;
+
+ 	var groundMat = new THREE.MeshPhongMaterial({
+		color: 0xffd3ff,
+		transparent:true,
+		opacity:.8,
+		shading:THREE.FlatShading,
+	});
 
 	ground_material = Physijs.createMaterial(
 		groundMat,
@@ -98,10 +143,12 @@ function init() {
 	);
 	
 	ground = new Physijs.BoxMesh(
-		new THREE.BoxGeometry(100, 1, 100),
+		new THREE.BoxGeometry(platformWidth, platformHeight, platformDepth),
 		ground_material,
 		0 // mass
 	);
+
+	ground.position.y = -(platformHeight/2)+.5;
 	ground.receiveShadow = true;
 	scene.add(ground);
 
@@ -141,6 +188,7 @@ function init() {
         x += (r * ROW_OFFSET);
 
 	    let fruit = KEY_MAPPINGS[k].fruit;
+	    fruits.push(fruit);
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
         fruit.defineConstraint();

@@ -30,6 +30,8 @@ gulp.task('js', function () {
         'js/Fruit.js',
         'js/Text.js',
         'js/Border.js',
+        'js/Cube.js',
+        'js/Cloud.js',
         'js/StaticCube.js',
         'js/Loader.js',
         'js/main.js',
