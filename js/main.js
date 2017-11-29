@@ -111,6 +111,7 @@ function init() {
                 MODEL_DATA[obj].geometry,
                 MATERIALS['banana'].clone(),
                 MODEL_DATA[obj].scale,
+                MODEL_DATA[obj].force,
                 null
             );
 

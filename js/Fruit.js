@@ -1,5 +1,5 @@
 var modifier = new THREE.BufferSubdivisionModifier( 4 );
-var CreateFruit = function(morphGeom, material, scale = .5, sound){
+var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 
 	var mat = Physijs.createMaterial(
 		material,	
@@ -11,7 +11,7 @@ var CreateFruit = function(morphGeom, material, scale = .5, sound){
 	mesh.castShadow = true;
 	mesh.scale.set(scale, scale, scale);
 
-	var force = new THREE.Vector3(500, 2200, 800), 
+	var force = new THREE.Vector3(500, 2200, 800).multiplyScalar(force),
 	offset = new THREE.Vector3(1, 5, 2);
 
 	function applyImpulse(){

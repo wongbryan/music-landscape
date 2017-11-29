@@ -64,12 +64,14 @@ const MODEL_DATA = {
         sound: ''
     },
     'blueberry': {
+        force: 0.2,
         geometry: null,
         materials: null,
         key: 'e',
         sound: ''
     },
     'banana_cube': {
+        force: 0.08,
         geometry: null,
         materials: null,
         key: 'r',
@@ -77,18 +79,21 @@ const MODEL_DATA = {
     },
     'apple': {
         scale: 0.1,
+        force: 15,
         geometry: null,
         materials: null,
         key: 'a',
         sound: ''
     },
     'jelly': {
+        force: 0.1,
         geometry: null,
         materials: null,
         key: 's',
         sound: ''
     },
     'grapes': {
+        force: 0.04,
         geometry: null,
         materials: null,
         key: 'd',
