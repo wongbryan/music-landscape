@@ -19,13 +19,21 @@ var CreateAutoplay = function(audio, timestamps){
 	function checkTimestamps(cur){
 		for (var key in timestamps){
 			if(Math.round(10*cur)/10==Number.parseFloat(key)){
-				console.log(cur);
-				console.log(key);
 				if (timestamps[key].trig){
 					continue;
 				}
 				var mag = timestamps[key].mag;
 				bounceAll(fruits, mag);
+
+				var lightkeys = timestamps[key].lightkeys;
+
+				if(lightkeys){
+					for( var i=0; i<lightkeys; i++){	
+						var index = Math.floor(Object.keys(KEY_MAPPINGS).length * Math.random());
+						var button = Object.keys(KEY_MAPPINGS)[index];
+						KEY_MAPPINGS[button].text.play();
+					}	
+				}
 
 				timestamps[key].trig = true;
 			}

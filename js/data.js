@@ -174,172 +174,214 @@ const AUDIO_DATA = {
 			'0': {
 				mag: .3,
 				trig: false,
+				lightkeys: 2,
 			},
 			'.7': {
 				mag: .3,
 				trig: false,
+				lightkeys: 2,
 			},
 			'.7': {
 				mag: .3,
 				trig: false,
+				lightkeys: 3,
 			},
 			'1': {
 				mag: .3,
 				trig: false,
+				lightkeys: 2,
 			},
 			'1.2': {
 				mag: .3,
 				trig: false,
+				lightkeys: 3,
 			},
 			'1.7': {
 				mag: .3,
 				trig: false,
+				lightkeys: 2,
 			},
 			'2.1': {
 				mag: .35,
 				trig: false,
+				lightkeys: 3,
 			},
 			'2.5': {
 				mag: .3,
 				trig: false,
+				lightkeys: 2,
 			},
 			'3.3': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'3.7': {
 				mag: .4,
 				trig: false,
+				lightkeys: 0,
 			},
 			'4.2': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'4.6': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'5': {
 				mag: 1,
 				trig: false,
+				lightkeys: 0,
 			},
 			'5.7': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'7': {
 				mag: .8,
 				trig: false,
+				lightkeys: 0,
 			},
 			'7.5': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'8': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'9.3': {
 				mag: 1.3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'10.6': {
 				mag: 1,
 				trig: false,
+				lightkeys: 0,
 			},
 			'11.8': {
 				mag: 1.3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'13.0': {
 				mag: 1,
 				trig: false,
+				lightkeys: 0,
 			},
 			'14.2': {
 				mag: 1.3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'15.4': {
 				mag: 1,
 				trig: false,
+				lightkeys: 0,
 			},
 			'16.6': {
 				mag: 1.3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'17.8': {
 				mag: 1,
 				trig: false,
+				lightkeys: 0,
 			},
 			'19.0': {
 				mag: .7,
 				trig: false,
+				lightkeys: 0,
 			},
 			'19.3': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'19.6': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'19.9': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'20.2': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'20.5': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'20.8': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'21.1': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'21.4': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'21.7': {
 				mag: .3,
 				trig: false,
+				lightkeys: 0,
 			},
 			'22.5': {
 				mag: 1,
 				trig: false,
+				lightkeys: 0,
 			},
 			'23.7': {
 				mag: .75,
 				trig: false,
+				lightkeys: 0,
 			},
 			'24.2': {
 				mag: .75,
 				trig: false,
+				lightkeys: 0,
 			},
 			'24.9': {
 				mag: .75,
 				trig: false,
+				lightkeys: 0,
 			},
 			'26.4': {
 				mag: .75,
 				trig: false,
+				lightkeys: 0,
 			},
 			'29': {
 				mag: 1.3,
 				trig: false,
+				lightkeys: 0,
 			},
 
 
 			// '': {
 			// 	mag: 1.3,
 			// 	trig: false,
+			lightkeys: 0,
 			// },
 		}
 	}
