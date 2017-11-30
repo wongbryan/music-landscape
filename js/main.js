@@ -13,6 +13,7 @@ var domEvents;
 var activeCamera;
 var force, offset;
 var boxes = [], fruits = [], clouds = [], pivots = [];
+var Autoplay;
 
 const WORLD_RADIUS = 150;
 
@@ -45,7 +46,7 @@ function update() {
 		clouds[i].update();
 	}
 
-	controls.update();
+	// controls.update();
 
 	TWEEN.update();
 }
@@ -67,7 +68,7 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
-    camera.position.set(0, 5, 10);
+    camera.position.set(0, 6, 20);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -81,7 +82,7 @@ function init() {
 		}
 	);
 
-    scene.add(camera);
+    // scene.add(camera);
 
     var numClouds = 7+Math.floor(Math.random()*7);
     var numPivots = 3;
@@ -108,7 +109,7 @@ function init() {
 
     var hemisphereLight = new THREE.HemisphereLight(0xfceafc,0x000000, .8)
 	
-	var shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+	var shadowLight = new THREE.DirectionalLight(0xffffff, .6);
 
 	shadowLight.position.set(150, 75, 150);
 	
@@ -123,9 +124,15 @@ function init() {
 
 	shadowLight.shadow.mapSize.width = 2048;
 	shadowLight.shadow.mapSize.height = 2048;
+
+	var shadowLight2 = shadowLight.clone();
+	shadowLight2.castShadow = false;
+	shadowLight2.intensity = .4;
+	shadowLight2.position.set(-150, 75, -150);
 	
 	scene.add(hemisphereLight);  
 	scene.add(shadowLight);
+	scene.add(shadowLight2);
 
 	const platformWidth = 60,
 	platformDepth = 25, 
@@ -226,7 +233,6 @@ function init() {
         scene.add(text.mesh);
 
         let path = 'assets/sounds/' + k + '.wav';
-        console.log(path);
         let audio = CreateAudio(path);
         KEY_MAPPINGS[k].audio = audio;
 
@@ -254,12 +260,21 @@ function init() {
             }
 
             if (objs.audio){
+            	objs.audio.stop();
             	objs.audio.play();
             }
         }
     });
 
 	scene.simulate();
+
+	var p = new THREE.Object3D();
+	p.add(camera);
+	p.speed = 1;
+	scene.add(p);
+	pivots.push(p);
+
+	Autoplay = CreateAutoplay('assets/sounds/autoplay.mp3');
 	
     window.addEventListener('resize', resize);
     loop();

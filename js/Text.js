@@ -1,5 +1,4 @@
 var CreateText = function(letter) {
-    console.log(typeof letter);
     var textGeometry = new THREE.TextGeometry(letter, {
         font: FONTS_DATA['fugue'].font,
         size: 2,
