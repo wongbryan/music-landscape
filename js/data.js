@@ -92,11 +92,12 @@ const MATERIALS = {
     	metalness: .5,
     	flatShading: false,
     	roughness: .06
-    }),	
+    }),
 
-    'border': new THREE.LineBasicMaterial({
-        color: 0x0000ff,
-        linewidth: 4
+    'key': new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.4
     }),
 
     'text': new THREE.MeshBasicMaterial({

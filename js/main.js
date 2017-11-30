@@ -167,7 +167,7 @@ function init() {
 	    	text: null,
 	    	border: null,
 	    	audio: null
-	    }
+	    };
 
 	    let r, c, offsetX, maxRows = 3, maxCols;
 
@@ -212,15 +212,16 @@ function init() {
 	    fruits.push(fruit);
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
+
         fruit.defineConstraint();
 
-        let border = CreateBorder();
-        border.mesh.position.set(x + 2, .1, z + 2);
-        KEY_MAPPINGS[k].border = border;
-        scene.add(border.mesh);
+        let square = CreateKey();
+        square.mesh.position.set(x, .1, z);
+        KEY_MAPPINGS[k].border = square;
+        scene.add(square.mesh);
 
         let text = CreateText(k);
-        text.mesh.position.set(x - 1, .1, z + 1);
+        text.mesh.position.set(x - 1, .2, z + 1);
         text.mesh.rotation.x = -Math.PI / 2;
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);
