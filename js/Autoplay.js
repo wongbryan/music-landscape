@@ -1,13 +1,14 @@
 var CreateAutoplay = function(audio, timestamps){
 	var sound = document.createElement('AUDIO');
 	sound.src = 'assets/sounds/fresh.mp3';
+	sound.currentTime = 37;
 
 	function play(){
 		sound.play();
 
 		var i = setInterval(function(){
 			var cur = sound.currentTime;
-			// console.log(cur);
+			console.log(cur);
 			if (cur >= sound.duration){
 				clearInterval(i);
 				return;
@@ -31,7 +32,7 @@ var CreateAutoplay = function(audio, timestamps){
 					for( var i=0; i<lightkeys; i++){	
 						var index = Math.floor(Object.keys(KEY_MAPPINGS).length * Math.random());
 						var button = Object.keys(KEY_MAPPINGS)[index];
-						KEY_MAPPINGS[button].text.play();
+						KEY_MAPPINGS[button].border.play();
 					}	
 				}
 

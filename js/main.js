@@ -59,7 +59,7 @@ function loop() {
 
 function init() {
     var container = document.getElementById('container');
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf'});
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -69,6 +69,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
     camera.position.set(0, 6, 20);
+
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     Listener = new THREE.AudioListener();
@@ -189,7 +190,7 @@ function init() {
 	    	text: null,
 	    	border: null,
 	    	audio: null
-	    }
+	    };
 
 	    let r, c, offsetX, maxRows = 3, maxCols;
 
@@ -234,15 +235,16 @@ function init() {
 	    fruits.push(fruit);
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
+
         fruit.defineConstraint();
 
-        let border = CreateBorder();
-        border.mesh.position.set(x + 2, .1, z + 2);
-        KEY_MAPPINGS[k].border = border;
-        scene.add(border.mesh);
+        let square = CreateKey();
+        square.mesh.position.set(x, .1, z);
+        KEY_MAPPINGS[k].border = square;
+        scene.add(square.mesh);
 
         let text = CreateText(k);
-        text.mesh.position.set(x - 1, .1, z + 1);
+        text.mesh.position.set(x - 1, .2, z + 1);
         text.mesh.rotation.x = -Math.PI / 2;
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);

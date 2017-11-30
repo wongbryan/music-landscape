@@ -92,16 +92,19 @@ const MATERIALS = {
     	metalness: .5,
     	flatShading: false,
     	roughness: .06
-    }),	
+    }),
 
-    'border': new THREE.LineBasicMaterial({
-        color: 0x0000ff,
-        linewidth: 4
+    'key': new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.4,
+        side: THREE.DoubleSide,
     }),
 
     'text': new THREE.MeshBasicMaterial({
         color: 0x0000ff,
-        overdraw: 0.5
+        overdraw: 0.5,
+        side: THREE.DoubleSide
     }),
 };
 
@@ -214,168 +217,295 @@ const AUDIO_DATA = {
 			'3.3': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'3.7': {
 				mag: .4,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'4.2': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 6,
 			},
 			'4.6': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'5': {
 				mag: 1,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 6,
 			},
 			'5.7': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'7': {
 				mag: .8,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'7.5': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'8': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'9.3': {
 				mag: 1.3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 12,
 			},
 			'10.6': {
 				mag: 1,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 6,
 			},
 			'11.8': {
 				mag: 1.3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'13.0': {
 				mag: 1,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 5,
 			},
 			'14.2': {
 				mag: 1.3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 7,
 			},
 			'15.4': {
 				mag: 1,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 7,
 			},
 			'16.6': {
 				mag: 1.3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 8,
 			},
 			'17.8': {
 				mag: 1,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 7,
 			},
 			'19.0': {
 				mag: .7,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'19.3': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'19.6': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'19.9': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'20.2': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'20.5': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'20.8': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 5,
 			},
 			'21.1': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'21.4': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 7,
 			},
 			'21.7': {
 				mag: .3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 6,
 			},
 			'22.5': {
 				mag: 1,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 12,
 			},
 			'23.7': {
 				mag: .75,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'24.2': {
 				mag: .75,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
 			},
 			'24.9': {
 				mag: .75,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 3,
 			},
 			'26.4': {
 				mag: .75,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 4,
+			},
+			'27.': {
+				mag: .3,
+				trig: false,
+				lightkeys: 4,
+			},
+			'27.5': {
+				mag: .4,
+				trig: false,
+				lightkeys: 8,
 			},
 			'29': {
 				mag: 1.3,
 				trig: false,
-				lightkeys: 0,
+				lightkeys: 12,
 			},
+			'30.8': {
+				mag: .75,
+				trig: false,
+				lightkeys: 12,
+			},
+			'31.5': {
+				mag: .8,
+				trig: false,
+				lightkeys: 18,
+			},
+			'31.75': {
+				mag: 1.3,
+				trig: false,
+				lightkeys: 18,
+			},
+			'32': {
+				mag: .4,
+				trig: false,
+				lightkeys: 7,
+			},
+			'32.3': {
+				mag: .4,
+				trig: false,
+				lightkeys: 6,
+			},
+			'32.7': {
+				mag: .3,
+				trig: false,
+				lightkeys: 7,
+			},
+			'33.': {
+				mag: .3,
+				trig: false,
+				lightkeys: 7,
+			},
+			'33.3': {
+				mag: .3,
+				trig: false,
+				lightkeys: 7,
+			},
+			'33.8': {
+				mag: .75,
+				trig: false,
+				lightkeys: 10,
+			},
+			'34.2': {
+				mag: 1.3,
+				trig: false,
+				lightkeys: 18,
+			},
+			'36.0': {
+				mag: .3,
+				trig: false,
+				lightkeys: 18,
+			},
+			'36.4': {
+				mag: .4,
+				trig: false,
+				lightkeys: 18,
+			},
+			'36.8': {
+				mag: .4,
+				trig: false,
+				lightkeys: 18,
+			},
+			'38.6': {
+				mag: 1.3,
+				trig: false,
+				lightkeys: 18,
+			},
+			'40': {
+				mag: .75,
+				trig: false,
+				lightkeys: 18,
+			},
+			'40.3': {
+				mag: .3,
+				trig: false,
+				lightkeys: 15,
+			},
+			'41.2': {
+				mag: 1.5,
+				trig: false,
+				lightkeys: 20,
+			},
+			'42.2': {
+				mag: 1.,
+				trig: false,
+				lightkeys: 20,
+			},
+			'43.2': {
+				mag: 1.,
+				trig: false,
+				lightkeys: 15,
+			},
+			'43.8': {
+				mag: 1.,
+				trig: false,
+				lightkeys: 15,
+			},
+			'44.1': {
+				mag: .3,
+				trig: false,
+				lightkeys: 5,
+			},
+			'44.6': {
+				mag: .4,
+				trig: false,
+				lightkeys: 10,
+			},
+			'45': {
+				mag: .4,
+				trig: false,
+				lightkeys: 15,
+			},
+
+
 
 
 			// '': {

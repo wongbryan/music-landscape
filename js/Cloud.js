@@ -3,7 +3,8 @@ var CreateCloud = function(pivot, x, y, z){
 
 	var mat = new THREE.MeshPhongMaterial({
 		color: 0x3f3772,
-		emissive: 0xcbd9ef
+		emissive: 0xcbd9ef,
+        side: THREE.DoubleSide
 	});
 
 	var nBlocs = 3+Math.floor(Math.random()*3);

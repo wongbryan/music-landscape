@@ -29,7 +29,7 @@ gulp.task('js', function () {
         'js/data.js',
         'js/Fruit.js',
         'js/Text.js',
-        'js/Border.js',
+        'js/Key.js',
         'js/Cube.js',
         'js/Cloud.js',
         'js/StaticCube.js',
