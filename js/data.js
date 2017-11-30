@@ -50,73 +50,6 @@ function codeToKey(code) {
     return KEYCODES[code];
 }
 
-const MODEL_DATA = {
-    'banana': {
-        geometry: null,
-        materials: null,
-        key: 'q',
-        sound: ''
-    },
-    'banana-low': {
-        geometry: null,
-        materials: null,
-        key: 'w',
-        sound: ''
-    },
-    'blueberry': {
-        force: 0.08,
-        geometry: null,
-        materials: null,
-        key: 'e',
-        sound: ''
-    },
-    'banana_cube': {
-        force: 0.04,
-        geometry: null,
-        materials: null,
-        key: 'r',
-        sound: ''
-    },
-    'apple': {
-        scale: 0.1,
-        force: 15,
-        geometry: null,
-        materials: null,
-        key: 'a',
-        sound: ''
-    },
-    'jelly': {
-        force: 0.1,
-        geometry: null,
-        materials: null,
-        key: 's',
-        sound: ''
-    },
-    'grapes': {
-        force: 0.02,
-        geometry: null,
-        materials: null,
-        key: 'd',
-        sound: ''
-    }
-};
-
-const TEXTURE_DATA = {
-    'blueberry': null,
-    'apple': null,
-    'banana': null,
-};
-
-const FONTS_DATA = {
-    'helvetiker_bold': {
-        font: null,
-        size: 80,
-        height: 20,
-        curveSegments: 2
-    }
-
-};
-
 const MATERIALS = {
     'bubbleGum': new THREE.MeshStandardMaterial({
         color: new THREE.Color(0xf572bf),
@@ -152,8 +85,61 @@ const MATERIALS = {
     }),
 };
 
+const MODEL_DATA = {
+    'banana': {
+        geometry: null,
+        materials: null,
+        key: 'q',
+        sound: ''
+    },
+    'blueberry': {
+        force: 0.08,
+        geometry: null,
+        materials: null,
+        key: 'e',
+        sound: ''
+    },
+    'apple': {
+        scale: 0.1,
+        force: 15,
+        geometry: null,
+        materials: null,
+        key: 'a',
+        sound: ''
+    },
+    'grapes': {
+        force: 0.02,
+        geometry: null,
+        materials: null,
+        key: 'd',
+        sound: ''
+    }
+};
+
+const TEXTURE_DATA = {
+    'blueberry': null,
+    'apple': null,
+    'banana': null,
+};
+
+const FONTS_DATA = {
+    'helvetiker_bold': {
+        font: null,
+        size: 80,
+        height: 20,
+        curveSegments: 2
+    },
+    'fugue': {
+        font: null,
+        size: 80,
+        height: 20,
+        curveSegments: 20
+    },
+
+};
+
 const KEY_MAPPINGS = {
     // 'a' : { fruit: Fruit, text: Text, border: Border }
 };
 
-const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 'a', 's', 'd'];
+const ACTIVE_KEYS = ['q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'];

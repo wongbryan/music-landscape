@@ -45,6 +45,8 @@ function update() {
 		clouds[i].update();
 	}
 
+	controls.update();
+
 	TWEEN.update();
 }
 
@@ -112,10 +114,10 @@ function init() {
 	
 	shadowLight.castShadow = true;
 
-	shadowLight.shadow.camera.left = -400;
-	shadowLight.shadow.camera.right = 400;
-	shadowLight.shadow.camera.top = 400;
-	shadowLight.shadow.camera.bottom = -400;
+	shadowLight.shadow.camera.left = -300;
+	shadowLight.shadow.camera.right = 300;
+	shadowLight.shadow.camera.top = 300;
+	shadowLight.shadow.camera.bottom = -300;
 	shadowLight.shadow.camera.near = 1;
 	shadowLight.shadow.camera.far = 1000;
 
@@ -125,7 +127,7 @@ function init() {
 	scene.add(hemisphereLight);  
 	scene.add(shadowLight);
 
-	const platformWidth = 40,
+	const platformWidth = 60,
 	platformDepth = 25, 
 	platformHeight = 150;
 
@@ -148,29 +150,28 @@ function init() {
 		0 // mass
 	);
 
-	ground.position.y = -(platformHeight/2)+.7;
+	ground.position.y = -(platformHeight/2)+1;
 	ground.receiveShadow = true;
 	scene.add(ground);
 
-	for (var obj in MODEL_DATA) {
-	    if (MODEL_DATA.hasOwnProperty(obj)) {
-            let fruit = CreateFruit(
-                MODEL_DATA[obj].geometry,
-                MATERIALS['banana'].clone(),
-                MODEL_DATA[obj].scale,
-                MODEL_DATA[obj].force,
-                null
-            );
+	// for (var obj in MODEL_DATA) {
+	//     if (MODEL_DATA.hasOwnProperty(obj)) {
+ //            let fruit = CreateFruit(
+ //                MODEL_DATA[obj].geometry,
+ //                MATERIALS['banana'].clone(),
+ //                MODEL_DATA[obj].scale,
+ //                MODEL_DATA[obj].force,
+ //                null
+ //            );
 
-	        // need to add sound
-
-            KEY_MAPPINGS[MODEL_DATA[obj].key] = {
-                fruit: fruit,
-                text: null,
-                border: null
-            };
-        }
-    }
+ //            KEY_MAPPINGS[MODEL_DATA[obj].key] = {
+ //                fruit: fruit,
+ //                text: null,
+ //                border: null,
+ //                audio: null
+ //            };
+ //        }
+ //    }
 
     const ROWS = 3;
 	const ROW_OFFSET = 2;
@@ -180,32 +181,80 @@ function init() {
     for (let i = 0; i < ACTIVE_KEYS.length; i++) {
 	    let k = ACTIVE_KEYS[i];
 
-	    let r = parseInt(i / COLS, 10);
-	    let c = parseInt(i % COLS, 10);
+	    KEY_MAPPINGS[k] = {
+	    	fruit: null,
+	    	text: null,
+	    	border: null,
+	    	audio: null
+	    }
 
-        let x = SP * (c - Math.floor(COLS / 2));
-        let z = SP * (r - Math.floor(ROWS / 2));
-        x += (r * ROW_OFFSET);
+	    let r, c, offsetX, maxRows = 3, maxCols;
 
-	    let fruit = KEY_MAPPINGS[k].fruit;
+	    if (i<=9){
+	    	r = 0;
+	    	c = i;
+	    	maxCols = 10;
+	    	offsetX = 0;
+	    }
+	    else if (i<=18){
+	    	r = 1;
+	    	c = i%10;
+	    	maxCols = 9;
+	    	offsetX = -SP;
+	    }
+	    else{
+	    	r = 2;
+	    	c = (i+1)%10;
+	    	maxCols = 7;
+	    	// offsetX = 
+	    	offsetX = -1.5*SP;
+	    }
+
+	    let x = SP * (c - Math.floor(maxCols/2));
+	    let z = SP * (r - Math.floor(maxRows/2));
+	    x += (r * ROW_OFFSET);
+	    x += offsetX;
+
+	    console.log(x);
+	    console.log(z);
+
+	    // let r = parseInt(i / COLS, 10);
+	    // let c = parseInt(i % COLS, 10);
+
+     //    let x = SP * (c - Math.floor(COLS / 2));
+     //    let z = SP * (r - Math.floor(ROWS / 2));
+     //    x += (r * ROW_OFFSET);
+
+        let numFruits = Object.keys(MODEL_DATA).length,
+        fruitIndex = Math.floor(numFruits*Math.random()),
+        fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
+
+	    let fruit = CreateFruit(
+	    	fruitData.geometry,
+	    	MATERIALS['banana'].clone(),
+	    	fruitData.scale,
+	    	fruitData.force,
+	    	null
+	    );
+
+	    KEY_MAPPINGS[k].fruit = fruit;
 	    fruits.push(fruit);
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
         fruit.defineConstraint();
 
         let border = CreateBorder();
-        border.mesh.position.set(x + 2, 0, z + 2);
+        border.mesh.position.set(x + 2, .2, z + 2);
         KEY_MAPPINGS[k].border = border;
         scene.add(border.mesh);
 
-        // draw text
         let text = CreateText(k);
-        text.mesh.position.set(x - 1, 0.75, z + 1);
+        text.mesh.position.set(x - 1, 1.1, z + 1);
         text.mesh.rotation.x = -Math.PI / 2;
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);
 
-        let path = 'assets/sounds/' + k + '.wav';
+        let path = 'assets/sounds/' + 'q' + '.wav';
         let audio = CreateAudio(path);
         KEY_MAPPINGS[k].audio = audio;
 
