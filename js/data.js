@@ -97,12 +97,14 @@ const MATERIALS = {
     'key': new THREE.MeshLambertMaterial({
         color: 0xffffff,
         transparent: true,
-        opacity: 0.4
+        opacity: 0.4,
+        side: THREE.DoubleSide,
     }),
 
     'text': new THREE.MeshBasicMaterial({
         color: 0x0000ff,
-        overdraw: 0.5
+        overdraw: 0.5,
+        side: THREE.DoubleSide
     }),
 };
 

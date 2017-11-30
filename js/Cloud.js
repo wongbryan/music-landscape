@@ -8,7 +8,8 @@ var CreateCloud = function(pivot, x, y, z){
 	// create a material; a simple white material will do the trick
 	var mat = new THREE.MeshPhongMaterial({
 		color: 0x3f3772,
-		emissive: 0xcbd9ef
+		emissive: 0xcbd9ef,
+        side: THREE.DoubleSide
 	});
 
 	// var mat = MATERIALS['banana'].clone();

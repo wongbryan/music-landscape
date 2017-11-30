@@ -58,7 +58,7 @@ function loop() {
 
 function init() {
     var container = document.getElementById('container');
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf'});
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -66,7 +66,7 @@ function init() {
     renderer.setClearColor(0xbfe7ff);
     container.appendChild(renderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 1000);
     camera.position.set(0, 5, 10);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
