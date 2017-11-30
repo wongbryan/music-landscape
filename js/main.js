@@ -13,7 +13,7 @@ var domEvents;
 var activeCamera;
 var force, offset;
 var boxes = [], fruits = [], clouds = [], pivots = [];
-var Autoplay;
+var Autoplay, Listener;
 
 const WORLD_RADIUS = 150;
 
@@ -70,6 +70,21 @@ function init() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
     camera.position.set(0, 6, 20);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    Listener = new THREE.AudioListener();
+    camera.add(Listener);
+
+    var audioLoader = new THREE.AudioLoader();
+	var sound = new THREE.PositionalAudio(Listener);
+
+	// audioLoader.load('assets/sounds/swum.mp3', function(buffer){
+	// 	console.log(buffer);
+	// 	sound.setBuffer(buffer);
+	// 	sound.setRefDistance(20);
+		
+	// });
+
+	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -207,7 +222,6 @@ function init() {
         fruitIndex = Math.floor(numFruits*Math.random()),
         fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
 
-        console.log(fruitData.materials);
 	    let fruit = CreateFruit(
 	    	fruitData.geometry,
 	    	fruitData.materials.clone(),
@@ -274,8 +288,6 @@ function init() {
 	p.speed = 1;
 	scene.add(p);
 	pivots.push(p);
-
-	Autoplay = CreateAutoplay('assets/sounds/autoplay.mp3');
 	
     window.addEventListener('resize', resize);
     loop();

@@ -1,12 +1,14 @@
 const ASSETS_PATH = 'assets/models/';
 const FONT_ASSETS_PATH = 'assets/fonts/';
 const TEXTURE_ASSETS_PATH = 'assets/images/';
+const AUDIO_ASSETS_PATH = 'assets/sounds/';
 
 var Loader = (function () {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.JSONLoader(manager);
     const fontLoader = new THREE.FontLoader(manager);
     const textureLoader = new THREE.TextureLoader(manager);
+    const audioLoader = new THREE.AudioLoader(manager);
     const $progress = $('#progress');
 
 
@@ -61,6 +63,17 @@ var Loader = (function () {
         );
     };
 
+    this.loadAudio = function(file, ext) {
+        audioLoader.load(
+            AUDIO_ASSETS_PATH + file + ext,
+
+            function(buffer) {
+                console.log(buffer);
+                AUDIO_DATA[file].buffer = buffer;
+            }
+        );
+    }
+
     return this;
 }());
 
@@ -74,5 +87,10 @@ for (var key in TEXTURE_DATA) {
 
 for (var key in FONTS_DATA) {
     Loader.loadFont(key);
+}
+
+for (var key in AUDIO_DATA) {
+    var ext = AUDIO_DATA[key].ext;
+    Loader.loadAudio(key, ext);
 }
 

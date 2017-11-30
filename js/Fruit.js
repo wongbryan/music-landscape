@@ -13,13 +13,17 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 	var force = new THREE.Vector3(500, 2200, 500).multiplyScalar(force),
 	offset = new THREE.Vector3(1, 5, 2);
 
-	function applyImpulse(){
+	function applyImpulse(mag=1){
+
+		var f = new THREE.Vector3();
+		f.copy(force);
+
 		var x = Math.random(),
 		y = 5+Math.random() * 2.5,
 		z = 1+Math.random();
 
 		offset.set(x, y, z);
-		mesh.applyImpulse(force, offset);
+		mesh.applyImpulse(f.multiplyScalar(mag), offset);
 	}
 
 	function defineConstraint(){
@@ -39,7 +43,7 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 	}
 
 	function play(){
-		applyImpulse(force, offset);
+		applyImpulse();
 	}
 
 	return {

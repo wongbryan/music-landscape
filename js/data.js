@@ -62,7 +62,7 @@ const MATERIALS = {
         // map : texture
     }),
 
-    'banana': new THREE.MeshPhongMaterial({
+    'banana': new THREE.MeshStandardMaterial({
         color: 0xbe9a47,
         emissive: 0x676925,
         roughness: .16,
@@ -86,7 +86,7 @@ const MATERIALS = {
     	metalness: .5
     }),
 
-    'grapes': new THREE.MeshPhongMaterial({
+    'grapes': new THREE.MeshStandardMaterial({
     	color: 0xb3f28b,
     	emissive: 0x68841f,
     	metalness: .5,
@@ -165,6 +165,185 @@ const FONTS_DATA = {
     },
 
 };
+
+const AUDIO_DATA = {
+	'fresh':{
+		buffer: null,
+		ext: '.mp3',
+		timestamps: {
+			'0': {
+				mag: .3,
+				trig: false,
+			},
+			'.7': {
+				mag: .3,
+				trig: false,
+			},
+			'.7': {
+				mag: .3,
+				trig: false,
+			},
+			'1': {
+				mag: .3,
+				trig: false,
+			},
+			'1.2': {
+				mag: .3,
+				trig: false,
+			},
+			'1.7': {
+				mag: .3,
+				trig: false,
+			},
+			'2.1': {
+				mag: .35,
+				trig: false,
+			},
+			'2.5': {
+				mag: .3,
+				trig: false,
+			},
+			'3.3': {
+				mag: .3,
+				trig: false,
+			},
+			'3.7': {
+				mag: .4,
+				trig: false,
+			},
+			'4.2': {
+				mag: .3,
+				trig: false,
+			},
+			'4.6': {
+				mag: .3,
+				trig: false,
+			},
+			'5': {
+				mag: 1,
+				trig: false,
+			},
+			'5.7': {
+				mag: .3,
+				trig: false,
+			},
+			'7': {
+				mag: .8,
+				trig: false,
+			},
+			'7.5': {
+				mag: .3,
+				trig: false,
+			},
+			'8': {
+				mag: .3,
+				trig: false,
+			},
+			'9.3': {
+				mag: 1.3,
+				trig: false,
+			},
+			'10.6': {
+				mag: 1,
+				trig: false,
+			},
+			'11.8': {
+				mag: 1.3,
+				trig: false,
+			},
+			'13.0': {
+				mag: 1,
+				trig: false,
+			},
+			'14.2': {
+				mag: 1.3,
+				trig: false,
+			},
+			'15.4': {
+				mag: 1,
+				trig: false,
+			},
+			'16.6': {
+				mag: 1.3,
+				trig: false,
+			},
+			'17.8': {
+				mag: 1,
+				trig: false,
+			},
+			'19.0': {
+				mag: .7,
+				trig: false,
+			},
+			'19.3': {
+				mag: .3,
+				trig: false,
+			},
+			'19.6': {
+				mag: .3,
+				trig: false,
+			},
+			'19.9': {
+				mag: .3,
+				trig: false,
+			},
+			'20.2': {
+				mag: .3,
+				trig: false,
+			},
+			'20.5': {
+				mag: .3,
+				trig: false,
+			},
+			'20.8': {
+				mag: .3,
+				trig: false,
+			},
+			'21.1': {
+				mag: .3,
+				trig: false,
+			},
+			'21.4': {
+				mag: .3,
+				trig: false,
+			},
+			'21.7': {
+				mag: .3,
+				trig: false,
+			},
+			'22.5': {
+				mag: 1,
+				trig: false,
+			},
+			'23.7': {
+				mag: .75,
+				trig: false,
+			},
+			'24.2': {
+				mag: .75,
+				trig: false,
+			},
+			'24.9': {
+				mag: .75,
+				trig: false,
+			},
+			'26.4': {
+				mag: .75,
+				trig: false,
+			},
+			'29': {
+				mag: 1.3,
+				trig: false,
+			},
+
+
+			// '': {
+			// 	mag: 1.3,
+			// 	trig: false,
+			// },
+		}
+	}
+}
 
 const KEY_MAPPINGS = {
     // 'a' : { fruit: Fruit, text: Text, border: Border }

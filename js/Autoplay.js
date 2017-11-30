@@ -1,27 +1,46 @@
-var CreateAutoplay = function(path){
-	var audio = CreateAudio(path);
-	var timestamps = [0, 100, 200, 300, 400, 500];
+var CreateAutoplay = function(audio, timestamps){
+	var sound = document.createElement('AUDIO');
+	sound.src = 'assets/sounds/fresh.mp3';
 
-	function checkTimestamp(){
-		var cur = audio.cur;
-		console.log(cur);
-		for(var i=0; i<timestamps.length; i++){
-			if (cur==timestamps[i]){
-				console.log('match');
+	function play(){
+		sound.play();
+
+		var i = setInterval(function(){
+			var cur = sound.currentTime;
+			// console.log(cur);
+			if (cur >= sound.duration){
+				clearInterval(i);
+				return;
+			}
+			checkTimestamps(cur);
+		}, 50);
+	}
+
+	function checkTimestamps(cur){
+		for (var key in timestamps){
+			if(Math.round(10*cur)/10==Number.parseFloat(key)){
+				console.log(cur);
+				console.log(key);
+				if (timestamps[key].trig){
+					continue;
+				}
+				var mag = timestamps[key].mag;
+				bounceAll(fruits, mag);
+
+				timestamps[key].trig = true;
 			}
 		}
 	}
 
-	function play(){
-		audio.play();
-
-		var interval = setInterval(function(){
-			console.log('hello');
-			checkTimestamp();
-		}, 10);
+	function bounceAll(fruits, mag){
+		for(var i=0; i<fruits.length; i++){
+			fruits[i].applyImpulse(mag);
+		}
 	}
+
 	return {
-		play: audio.play,
-		pause: audio.pause
+		play: play,
+		sound: sound,
+		timestamps: timestamps
 	}
 }
