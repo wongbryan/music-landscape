@@ -14,6 +14,11 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 	offset = new THREE.Vector3(1, 5, 2);
 
 	function applyImpulse(){
+		var x = Math.random(),
+		y = 5+Math.random() * 2.5,
+		z = 1+Math.random();
+
+		offset.set(x, y, z);
 		mesh.applyImpulse(force, offset);
 	}
 

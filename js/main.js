@@ -154,25 +154,6 @@ function init() {
 	ground.receiveShadow = true;
 	scene.add(ground);
 
-	// for (var obj in MODEL_DATA) {
-	//     if (MODEL_DATA.hasOwnProperty(obj)) {
- //            let fruit = CreateFruit(
- //                MODEL_DATA[obj].geometry,
- //                MATERIALS['banana'].clone(),
- //                MODEL_DATA[obj].scale,
- //                MODEL_DATA[obj].force,
- //                null
- //            );
-
- //            KEY_MAPPINGS[MODEL_DATA[obj].key] = {
- //                fruit: fruit,
- //                text: null,
- //                border: null,
- //                audio: null
- //            };
- //        }
- //    }
-
     const ROWS = 3;
 	const ROW_OFFSET = 2;
 	const COLS = 4;
@@ -180,7 +161,6 @@ function init() {
 
     for (let i = 0; i < ACTIVE_KEYS.length; i++) {
 	    let k = ACTIVE_KEYS[i];
-	    console.log(k);
 
 	    KEY_MAPPINGS[k] = {
 	    	fruit: null,
@@ -219,8 +199,6 @@ function init() {
         let numFruits = Object.keys(MODEL_DATA).length,
         fruitIndex = Math.floor(numFruits*Math.random()),
         fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
-
-         // console.log(fruitData.materials);
 
 	    let fruit = CreateFruit(
 	    	fruitData.geometry,

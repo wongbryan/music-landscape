@@ -108,6 +108,7 @@ const MATERIALS = {
 const MODEL_DATA = {
     'banana': {
         geometry: null,
+        force: .6,
         materials: MATERIALS['banana'],
         key: 'q',
         sound: ''
@@ -121,7 +122,7 @@ const MODEL_DATA = {
     },
     'apple': {
         scale: 0.1,
-        force: 15,
+        force: 5,
         geometry: null,
         materials: MATERIALS['apple'],
         key: 'a',
