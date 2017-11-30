@@ -114,10 +114,10 @@ function init() {
 	
 	shadowLight.castShadow = true;
 
-	shadowLight.shadow.camera.left = -300;
-	shadowLight.shadow.camera.right = 300;
-	shadowLight.shadow.camera.top = 300;
-	shadowLight.shadow.camera.bottom = -300;
+	shadowLight.shadow.camera.left = -100;
+	shadowLight.shadow.camera.right = 100;
+	shadowLight.shadow.camera.top = 100;
+	shadowLight.shadow.camera.bottom = -100;
 	shadowLight.shadow.camera.near = 1;
 	shadowLight.shadow.camera.far = 1000;
 
@@ -134,7 +134,7 @@ function init() {
  	var groundMat = new THREE.MeshPhongMaterial({
 		color: 0xffd3ff,
 		transparent:true,
-		opacity:.8,
+		opacity:1,
 		shading:THREE.FlatShading,
 	});
 
@@ -150,7 +150,7 @@ function init() {
 		0 // mass
 	);
 
-	ground.position.y = -(platformHeight/2)+1;
+	ground.position.y = -(platformHeight/2);
 	ground.receiveShadow = true;
 	scene.add(ground);
 
@@ -215,23 +215,15 @@ function init() {
 	    x += (r * ROW_OFFSET);
 	    x += offsetX;
 
-	    console.log(x);
-	    console.log(z);
-
-	    // let r = parseInt(i / COLS, 10);
-	    // let c = parseInt(i % COLS, 10);
-
-     //    let x = SP * (c - Math.floor(COLS / 2));
-     //    let z = SP * (r - Math.floor(ROWS / 2));
-     //    x += (r * ROW_OFFSET);
-
         let numFruits = Object.keys(MODEL_DATA).length,
         fruitIndex = Math.floor(numFruits*Math.random()),
         fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
 
+         // console.log(fruitData.materials);
+
 	    let fruit = CreateFruit(
 	    	fruitData.geometry,
-	    	MATERIALS['banana'].clone(),
+	    	fruitData.materials.clone(),
 	    	fruitData.scale,
 	    	fruitData.force,
 	    	null
@@ -244,12 +236,12 @@ function init() {
         fruit.defineConstraint();
 
         let border = CreateBorder();
-        border.mesh.position.set(x + 2, .2, z + 2);
+        border.mesh.position.set(x + 2, .1, z + 2);
         KEY_MAPPINGS[k].border = border;
         scene.add(border.mesh);
 
         let text = CreateText(k);
-        text.mesh.position.set(x - 1, 1.1, z + 1);
+        text.mesh.position.set(x - 1, .1, z + 1);
         text.mesh.rotation.x = -Math.PI / 2;
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);

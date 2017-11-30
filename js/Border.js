@@ -1,5 +1,5 @@
 var CreateBorder = function() {
-    const y = 0.75;
+    const y = 0;
 
     var borderGeometry = new THREE.Geometry();
     borderGeometry.vertices.push(

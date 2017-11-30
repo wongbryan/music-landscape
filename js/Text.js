@@ -3,7 +3,7 @@ var CreateText = function(letter) {
     var textGeometry = new THREE.TextGeometry(letter, {
         font: FONTS_DATA['fugue'].font,
         size: 2,
-        height: 0.01,
+        height: 0.1,
         curveSegments: 20
     });
     textGeometry.computeBoundingBox();

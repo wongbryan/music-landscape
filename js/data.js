@@ -63,16 +63,36 @@ const MATERIALS = {
     }),
 
     'banana': new THREE.MeshPhongMaterial({
-        color: new THREE.Color(0xfef45d),
-        emissive: new THREE.Color(0xf5d44f)
+        color: 0xbe9a47,
+        emissive: 0x676925,
+        roughness: .16,
+        flatShading: false,
+        metalness: 0  
     }),
 
-    'blueberry': new THREE.MeshPhongMaterial({
-        color: 0x57fcfe,
-        emissive: 0x7e95f6,
-        specular: 0x593453,
-        shininess: 27,
+    'blueberry': new THREE.MeshStandardMaterial({
+    	color: 0x5c70fb,
+    	emissive: 0x1235ae,
+    	roughness: 0,
+    	flatShading: false,
+    	metalness: 0
     }),
+
+    'apple': new THREE.MeshStandardMaterial({
+    	color: 0xfc1820,
+    	emissive: 0x760314,
+    	roughness: .1,
+    	flatShading: false,
+    	metalness: .5
+    }),	
+
+    'grapes': new THREE.MeshPhongMaterial({
+    	color: 0xb3f28b,
+    	emissive: 0x68841f,
+    	metalness: .5,
+    	flatShading: false,
+    	roughness: .06
+    }),	
 
     'border': new THREE.LineBasicMaterial({
         color: 0x0000ff,
@@ -88,14 +108,14 @@ const MATERIALS = {
 const MODEL_DATA = {
     'banana': {
         geometry: null,
-        materials: null,
+        materials: MATERIALS['banana'],
         key: 'q',
         sound: ''
     },
     'blueberry': {
         force: 0.08,
         geometry: null,
-        materials: null,
+        materials: MATERIALS['blueberry'],
         key: 'e',
         sound: ''
     },
@@ -103,14 +123,14 @@ const MODEL_DATA = {
         scale: 0.1,
         force: 15,
         geometry: null,
-        materials: null,
+        materials: MATERIALS['apple'],
         key: 'a',
         sound: ''
     },
     'grapes': {
-        force: 0.02,
+        force: 0.01,
         geometry: null,
-        materials: null,
+        materials: MATERIALS['grapes'],
         key: 'd',
         sound: ''
     }
