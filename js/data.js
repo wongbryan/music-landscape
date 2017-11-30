@@ -134,7 +134,14 @@ const MODEL_DATA = {
         materials: MATERIALS['grapes'],
         key: 'd',
         sound: ''
-    }
+    },
+    // 'watermelon': {
+    //     force: 0.01,
+    //     geometry: null,
+    //     materials: null,
+    //     key: 'd',
+    //     sound: ''
+    // }
 };
 
 const TEXTURE_DATA = {

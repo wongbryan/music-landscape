@@ -207,6 +207,7 @@ function init() {
         fruitIndex = Math.floor(numFruits*Math.random()),
         fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
 
+        console.log(fruitData.materials);
 	    let fruit = CreateFruit(
 	    	fruitData.geometry,
 	    	fruitData.materials.clone(),
