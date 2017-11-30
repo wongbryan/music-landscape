@@ -84,7 +84,7 @@ const MATERIALS = {
     	roughness: .1,
     	flatShading: false,
     	metalness: .5
-    }),	
+    }),
 
     'grapes': new THREE.MeshPhongMaterial({
     	color: 0xb3f28b,

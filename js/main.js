@@ -180,6 +180,7 @@ function init() {
 
     for (let i = 0; i < ACTIVE_KEYS.length; i++) {
 	    let k = ACTIVE_KEYS[i];
+	    console.log(k);
 
 	    KEY_MAPPINGS[k] = {
 	    	fruit: null,
@@ -246,7 +247,8 @@ function init() {
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);
 
-        let path = 'assets/sounds/' + 'q' + '.wav';
+        let path = 'assets/sounds/' + k + '.wav';
+        console.log(path);
         let audio = CreateAudio(path);
         KEY_MAPPINGS[k].audio = audio;
 
