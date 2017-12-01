@@ -7,6 +7,7 @@ var CreateAutoplay = function(audio, timestamps, camera){
 		sound.play();
 
 		camera.controller.shiftPos(0);
+		camera.pivot.speed = 1;
 
 		var i = setInterval(function(){
 			var cur = sound.currentTime;
