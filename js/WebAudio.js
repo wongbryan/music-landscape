@@ -14,7 +14,7 @@ var Recorder;
     var context,
         bufferLoader,
         destination,
-        isRecording = false,
+        // isRecording = false,
         mediaRecorder,
         sources = [],
         chunks = [],
@@ -34,39 +34,39 @@ var Recorder;
     );
 
     function loadComplete(bufferList) {
+        var isRecording = false;
+
         if (bufferLoader.calledback)
             return;
 
         destination = context.createMediaStreamDestination();
         mediaRecorder = new MediaRecorder(destination.stream);
-        console.log(mediaRecorder);
 
         mediaRecorder.ondataavailable = function (e) {
             chunks.push(e.data);
         };
 
         mediaRecorder.onstop = function (e) {
-            var audio;
-            var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
-            blob.onloadend = function(e){
-              audio = document.createElement('audio');
+            try{
+              var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
+
+              if(blob.size == 0){
+                throw new Error('No input given to record.');
+              }
+
+              var audio = document.createElement('audio');
               console.log(blob);
               console.log(audio);
               audio.src = URL.createObjectURL(blob);
               audioRecordings.push(audio);
 
               chunks = [];
+            } catch(e){
+              console.error(e.message);
             }
         };
 
         bufferLoader.calledback = true;
-
-        // for (var i=0; i<bufferList.length; i++){
-        //   var source = context.createBufferSource();
-        //   source.buffer = bufferList[i];
-        //   source.connect(destination);
-        //   sources.push(source);
-        // }
 
         for (var key in KEY_MAPPINGS) {
             var index = ACTIVE_KEYS.indexOf(key);
@@ -74,30 +74,34 @@ var Recorder;
             KEY_MAPPINGS[key].web_audio_buffer = buffer;
         }
 
+        function getRecordingStatus(){
+          return isRecording;
+        }
+
+        function startRecording() {
+            isRecording = true;
+            mediaRecorder.start();
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            isRecording = false;
+        }
+
+        function playRecording() {
+            audioRecordings[0].play();
+        }
+
         Recorder = {
             context: context,
             destination: destination,
             mediaRecorder: mediaRecorder,
-            isRecording: isRecording,
+            isRecording: getRecordingStatus,
             startRecording: startRecording,
             stopRecording: stopRecording,
             playRecording: playRecording,
             audioRecordings: audioRecordings
         }
-    }
-
-    function startRecording() {
-        isRecording = true;
-        mediaRecorder.start();
-    }
-
-    function stopRecording() {
-        mediaRecorder.stop();
-        isRecording = false;
-    }
-
-    function playRecording() {
-        audioRecordings[0].play();
     }
 
     bufferLoader.load();

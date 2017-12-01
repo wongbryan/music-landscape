@@ -272,11 +272,13 @@ function init() {
                     objs.audio.play();
                 }
 
-                if (objs.web_audio_buffer) {
+                if (objs.web_audio_buffer && Recorder.isRecording()) {
                     var source = Recorder.context.createBufferSource();
                     source.buffer = objs.web_audio_buffer;
                     source.connect(Recorder.destination);
                     source.start(0);
+
+                    console.log(source);
                 }
 
             } else {
