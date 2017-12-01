@@ -68,7 +68,8 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .0001, 10000);
-    camera.position.set(0, 6, 20);
+    camera.position.set(-50, 20, 50);
+    camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -85,7 +86,7 @@ function init() {
 		
 	// });
 
-	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps);
+	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -126,7 +127,7 @@ function init() {
     var hemisphereLight = new THREE.HemisphereLight(0xfceafc,0x000000, .8)
 	
 	var shadowLight = new THREE.DirectionalLight(0xffffff, .5);
-
+	
 	shadowLight.position.set(150, 75, 150);
 	
 	shadowLight.castShadow = true;
@@ -160,6 +161,9 @@ function init() {
 	platformDepth = 25, 
 	platformHeight = 150;
 
+	const height = 50,
+	radius = 30;
+
  	var groundMat = new THREE.MeshPhongMaterial({
 		color: 0xffd3ff,
 		transparent:true,
@@ -175,11 +179,15 @@ function init() {
 	
 	ground = new Physijs.BoxMesh(
 		new THREE.BoxGeometry(platformWidth, platformHeight, platformDepth),
+		// new THREE.ConeGeometry(radius, height, 32, 1),
 		ground_material,
 		0 // mass
 	);
 
 	ground.position.y = -(platformHeight/2);
+	// ground.position.y = -height/2;
+	// ground.rotation.x = Math.PI;
+	// ground.rotation.y = Math.PI/4;
 	ground.receiveShadow = true;
 	scene.add(ground);
 
@@ -291,11 +299,11 @@ function init() {
 
 	scene.simulate();
 
-	var p = new THREE.Object3D();
-	p.add(camera);
-	p.speed = 1;
-	scene.add(p);
-	pivots.push(p);
+	camera.pivot = new THREE.Object3D();
+	camera.pivot.add(camera);
+	camera.pivot.speed = 0;
+	scene.add(camera.pivot);
+	pivots.push(camera.pivot);
 	
     window.addEventListener('resize', resize);
     loop();

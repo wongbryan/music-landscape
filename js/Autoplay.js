@@ -1,10 +1,12 @@
-var CreateAutoplay = function(audio, timestamps){
+var CreateAutoplay = function(audio, timestamps, camera){
 	var sound = document.createElement('AUDIO');
 	sound.src = 'assets/sounds/fresh.mp3';
-	sound.currentTime = 37;
+	// sound.currentTime = 37;
 
 	function play(){
 		sound.play();
+
+		camera.controller.shiftPos(0);
 
 		var i = setInterval(function(){
 			var cur = sound.currentTime;
