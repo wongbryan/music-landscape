@@ -179,7 +179,7 @@ const AUDIO_DATA = {
 				trig: false,
 				lightkeys: 2,
 			},
-			'.7': {
+			'.3': {
 				mag: .3,
 				trig: false,
 				lightkeys: 2,
@@ -504,9 +504,6 @@ const AUDIO_DATA = {
 				trig: false,
 				lightkeys: 15,
 			},
-
-
-
 
 			// '': {
 			// 	mag: 1.3,
