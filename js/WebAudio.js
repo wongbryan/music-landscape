@@ -46,15 +46,17 @@ var Recorder;
         };
 
         mediaRecorder.onstop = function (e) {
+            var audio;
             var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
-            var audio = document.createElement('audio');
-            console.log(blob);
-            console.log(audio);
-            audio.srcObject = blob;
-            audio.src = URL.createObjectURL(blob);
-            audioRecordings.push(audio);
+            blob.onloadend = function(e){
+              audio = document.createElement('audio');
+              console.log(blob);
+              console.log(audio);
+              audio.src = URL.createObjectURL(blob);
+              audioRecordings.push(audio);
 
-            chunks = [];
+              chunks = [];
+            }
         };
 
         bufferLoader.calledback = true;
