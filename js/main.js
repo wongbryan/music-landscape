@@ -5,12 +5,8 @@ Physijs.scripts.ammo = 'examples/js/ammo.js';
 
 var initScene, render, box, loader, renderer, scene, ground_material, ground, light, camera;
 
-var camera, outerCamera, scene, renderer, controls;
+var camera, scene, renderer, controls;
 var clock = new THREE.Clock();
-var pointLight;
-var pov;
-var domEvents;
-var activeCamera;
 var force, offset;
 var boxes = [], fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
@@ -21,20 +17,6 @@ function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-// placeholder for now before figuring out how to structure Camera class
-function updateCamera() {
-    if (pov) {
-        camera.position.copy(Avatar.position).add(new THREE.Vector3(0, 5, 10));
-    } else {
-        camera.lookAt(Avatar.position);
-        camera.position.copy(Avatar.position).sub(new THREE.Vector3(0, 10, -10));
-    }
-}
-
-function toggleCamera(){
-	activeCamera = (activeCamera == camera) ? outerCamera : camera;
 }
 
 function update() {	
@@ -68,7 +50,7 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-50, 20, 50);
+    camera.position.set(-94, 197, 172);
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
