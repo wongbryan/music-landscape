@@ -19,8 +19,7 @@ var Recorder;
         sources = [],
         chunks = [],
         sound_paths = [],
-        audioRecordings = [],
-        activeAudio = document.createElement('audio');
+        audioRecordings = [];
 
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
@@ -48,8 +47,12 @@ var Recorder;
 
         mediaRecorder.onstop = function (e) {
             var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
-            activeAudio.src = URL.createObjectURL(blob);
-            audioRecordings[0] = activeAudio;
+            var audio = document.createElement('audio');
+            console.log(blob);
+            console.log(audio);
+            audio.srcObject = blob;
+            audio.src = URL.createObjectURL(blob);
+            audioRecordings.push(audio);
 
             chunks = [];
         };
@@ -77,7 +80,6 @@ var Recorder;
             startRecording: startRecording,
             stopRecording: stopRecording,
             playRecording: playRecording,
-            activeAudio: activeAudio,
             audioRecordings: audioRecordings
         }
     }

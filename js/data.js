@@ -79,11 +79,11 @@ const MATERIALS = {
     }),
 
     'pineapple': new THREE.MeshStandardMaterial({
-        color: 0xbe9a47,
-        emissive: 0x676925,
-        roughness: .16,
+        color: 0xfedd3a,
+        emissive: 0x6f4014,
+        roughness: 1,
         flatShading: false,
-        metalness: 0  
+        metalness: .5  
     }),
 
     'blueberry': new THREE.MeshStandardMaterial({
