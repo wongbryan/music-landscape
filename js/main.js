@@ -125,7 +125,7 @@ function init() {
 
     var hemisphereLight = new THREE.HemisphereLight(0xfceafc,0x000000, .8)
 	
-	var shadowLight = new THREE.DirectionalLight(0xffffff, .6);
+	var shadowLight = new THREE.DirectionalLight(0xffffff, .5);
 
 	shadowLight.position.set(150, 75, 150);
 	
@@ -143,12 +143,18 @@ function init() {
 
 	var shadowLight2 = shadowLight.clone();
 	shadowLight2.castShadow = false;
-	shadowLight2.intensity = .4;
+	shadowLight2.intensity = .2;
 	shadowLight2.position.set(-150, 75, -150);
+
+	var shadowLight3 = shadowLight.clone();
+	shadowLight3.castShadow = false;
+	shadowLight3.intensity = .1;
+	shadowLight3.position.set(0, 125, 0);
 	
 	scene.add(hemisphereLight);  
 	scene.add(shadowLight);
 	scene.add(shadowLight2);
+	scene.add(shadowLight3);
 
 	const platformWidth = 60,
 	platformDepth = 25, 
