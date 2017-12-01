@@ -59,16 +59,9 @@ function init() {
     camera.add(Listener);
 
     var audioLoader = new THREE.AudioLoader();
-    var sound = new THREE.PositionalAudio(Listener);
-
-    // audioLoader.load('assets/sounds/swum.mp3', function(buffer){
-    // 	console.log(buffer);
-    // 	sound.setBuffer(buffer);
-    // 	sound.setRefDistance(20);
-
-    // });
-
-    Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
+	var sound = new THREE.PositionalAudio(Listener);
+	
+	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 

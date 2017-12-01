@@ -109,7 +109,21 @@ const MATERIALS = {
     	flatShading: false,
     	roughness: .06
     }),
-
+    // 'watermelon': new THREE.MeshStandardMaterial({
+    // 	color: 0xb3f28b,
+    // 	emissive: 0x68841f,
+    // 	metalness: .5,
+    // 	flatShading: false,
+    // 	roughness: .06
+    // }),
+    //
+    // 'pumpkin': new THREE.MeshStandardMaterial({
+    // 	color: 0xb3f28b,
+    // 	emissive: 0x68841f,
+    // 	metalness: .5,
+    // 	flatShading: false,
+    // 	roughness: .06
+    // }),
     'key': new THREE.MeshLambertMaterial({
         color: 0xffffff,
         transparent: true,
@@ -122,7 +136,6 @@ const MATERIALS = {
         overdraw: 0.5,
         side: THREE.DoubleSide
     }),
-
 
 };
 
@@ -170,6 +183,13 @@ const MODEL_DATA = {
         key: 'd',
         sound: ''
     },
+    // 'pumpkin': {
+    //     force: 0.01,
+    //     geometry: null,
+    //     materials: MATERIALS['pineapple'],
+    //     key: 'd',
+    //     sound: ''
+    // },
     // 'watermelon': {
     //     force: 0.01,
     //     geometry: null,
