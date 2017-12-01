@@ -70,6 +70,22 @@ const MATERIALS = {
         metalness: 0  
     }),
 
+    'starfruit': new THREE.MeshStandardMaterial({
+        color: 0xbe9a47,
+        emissive: 0x676925,
+        roughness: .16,
+        flatShading: false,
+        metalness: 0  
+    }),
+
+    'pineapple': new THREE.MeshStandardMaterial({
+        color: 0xbe9a47,
+        emissive: 0x676925,
+        roughness: .16,
+        flatShading: false,
+        metalness: 0  
+    }),
+
     'blueberry': new THREE.MeshStandardMaterial({
     	color: 0x5c70fb,
     	emissive: 0x1235ae,
@@ -94,6 +110,8 @@ const MATERIALS = {
     	roughness: .06
     }),
 
+
+
     'key': new THREE.MeshLambertMaterial({
         color: 0xffffff,
         transparent: true,
@@ -106,6 +124,8 @@ const MATERIALS = {
         overdraw: 0.5,
         side: THREE.DoubleSide
     }),
+
+
 };
 
 const MODEL_DATA = {
@@ -135,6 +155,20 @@ const MODEL_DATA = {
         force: 0.01,
         geometry: null,
         materials: MATERIALS['grapes'],
+        key: 'd',
+        sound: ''
+    },
+    'starfruit': {
+        force: 0.01,
+        geometry: null,
+        materials: MATERIALS['starfruit'],
+        key: 'd',
+        sound: ''
+    },
+    'pineapple': {
+        force: 0.01,
+        geometry: null,
+        materials: MATERIALS['pineapple'],
         key: 'd',
         sound: ''
     },

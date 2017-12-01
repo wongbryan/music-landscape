@@ -4,6 +4,7 @@ function BufferLoader(context, urlList, callback) {
   this.onload = callback;
   this.bufferList = new Array();
   this.loadCount = 0;
+  this.calledback = false;
 }
 
 BufferLoader.prototype.loadBuffer = function(url, index) {

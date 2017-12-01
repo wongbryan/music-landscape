@@ -13,7 +13,7 @@ var domEvents;
 var activeCamera;
 var force, offset;
 var boxes = [], fruits = [], clouds = [], pivots = [];
-var Autoplay, Listener;
+var Autoplay, Listener, Recorder;
 
 const WORLD_RADIUS = 150;
 
@@ -46,7 +46,7 @@ function update() {
 		clouds[i].update();
 	}
 
-	// controls.update();
+	controls.update();
 
 	TWEEN.update();
 }
@@ -203,7 +203,8 @@ function init() {
 	    	fruit: null,
 	    	text: null,
 	    	border: null,
-	    	audio: null
+	    	audio: null,
+	    	web_audio_buffer: null
 	    };
 
 	    let r, c, offsetX, maxRows = 3, maxCols;
@@ -293,6 +294,13 @@ function init() {
             if (objs.audio){
             	objs.audio.stop();
             	objs.audio.play();
+            }
+
+            if(objs.web_audio_buffer){
+            	var source = Recorder.context.createBufferSource();
+            	source.buffer = objs.web_audio_buffer;
+            	source.connect(Recorder.destination);
+            	source.start(0);
             }
         }
     });
