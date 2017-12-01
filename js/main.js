@@ -9,7 +9,7 @@ var camera, scene, renderer, controls;
 var clock = new THREE.Clock();
 var force, offset;
 var boxes = [], fruits = [], clouds = [], pivots = [];
-var Autoplay, Listener;
+var Autoplay, Listener, Recorder;
 
 const WORLD_RADIUS = 150;
 
@@ -19,18 +19,18 @@ function resize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function update() {	
-	for(var i=0; i<pivots.length; i++){
-		pivots[i].rotation.y += .001 * pivots[i].speed;
-	}
+function update() {
+    for (var i = 0; i < pivots.length; i++) {
+        pivots[i].rotation.y += .001 * pivots[i].speed;
+    }
 
-	for(var i=0; i<clouds.length; i++){
-		clouds[i].update();
-	}
+    for (var i = 0; i < clouds.length; i++) {
+        clouds[i].update();
+    }
 
-	controls.update();
+    controls.update();
 
-	TWEEN.update();
+    TWEEN.update();
 }
 
 function loop() {
@@ -59,176 +59,177 @@ function init() {
     camera.add(Listener);
 
     var audioLoader = new THREE.AudioLoader();
-	var sound = new THREE.PositionalAudio(Listener);
+    var sound = new THREE.PositionalAudio(Listener);
 
-	// audioLoader.load('assets/sounds/swum.mp3', function(buffer){
-	// 	console.log(buffer);
-	// 	sound.setBuffer(buffer);
-	// 	sound.setRefDistance(20);
-		
-	// });
+    // audioLoader.load('assets/sounds/swum.mp3', function(buffer){
+    // 	console.log(buffer);
+    // 	sound.setBuffer(buffer);
+    // 	sound.setRefDistance(20);
 
-	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
+    // });
+
+    Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     scene = new Physijs.Scene;
-	scene.setGravity(new THREE.Vector3( 0, -60, 0 ));
-	scene.addEventListener(
-		'update',
-		function() {
-			scene.simulate( undefined, 1 );
-		}
-	);
+    scene.setGravity(new THREE.Vector3(0, -60, 0));
+    scene.addEventListener(
+        'update',
+        function () {
+            scene.simulate(undefined, 1);
+        }
+    );
 
     // scene.add(camera);
 
-    var numClouds = 7+Math.floor(Math.random()*7);
+    var numClouds = 7 + Math.floor(Math.random() * 7);
     var numPivots = 3;
 
-    for(var i=0; i<numPivots; i++){
-    	pivots[i] = new THREE.Object3D();
-    	pivots[i].speed = 1 + Math.random()*2;
+    for (var i = 0; i < numPivots; i++) {
+        pivots[i] = new THREE.Object3D();
+        pivots[i].speed = 1 + Math.random() * 2;
     }
 
-    for(var i=0; i<numClouds; i++){
-    	var index = Math.floor(Math.random()*numPivots);
-   
-    	var angle = Math.random()*Math.PI*2;
-    	var x = WORLD_RADIUS*Math.cos(angle),
-    	y = Math.random()*50+10,
-    	z = WORLD_RADIUS*Math.sin(angle)
-    	var cloud = CreateCloud(pivots[index], x, y, z);
+    for (var i = 0; i < numClouds; i++) {
+        var index = Math.floor(Math.random() * numPivots);
 
-    	clouds.push(cloud);
-    	scene.add(cloud.mesh);
+        var angle = Math.random() * Math.PI * 2;
+        var x = WORLD_RADIUS * Math.cos(angle),
+            y = Math.random() * 50 + 10,
+            z = WORLD_RADIUS * Math.sin(angle)
+        var cloud = CreateCloud(pivots[index], x, y, z);
+
+        clouds.push(cloud);
+        scene.add(cloud.mesh);
     }
 
     var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
 
-    var hemisphereLight = new THREE.HemisphereLight(0xfceafc,0x000000, .8)
-	
-	var shadowLight = new THREE.DirectionalLight(0xffffff, .5);
-	
-	shadowLight.position.set(150, 75, 150);
-	
-	shadowLight.castShadow = true;
+    var hemisphereLight = new THREE.HemisphereLight(0xfceafc, 0x000000, .8)
 
-	shadowLight.shadow.camera.left = -100;
-	shadowLight.shadow.camera.right = 100;
-	shadowLight.shadow.camera.top = 100;
-	shadowLight.shadow.camera.bottom = -100;
-	shadowLight.shadow.camera.near = 1;
-	shadowLight.shadow.camera.far = 1000;
+    var shadowLight = new THREE.DirectionalLight(0xffffff, .5);
 
-	shadowLight.shadow.mapSize.width = 2048;
-	shadowLight.shadow.mapSize.height = 2048;
+    shadowLight.position.set(150, 75, 150);
 
-	var shadowLight2 = shadowLight.clone();
-	shadowLight2.castShadow = false;
-	shadowLight2.intensity = .2;
-	shadowLight2.position.set(-150, 75, -150);
+    shadowLight.castShadow = true;
 
-	var shadowLight3 = shadowLight.clone();
-	shadowLight3.castShadow = false;
-	shadowLight3.intensity = .1;
-	shadowLight3.position.set(0, 125, 0);
-	
-	scene.add(hemisphereLight);  
-	scene.add(shadowLight);
-	scene.add(shadowLight2);
-	scene.add(shadowLight3);
+    shadowLight.shadow.camera.left = -100;
+    shadowLight.shadow.camera.right = 100;
+    shadowLight.shadow.camera.top = 100;
+    shadowLight.shadow.camera.bottom = -100;
+    shadowLight.shadow.camera.near = 1;
+    shadowLight.shadow.camera.far = 1000;
 
-	const platformWidth = 60,
-	platformDepth = 25, 
-	platformHeight = 150;
+    shadowLight.shadow.mapSize.width = 2048;
+    shadowLight.shadow.mapSize.height = 2048;
 
-	const height = 50,
-	radius = 30;
+    var shadowLight2 = shadowLight.clone();
+    shadowLight2.castShadow = false;
+    shadowLight2.intensity = .2;
+    shadowLight2.position.set(-150, 75, -150);
 
- 	var groundMat = new THREE.MeshPhongMaterial({
-		color: 0xffd3ff,
-		transparent:true,
-		opacity:1,
-		shading:THREE.FlatShading,
-	});
+    var shadowLight3 = shadowLight.clone();
+    shadowLight3.castShadow = false;
+    shadowLight3.intensity = .1;
+    shadowLight3.position.set(0, 125, 0);
 
-	ground_material = Physijs.createMaterial(
-		groundMat,
-		1., // high friction
-		1. // low restitution
-	);
-	
-	ground = new Physijs.BoxMesh(
-		new THREE.BoxGeometry(platformWidth, platformHeight, platformDepth),
-		// new THREE.ConeGeometry(radius, height, 32, 1),
-		ground_material,
-		0 // mass
-	);
+    scene.add(hemisphereLight);
+    scene.add(shadowLight);
+    scene.add(shadowLight2);
+    scene.add(shadowLight3);
 
-	ground.position.y = -(platformHeight/2);
-	// ground.position.y = -height/2;
-	// ground.rotation.x = Math.PI;
-	// ground.rotation.y = Math.PI/4;
-	ground.receiveShadow = true;
-	scene.add(ground);
+    const platformWidth = 60,
+        platformDepth = 25,
+        platformHeight = 150;
+
+    const height = 50,
+        radius = 30;
+
+    var groundMat = new THREE.MeshPhongMaterial({
+        color: 0xffd3ff,
+        transparent: true,
+        opacity: 1,
+        shading: THREE.FlatShading,
+    });
+
+    ground_material = Physijs.createMaterial(
+        groundMat,
+        1., // high friction
+        1. // low restitution
+    );
+
+    ground = new Physijs.BoxMesh(
+        new THREE.BoxGeometry(platformWidth, platformHeight, platformDepth),
+        // new THREE.ConeGeometry(radius, height, 32, 1),
+        ground_material,
+        0 // mass
+    );
+
+    ground.position.y = -(platformHeight / 2);
+    // ground.position.y = -height/2;
+    // ground.rotation.x = Math.PI;
+    // ground.rotation.y = Math.PI/4;
+    ground.receiveShadow = true;
+    scene.add(ground);
 
     const ROWS = 3;
-	const ROW_OFFSET = 2;
-	const COLS = 4;
-	const SP = 4;
+    const ROW_OFFSET = 2;
+    const COLS = 4;
+    const SP = 4;
 
     for (let i = 0; i < ACTIVE_KEYS.length; i++) {
-	    let k = ACTIVE_KEYS[i];
+        let k = ACTIVE_KEYS[i];
 
-	    KEY_MAPPINGS[k] = {
-	    	fruit: null,
-	    	text: null,
-	    	border: null,
-	    	audio: null
-	    };
+        KEY_MAPPINGS[k] = {
+            fruit: null,
+            text: null,
+            border: null,
+            audio: null,
+            web_audio_buffer: null
+        };
 
-	    let r, c, offsetX, maxRows = 3, maxCols;
+        let r, c, offsetX, maxRows = 3, maxCols;
 
-	    if (i<=9){
-	    	r = 0;
-	    	c = i;
-	    	maxCols = 10;
-	    	offsetX = 0;
-	    }
-	    else if (i<=18){
-	    	r = 1;
-	    	c = i%10;
-	    	maxCols = 9;
-	    	offsetX = -SP;
-	    }
-	    else{
-	    	r = 2;
-	    	c = (i+1)%10;
-	    	maxCols = 7;
-	    	// offsetX = 
-	    	offsetX = -1.5*SP;
-	    }
+        if (i <= 9) {
+            r = 0;
+            c = i;
+            maxCols = 10;
+            offsetX = 0;
+        }
+        else if (i <= 18) {
+            r = 1;
+            c = i % 10;
+            maxCols = 9;
+            offsetX = -SP;
+        }
+        else {
+            r = 2;
+            c = (i + 1) % 10;
+            maxCols = 7;
+            // offsetX =
+            offsetX = -1.5 * SP;
+        }
 
-	    let x = SP * (c - Math.floor(maxCols/2));
-	    let z = SP * (r - Math.floor(maxRows/2));
-	    x += (r * ROW_OFFSET);
-	    x += offsetX;
+        let x = SP * (c - Math.floor(maxCols / 2));
+        let z = SP * (r - Math.floor(maxRows / 2));
+        x += (r * ROW_OFFSET);
+        x += offsetX;
 
         let numFruits = Object.keys(MODEL_DATA).length,
-        fruitIndex = Math.floor(numFruits*Math.random()),
-        fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
+            fruitIndex = Math.floor(numFruits * Math.random()),
+            fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
 
-	    let fruit = CreateFruit(
-	    	fruitData.geometry,
-	    	fruitData.materials.clone(),
-	    	fruitData.scale,
-	    	fruitData.force,
-	    	null
-	    );
+        let fruit = CreateFruit(
+            fruitData.geometry,
+            fruitData.materials.clone(),
+            fruitData.scale,
+            fruitData.force,
+            null
+        );
 
-	    KEY_MAPPINGS[k].fruit = fruit;
-	    fruits.push(fruit);
+        KEY_MAPPINGS[k].fruit = fruit;
+        fruits.push(fruit);
         fruit.mesh.position.set(x, 0, z);
         scene.add(fruit.mesh);
 
@@ -252,7 +253,7 @@ function init() {
     }
 
     document.addEventListener('keydown', (e) => {
-        if ( !e.metaKey ) {
+        if (!e.metaKey) {
             e.preventDefault();
         }
 
@@ -273,41 +274,58 @@ function init() {
                     objs.border.play();
                 }
 
-                if (objs.audio){
+                if (objs.audio) {
                     objs.audio.stop();
                     objs.audio.play();
                 }
-			} else {
+
+                if (objs.web_audio_buffer) {
+                    var source = Recorder.context.createBufferSource();
+                    source.buffer = objs.web_audio_buffer;
+                    source.connect(Recorder.destination);
+                    source.start(0);
+                }
+
+            } else {
                 if (!isNaN(key)) {
                     let i = parseInt(key, 10);
                     if (i > 0 && camera.controller.positions.length - 1 >= i - 1) {
                         camera.controller.shiftPos(i - 1);
                     }
                 } else {
-                    switch(key) {
-						case 'left arrow':
+                    switch (key) {
+                        case 'left arrow':
                             camera.controller.prev();
                             break;
-						case 'right arrow':
-							camera.controller.next();
-							break;
-						default:
-							break;
+                        case 'right arrow':
+                            camera.controller.next();
+                            break;
+                        case 'spacebar':
+                            Recorder.startRecording();
+                            break;
+                        case 'down arrow':
+                            Recorder.playRecording();
+                            break;
+                        case 'up arrow':
+                            Recorder.stopRecording();
+                            break;
+                        default:
+                            break;
                     }
-				}
+                }
 
-			}
+            }
         }
     });
 
-	scene.simulate();
+    scene.simulate();
 
-	camera.pivot = new THREE.Object3D();
-	camera.pivot.add(camera);
-	camera.pivot.speed = 0;
-	scene.add(camera.pivot);
-	pivots.push(camera.pivot);
-	
+    camera.pivot = new THREE.Object3D();
+    camera.pivot.add(camera);
+    camera.pivot.speed = 0;
+    scene.add(camera.pivot);
+    pivots.push(camera.pivot);
+
     window.addEventListener('resize', resize);
     loop();
 }

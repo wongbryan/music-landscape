@@ -11,7 +11,6 @@ var Loader = (function () {
     const audioLoader = new THREE.AudioLoader(manager);
     const $progress = $('#progress');
 
-
     manager.onProgress = function (item, loaded, total) {
         let percent = Math.ceil(loaded / total * 100);
 
