@@ -10,7 +10,7 @@ var CreateCloud = function(pivot, x, y, z){
 	var nBlocs = 3+Math.floor(Math.random()*3);
 	for (var i=0; i<nBlocs; i++ ){
 
-		var geom = (Math.random()>.4) ? new THREE.SphereGeometry(20, 8, 8) : new THREE.BoxGeometry(20,20,20);
+		var geom = (Math.random()>.4) ? new THREE.SphereGeometry(20, 6, 6) : new THREE.BoxGeometry(20,20,20);
 
 		var m = new THREE.Mesh(geom, mat); 
 		
