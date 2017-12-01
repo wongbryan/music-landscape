@@ -20,7 +20,7 @@ var Recorder;
         chunks = [],
         sound_paths = [],
         audioRecordings = [],
-        activeAudio;
+        activeAudio = document.createElement('audio');
 
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
@@ -48,9 +48,10 @@ var Recorder;
 
         mediaRecorder.onstop = function (e) {
             var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
-            activeAudio = document.createElement('audio');
             activeAudio.src = URL.createObjectURL(blob);
             audioRecordings[0] = activeAudio;
+
+            chunks = [];
         };
 
         bufferLoader.calledback = true;
