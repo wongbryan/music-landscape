@@ -11,6 +11,10 @@
 </div>
 <div id="container"></div>
 </body>
+<div id="cameraToggle">
+    <ul class="buttons">
+    </ul>
+</div>
 <script type="vsh" id="vertexShader">
 	void main(){
 		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);

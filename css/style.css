@@ -1,34 +1,64 @@
 body {
-    margin: 0;
-    overflow: hidden;
+  margin: 0;
+  overflow: hidden;
 }
-
 #progress {
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: #f6f6f6;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #f6f6f6;
 }
-
 #progress .percent {
-    color: #919191;
-    text-align: center;
-    top: 50%;
-    position: relative;
-    transform: translateY(-50%);
-    font-size: 20rem;
-    font-family: 'Avenir Next', sans-serif;
-    z-index: 4;
+  color: #919191;
+  text-align: center;
+  top: 50%;
+  position: relative;
+  transform: translateY(-50%);
+  font-size: 20rem;
+  font-family: 'Avenir Next', sans-serif;
+  z-index: 4;
 }
-
 #progress .bar {
-    position: absolute;
-    bottom: 0;
-    height: 0%;
-    background: #ebebeb;
-    z-index: 3;
-    width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 0%;
+  background: #ebebeb;
+  z-index: 3;
+  width: 100%;
+}
+#cameraToggle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+#cameraToggle .buttons {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#cameraToggle .buttons .button {
+  display: inline-block;
+  padding: 2px 4px;
+  margin: 0 5px;
+  border-radius: 50%;
+  border: 1px solid white;
+  text-align: center;
+  line-height: 30px;
+  width: 30px;
+  height: 30px;
+  transition: all 350ms ease-in-out;
+  font-family: sans-serif;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+#cameraToggle .buttons .button:hover,
+#cameraToggle .buttons .button.active {
+  cursor: pointer;
+  background: white;
+  color: black;
 }

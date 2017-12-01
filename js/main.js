@@ -46,7 +46,7 @@ function update() {
 		clouds[i].update();
 	}
 
-	// controls.update();
+	controls.update();
 
 	TWEEN.update();
 }
@@ -278,22 +278,43 @@ function init() {
         if (key) {
             let objs = KEY_MAPPINGS[key];
 
-            if (objs.fruit) {
-                objs.fruit.play();
-            }
+            if (objs) {
+                if (objs.fruit) {
+                    objs.fruit.play();
+                }
 
-            if (objs.text) {
-                objs.text.play();
-            }
+                if (objs.text) {
+                    objs.text.play();
+                }
 
-            if (objs.border) {
-                objs.border.play();
-            }
+                if (objs.border) {
+                    objs.border.play();
+                }
 
-            if (objs.audio){
-            	objs.audio.stop();
-            	objs.audio.play();
-            }
+                if (objs.audio){
+                    objs.audio.stop();
+                    objs.audio.play();
+                }
+			} else {
+                if (!isNaN(key)) {
+                    let i = parseInt(key, 10);
+                    if (i > 0 && camera.controller.positions.length - 1 >= i - 1) {
+                        camera.controller.shiftPos(i - 1);
+                    }
+                } else {
+                    switch(key) {
+						case 'left arrow':
+                            camera.controller.prev();
+                            break;
+						case 'right arrow':
+							camera.controller.next();
+							break;
+						default:
+							break;
+                    }
+				}
+
+			}
         }
     });
 
