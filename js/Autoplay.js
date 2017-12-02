@@ -11,7 +11,7 @@ var CreateAutoplay = function(audio, timestamps, camera){
 
 		var i = setInterval(function(){
 			var cur = sound.currentTime;
-			console.log(cur);
+			// console.log(cur);
 			if (cur >= sound.duration){
 				clearInterval(i);
 				return;

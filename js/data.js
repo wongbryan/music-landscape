@@ -162,27 +162,27 @@ const MODEL_DATA = {
         key: 'a',
         sound: ''
     },
-    'grapes': {
-        force: 0.01,
-        geometry: null,
-        materials: MATERIALS['grapes'],
-        key: 'd',
-        sound: ''
-    },
-    'starfruit': {
-        force: 0.01,
-        geometry: null,
-        materials: MATERIALS['starfruit'],
-        key: 'd',
-        sound: ''
-    },
-    'pineapple': {
-        force: 0.01,
-        geometry: null,
-        materials: MATERIALS['pineapple'],
-        key: 'd',
-        sound: ''
-    },
+    // 'grapes': {
+    //     force: 0.01,
+    //     geometry: null,
+    //     materials: MATERIALS['grapes'],
+    //     key: 'd',
+    //     sound: ''
+    // },
+    // 'starfruit': {
+    //     force: 0.01,
+    //     geometry: null,
+    //     materials: MATERIALS['starfruit'],
+    //     key: 'd',
+    //     sound: ''
+    // },
+    // 'pineapple': {
+    //     force: 0.01,
+    //     geometry: null,
+    //     materials: MATERIALS['pineapple'],
+    //     key: 'd',
+    //     sound: ''
+    // },
     // 'pumpkin': {
     //     force: 0.01,
     //     geometry: null,
