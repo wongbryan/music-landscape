@@ -277,8 +277,6 @@ function init() {
                     source.buffer = objs.web_audio_buffer;
                     source.connect(Recorder.destination);
                     source.start(0);
-
-                    console.log(source);
                 }
 
             } else {
@@ -296,13 +294,15 @@ function init() {
                             camera.controller.next();
                             break;
                         case 'spacebar':
-                            Recorder.startRecording();
+                        	if(Recorder.isRecording()){
+                        		Recorder.stopRecording();
+                        	}
+                        	else{
+                        		Recorder.startRecording();
+                        	}
                             break;
                         case 'down arrow':
                             Recorder.playRecording();
-                            break;
-                        case 'up arrow':
-                            Recorder.stopRecording();
                             break;
                         default:
                             break;

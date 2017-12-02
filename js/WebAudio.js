@@ -7,14 +7,14 @@ var Recorder;
         context = new AudioContext();
     }
     catch (e) {
-        console.err('Browser does not support Web Audio API. Recordings will not be possible.');
+        console.err('Browser does not support the Web Audio API. Recordings will not be possible.');
         return;
     }
 
     var context,
         bufferLoader,
         destination,
-        // isRecording = false,
+        isRecording = false,
         mediaRecorder,
         sources = [],
         chunks = [],
@@ -34,7 +34,6 @@ var Recorder;
     );
 
     function loadComplete(bufferList) {
-        var isRecording = false;
 
         if (bufferLoader.calledback)
             return;
@@ -55,8 +54,6 @@ var Recorder;
               }
 
               var audio = document.createElement('audio');
-              console.log(blob);
-              console.log(audio);
               audio.src = URL.createObjectURL(blob);
               audioRecordings.push(audio);
 
