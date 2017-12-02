@@ -504,7 +504,637 @@ const AUDIO_DATA = {
 				trig: false,
 				lightkeys: 15,
 			},
-
+			'45.2': {
+				mag: 0.1,
+				trig: false,
+				lightkeys: 5,
+			},
+			'45.6': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 9,
+			},
+			'45.8': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'46': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 7,
+			},
+			'46.5': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 10,
+			},
+			'47.2': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'47.5': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'47.8': {
+				mag: .7,
+				trig: false,
+				lightkeys: 11,
+			},
+			'48': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'48.3': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 10,
+			},
+			'48.7': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 8,
+			},
+			'48.8': {
+				mag: 0.9,
+				trig: false,
+				lightkeys: 15,
+			},
+			'49.5': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'50.0': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'50.3': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 7,
+			},
+			'50.6': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 7,
+			},
+			'51.0': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'51.3': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'51.6': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 8,
+			},
+			'52.0': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'52.3': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 11,
+			},
+			'52.6': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 6,
+			},
+			'53.0': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 6,
+			},
+			'53.3': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'53.6': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'53.9': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'54.3': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 10,
+			},
+			'54.6': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'54.9': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 9,
+			},
+			'55.3': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 11,
+			},
+			'55.6': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 10,
+			},
+			'55.9': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'56.3': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 10,
+			},
+			'56.6': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 7,
+			},
+			'56.9': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 11,
+			},
+			'57.2': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 11,
+			},
+			'57.6': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 6,
+			},
+			'57.9': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 5,
+			},
+			'58.2': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'58.6': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'58.9': {
+				mag: 0.9,
+				trig: false,
+				lightkeys: 14,
+			},
+			'59.2': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'59.6': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'59.9': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'60.2': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'60.5': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'60.9': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'61.2': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 10,
+			},
+			'61.5': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 7,
+			},
+			'61.9': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 7,
+			},
+			'62.2': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 10,
+			},
+			'62.5': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'62.9': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 13,
+			},
+			'63.2': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'63.5': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 13,
+			},
+			'63.8': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 13,
+			},
+			'64.2': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 12,
+			},
+			'64.5': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 12,
+			},
+			'64.8': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 8,
+			},
+			'65.2': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 7,
+			},
+			'65.5': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 6,
+			},
+			'65.8': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 5,
+			},
+			'66.2': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 6,
+			},
+			'66.5': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 6,
+			},
+			'66.8': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 6,
+			},
+			'67.1': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'67.5': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'67.8': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'68.1': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'68.5': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'68.8': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'69.1': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'69.4': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'69.8': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 13,
+			},
+			'70.1': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 13,
+			},
+			'70.4': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 13,
+			},
+			'70.8': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 15,
+			},
+			'71.1': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 13,
+			},
+			'71.4': {
+				mag: 0.9,
+				trig: false,
+				lightkeys: 15,
+			},
+			'71.8': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'72.1': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'72.4': {
+				mag: 1,
+				trig: false,
+				lightkeys: 13,
+			},
+			'72.7': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'73.1': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'73.4': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'73.7': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 7,
+			},
+			'74.1': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'74.4': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 6,
+			},
+			'74.7': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 9,
+			},
+			'75.1': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 10,
+			},
+			'75.4': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 10,
+			},
+			'75.7': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 6,
+			},
+			'76.0': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'76.4': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'76.7': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'77.0': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'77.4': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 11,
+			},
+			'77.7': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'78.0': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 11,
+			},
+			'78.4': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 8,
+			},
+			'78.7': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 7,
+			},
+			'79.0': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 7,
+			},
+			'79.3': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 7,
+			},
+			'79.7': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 8,
+			},
+			'80.0': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 9,
+			},
+			'80.3': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 8,
+			},
+			'80.7': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 10,
+			},
+			'81.0': {
+				mag: 0.9,
+				trig: false,
+				lightkeys: 12,
+			},
+			'81.3': {
+				mag: 1,
+				trig: false,
+				lightkeys: 15,
+			},
+			'81.7': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 6,
+			},
+			'82.0': {
+				mag: 0.3,
+				trig: false,
+				lightkeys: 6,
+			},
+			'82.3': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 10,
+			},
+			'82.6': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 8,
+			},
+			'83.0': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'83.3': {
+				mag: 0.6,
+				trig: false,
+				lightkeys: 9,
+			},
+			'83.6': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'84.0': {
+				mag: 0.5,
+				trig: false,
+				lightkeys: 8,
+			},
+			'84.3': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'84.6': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 10,
+			},
+			'85.0': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'85.3': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 10,
+			},
+			'85.6': {
+				mag: 0.8,
+				trig: false,
+				lightkeys: 12,
+			},
+			'85.9': {
+				mag: 0.4,
+				trig: false,
+				lightkeys: 7,
+			},
+			'86.3': {
+				mag: 0.7,
+				trig: false,
+				lightkeys: 12,
+			},
+			'86.6': {
+				mag: 0.2,
+				trig: false,
+				lightkeys: 5,
+			},
+			'86.9': {
+				mag: 0.1,
+				trig: false,
+				lightkeys: 3,
+			},
+			
 			// '': {
 			// 	mag: 1.3,
 			// 	trig: false,
