@@ -50,7 +50,7 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-94, 197, 172);
+    camera.position.set(-50, 20, 50);
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));

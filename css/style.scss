@@ -1,0 +1,226 @@
+@mixin on-circle($item-count, $circle-size, $item-size) {
+  position: relative;
+  width:  $circle-size;
+  height: $circle-size;
+  padding: 0;
+  border-radius: 50%; 
+  list-style: none;       
+  $extraRot: 90;
+
+  > * {
+    display: block;
+    position: absolute;
+    top:  50%; 
+    left: 50%;
+    width:  $item-size;
+    height: $item-size;
+    margin: -($item-size / 2);
+  
+    $angle: (360 / $item-count);
+    $rot: 0;
+
+    @for $i from 1 through $item-count {
+      &:nth-of-type(#{$i}) {
+        transform: 
+          rotate($rot * 1deg) 
+          translate($circle-size / 2) 
+          rotate(($extraRot+$rot)*1deg);
+      }
+
+      $rot: $rot + $angle;
+    }
+  }
+}
+
+// #bars {
+//     height: 30px;
+//     left: 50%;
+//     margin: -30px 0 0 -20px;
+//     position: absolute;
+//     top: 50%;
+//     width: 40px;
+// }
+
+#play{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#bars{
+  @include on-circle($item-count: 10, $circle-size: 20em, $item-size: 2em);
+}
+
+.bar {
+  background: #666;
+  bottom: 1px;
+  height: 3px;
+  position: absolute;
+  width: 3px;      
+  animation: sound 0ms -800ms linear infinite alternate;
+}
+
+@keyframes sound {
+    0% {
+       opacity: .35;
+        height: 3px; 
+    }
+    100% {
+        opacity: 1;       
+        height: 28px;        
+    }
+}
+
+.bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
+.bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
+.bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
+.bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
+.bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
+.bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
+.bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
+.bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
+.bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
+.bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#progress {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #f6f6f6;
+  .percent {
+    color: #919191;
+    text-align: center;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
+    font-size: 20rem;
+    font-family: 'Avenir Next', sans-serif;
+    z-index: 4;
+  }
+  .bar {
+    position: absolute;
+    bottom: 0;
+    height: 0%;
+    background: #ebebeb;
+    z-index: 3;
+    width: 100%;
+  }
+}
+
+#cameraToggle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+
+  .buttons {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    .button {
+      display: inline-block;
+      padding: 2px 4px;
+      margin: 0 5px;
+      border-radius: 50%;
+      border: 1px solid white;
+      text-align: center;
+      line-height: 30px;
+      width: 30px;
+      height: 30px;
+      transition: all 350ms ease-in-out;
+      font-family: sans-serif;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+
+      &:hover, &.active {
+        cursor: pointer;
+        background: white;
+        color: black;
+
+      }
+
+    }
+  }
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#progress {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #f6f6f6;
+  .percent {
+    color: #919191;
+    text-align: center;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
+    font-size: 20rem;
+    font-family: 'Avenir Next', sans-serif;
+    z-index: 4;
+  }
+  .bar {
+    position: absolute;
+    bottom: 0;
+    height: 0%;
+    background: #ebebeb;
+    z-index: 3;
+    width: 100%;
+  }
+}
+
+#cameraToggle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+
+  .buttons {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    .button {
+      display: inline-block;
+      padding: 2px 4px;
+      margin: 0 5px;
+      border-radius: 50%;
+      border: 1px solid white;
+      text-align: center;
+      line-height: 30px;
+      width: 30px;
+      height: 30px;
+      transition: all 350ms ease-in-out;
+      font-family: sans-serif;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+
+      &:hover, &.active {
+        cursor: pointer;
+        background: white;
+        color: black;
+
+      }
+
+    }
+  }
+}
