@@ -62,6 +62,7 @@ function init() {
 	var sound = new THREE.PositionalAudio(Listener);
 	
 	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
+	dance.onmousedown = Autoplay.play;
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -251,6 +252,9 @@ function init() {
             e.preventDefault();
         }
 
+        if (Autoplay.isPlaying())
+        	return;
+        
         let key = codeToKey(e.keyCode);
         if (key) {
             let objs = KEY_MAPPINGS[key];
@@ -295,15 +299,15 @@ function init() {
                             camera.controller.next();
                             break;
                         case 'spacebar':
-                        	if(Recorder.isRecording()){
-                        		Recorder.stopRecording();
-                        	}
-                        	else{
-                        		Recorder.startRecording();
-                        	}
+                        	// if(Recorder.isRecording()){
+                        	// 	Recorder.stopRecording();
+                        	// }
+                        	// else{
+                        	// 	Recorder.startRecording();
+                        	// }
                             break;
                         case 'down arrow':
-                            Recorder.playRecording();
+                            // Recorder.playRecording();
                             break;
                         default:
                             break;

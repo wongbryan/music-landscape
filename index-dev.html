@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Calibre-web/stylesheet.css"/>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Fugue-web/stylesheet.css"/>
 <head>
     <title>Landscape</title>
     <link rel="stylesheet" href="css/style.css">
@@ -10,11 +12,17 @@
     <div class="percent">0%</div>
     <div class="bar"></div>
 </div>
+<div id="dance">
+    <a>dance!</a>
+</div>
 <div id="container"></div>
 <div id="cameraToggle">
     <ul class="buttons">
     </ul>
+    <span>Toggle camera</span>
 </div>
+
+<canvas class="background"></canvas>
 
 <!-- <div id="play">
     <div id="bars">
@@ -38,6 +46,7 @@
 		gl_FragColor = color;
 	}
 </script>
+<script src="js/ui.js"></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="lib/tween.js/src/Tween.js"></script>
 <script src="bower_components/three.js/three.js"></script>

@@ -128,80 +128,55 @@ body {
     padding: 0; }
     #cameraToggle .buttons .button {
       display: inline-block;
-      padding: 2px 4px;
-      margin: 0 5px;
-      border-radius: 50%;
+      padding: 2px 2px;
+      margin: 0;
+      margin-right: 10px;
+      border-radius: 100%;
       border: 1px solid white;
       text-align: center;
       line-height: 30px;
       width: 30px;
       height: 30px;
-      transition: all 350ms ease-in-out;
-      font-family: sans-serif;
+      transition: all 250ms ease-in-out;
+      font-family: "Fugue";
       color: white;
-      font-weight: bold;
+      font-weight: normal;
       font-size: 16px; }
       #cameraToggle .buttons .button:hover, #cameraToggle .buttons .button.active {
         cursor: pointer;
         background: white;
         color: black; }
+  #cameraToggle ul, #cameraToggle span {
+    display: block; }
+  #cameraToggle span {
+    margin-top: 10px;
+    font-family: "Fugue";
+    font-weight: normal;
+    color: #f7faff;
+    font-size: 17px; }
 
-body {
-  margin: 0;
-  overflow: hidden; }
-
-#progress {
+#dance {
   position: fixed;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: #f6f6f6; }
-  #progress .percent {
-    color: #919191;
-    text-align: center;
-    top: 50%;
-    position: relative;
-    transform: translateY(-50%);
-    font-size: 20rem;
-    font-family: 'Avenir Next', sans-serif;
-    z-index: 4; }
-  #progress .bar {
-    position: absolute;
-    bottom: 0;
-    height: 0%;
-    background: #ebebeb;
-    z-index: 3;
-    width: 100%; }
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  background-color: #f7faff;
+  text-align: center;
+  transition: background-color .1s ease, opacity .3s ease; }
+  #dance a {
+    font-family: "Fugue";
+    color: #333333;
+    font-size: 28px;
+    line-height: 98px;
+    pointer-events: none; }
 
-#cameraToggle {
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 20px; }
-  #cameraToggle .buttons {
-    list-style-type: none;
-    margin: 0;
-    padding: 0; }
-    #cameraToggle .buttons .button {
-      display: inline-block;
-      padding: 2px 4px;
-      margin: 0 5px;
-      border-radius: 50%;
-      border: 1px solid white;
-      text-align: center;
-      line-height: 30px;
-      width: 30px;
-      height: 30px;
-      transition: all 350ms ease-in-out;
-      font-family: sans-serif;
-      color: white;
-      font-weight: bold;
-      font-size: 16px; }
-      #cameraToggle .buttons .button:hover, #cameraToggle .buttons .button.active {
-        cursor: pointer;
-        background: white;
-        color: black; }
+#dance:hover {
+  background-color: #2b2d2d;
+  cursor: pointer; }
+  #dance:hover a {
+    text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000; }
 
 /*# sourceMappingURL=style.css.map */

@@ -3,10 +3,21 @@ var CreateAutoplay = function(audio, timestamps, camera){
 	sound.src = 'assets/sounds/fresh.mp3';
 	// sound.currentTime = 0;
 
-	function play(){
-		sound.play();
+	var isplaying = false;
 
-		camera.controller.shiftPos(0);
+	function isPlaying(){
+		return isplaying;
+	}
+
+	function play(){
+		isplaying = true;
+		sound.play();
+		dance.style.opacity = 0;
+		setTimeout(()=>{
+			dance.style.display = 'none';
+		}, 300);
+
+		camera.controller.shiftPos(2);
 		camera.pivot.speed = 1;
 
 		var i = setInterval(function(){
@@ -14,6 +25,15 @@ var CreateAutoplay = function(audio, timestamps, camera){
 			// console.log(cur);
 			if (cur >= sound.duration){
 				clearInterval(i);
+				dance.style.opacity = 1;
+				setTimeout(()=>{
+					dance.style.display = 'block';
+				}, 300);
+
+				for (var key in timestamps){
+					timestamps[key].trig = false;
+				}
+				isplaying = false;
 				return;
 			}
 			checkTimestamps(cur);
@@ -26,7 +46,11 @@ var CreateAutoplay = function(audio, timestamps, camera){
 				if (timestamps[key].trig){
 					continue;
 				}
-				console.log(key);
+
+				if (timestamps[key].cameraToggle != undefined){
+					camera.controller.shiftPos(timestamps[key].cameraToggle);
+				}
+				
 				var mag = timestamps[key].mag;
 				bounceAll(fruits, mag);
 
@@ -55,6 +79,7 @@ var CreateAutoplay = function(audio, timestamps, camera){
 	}
 
 	return {
+		isPlaying: isPlaying,
 		play: play,
 		sound: sound,
 		timestamps: timestamps

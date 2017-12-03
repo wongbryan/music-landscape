@@ -265,7 +265,7 @@ const MODEL_DATA = {
     },
     'lemon': {
         force: 4,
-        scale: .17,
+        scale: .14,
         geometry: null,
         materials: null,
         key: 'd',
@@ -390,6 +390,7 @@ const AUDIO_DATA = {
 				mag: 1.3,
 				trig: false,
 				lightkeys: 12,
+				cameraToggle: 1
 			},
 			'10.6': {
 				mag: 1,
