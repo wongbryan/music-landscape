@@ -10,6 +10,7 @@ var clock = new THREE.Clock();
 var force, offset;
 var boxes = [], fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener, Recorder;
+var isRecording = false;
 
 const WORLD_RADIUS = 150;
 
@@ -97,8 +98,6 @@ function init() {
         scene.add(cloud.mesh);
     }
 
-    var sphere = new THREE.Mesh(new THREE.SphereGeometry(.5), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}));
-
     var hemisphereLight = new THREE.HemisphereLight(0xfceafc, 0x000000, .8)
 
     var shadowLight = new THREE.DirectionalLight(0xffffff, .5);
@@ -135,9 +134,6 @@ function init() {
     const platformWidth = 60,
         platformDepth = 25,
         platformHeight = 150;
-
-    const height = 50,
-        radius = 30;
 
     var groundMat = new THREE.MeshPhongMaterial({
         color: 0xffd3ff,
@@ -245,6 +241,38 @@ function init() {
 
     }
 
+    document.querySelector('#menuWrapper .start').addEventListener('click', () => {
+        camera.controller.shiftPos(0);
+        $('#menuWrapper').animate({
+            opacity: 0,
+            top: "-=50",
+        }, 350, () => {
+            $('#menuWrapper').css('display', 'none');
+            initRest();
+        })
+    });
+
+    scene.simulate();
+
+    camera.pivot = new THREE.Object3D();
+    camera.pivot.add(camera);
+    camera.pivot.speed = 0;
+    scene.add(camera.pivot);
+    pivots.push(camera.pivot);
+
+    window.addEventListener('resize', resize);
+    loop();
+}
+
+function initRest() {
+    $('.buttons > .button').each(function(i, b) {
+        const delay = 100 * i;
+        setTimeout(function () {
+            $(b).css('opacity', 1);
+        }, delay);
+    })
+
+
     document.addEventListener('keydown', (e) => {
         if (!e.metaKey) {
             e.preventDefault();
@@ -294,13 +322,18 @@ function init() {
                             camera.controller.next();
                             break;
                         case 'spacebar':
-                            Recorder.startRecording();
+                            if (isRecording) {
+                                Recorder.stopRecording();
+                                isRecording = false;
+                            } else {
+                                Recorder.startRecording();
+                                isRecording = true;
+                            }
                             break;
                         case 'down arrow':
                             Recorder.playRecording();
                             break;
                         case 'up arrow':
-                            Recorder.stopRecording();
                             break;
                         default:
                             break;
@@ -310,15 +343,4 @@ function init() {
             }
         }
     });
-
-    scene.simulate();
-
-    camera.pivot = new THREE.Object3D();
-    camera.pivot.add(camera);
-    camera.pivot.speed = 0;
-    scene.add(camera.pivot);
-    pivots.push(camera.pivot);
-
-    window.addEventListener('resize', resize);
-    loop();
 }

@@ -183,20 +183,20 @@ const MODEL_DATA = {
         key: 'd',
         sound: ''
     },
-    // 'pumpkin': {
-    //     force: 0.01,
-    //     geometry: null,
-    //     materials: MATERIALS['pineapple'],
-    //     key: 'd',
-    //     sound: ''
-    // },
-    // 'watermelon': {
-    //     force: 0.01,
-    //     geometry: null,
-    //     materials: null,
-    //     key: 'd',
-    //     sound: ''
-    // }
+		// 'pumpkin': {
+		//     force: 0.01,
+		//     geometry: null,
+		//     materials: MATERIALS['pineapple'],
+		//     key: 'd',
+		//     sound: ''
+		// },
+		// 'watermelon': {
+		//     force: 0.01,
+		//     geometry: null,
+		//     materials: null,
+		//     key: 'd',
+		//     sound: ''
+		// }
 };
 
 const TEXTURE_DATA = {

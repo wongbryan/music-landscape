@@ -42,6 +42,7 @@ body {
 }
 #cameraToggle .buttons .button {
   display: inline-block;
+  opacity: 0;
   padding: 2px 4px;
   margin: 0 5px;
   border-radius: 50%;
@@ -61,4 +62,49 @@ body {
   cursor: pointer;
   background: white;
   color: black;
+}
+#menuWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+#menuWrapper .menu {
+  margin: 0 auto;
+  font-family: 'Consolas', monospace;
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+#menuWrapper .menu .title {
+  position: absolute;
+  top: 25px;
+}
+#menuWrapper .menu .start {
+  color: white;
+  border: 1px solid white;
+  padding: 7px 10px;
+  font-size: 18px;
+  height: 25px;
+  width: 100px;
+  text-align: center;
+  transition: all 350ms ease-in-out;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+#menuWrapper .menu .start:hover,
+#menuWrapper .menu .start:active {
+  color: black;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid white;
+  background: white;
 }
