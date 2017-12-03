@@ -11,11 +11,22 @@
     <div class="bar"></div>
 </div>
 <div id="container"></div>
-</body>
 <div id="cameraToggle">
     <ul class="buttons">
     </ul>
 </div>
+
+<!-- <div id="play">
+    <div id="bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</div> -->
+</body>
 <script type="vsh" id="vertexShader">
 	void main(){
 		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);

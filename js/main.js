@@ -223,7 +223,8 @@ function init() {
 
 	    KEY_MAPPINGS[k].fruit = fruit;
 	    fruits.push(fruit);
-        fruit.mesh.position.set(x, 1, z);
+        fruit.mesh.position.set(x, 5, z);
+        fruit.mesh.rotation.set(Math.random(), Math.random(), Math.random());
         scene.add(fruit.mesh);
 
         fruit.defineConstraint();

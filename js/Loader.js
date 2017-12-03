@@ -36,8 +36,8 @@ var Loader = (function () {
             function(geometry, materials){
                 MODEL_DATA[file].geometry = geometry;
 
-                if (materials !== undefined)
-                    MODEL_DATA[file].materials = materials;
+                // if (materials !== undefined)
+                //     MODEL_DATA[file].materials = materials;
             }
         );
     };

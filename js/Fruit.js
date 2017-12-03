@@ -8,6 +8,9 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 
 	var mesh = new Physijs.BoxMesh(morphGeom, mat);
 	mesh.castShadow = true;
+	// scale += (2*Math.random()-1)*(.5*scale);
+	// scale = (scale < .1) ? .2:scale;
+
 	mesh.scale.set(scale, scale, scale);
 
 	var force = new THREE.Vector3(500, 2200, 500).multiplyScalar(force),
@@ -18,16 +21,16 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 		var f = new THREE.Vector3();
 		f.copy(force);
 
-		var x = Math.random(),
+		var x = 0,
 		y = 5+Math.random() * 2.5,
-		z = 1+Math.random();
+		z = 0;
 
 		offset.set(x, y, z);
 		mesh.applyImpulse(f.multiplyScalar(mag), offset);
 	}
 
 	function defineConstraint(){
-		var linear_lower = new THREE.Vector3(-1, -5, -1),
+		var linear_lower = new THREE.Vector3(-1, -10, -1),
 		linear_upper = new THREE.Vector3(1, 15, 1);
 
 		var constraint = new Physijs.DOFConstraint(

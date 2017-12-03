@@ -38,6 +38,8 @@ var CreateAutoplay = function(audio, timestamps, camera){
 						index = (lightkeys == 26) ? i : Math.floor(Object.keys(KEY_MAPPINGS).length * Math.random());
 						var button = Object.keys(KEY_MAPPINGS)[index];
 						KEY_MAPPINGS[button].border.play();
+
+						KEY_MAPPINGS[button].text.play();
 					}	
 				}
 

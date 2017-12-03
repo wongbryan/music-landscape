@@ -70,6 +70,14 @@ const MATERIALS = {
         metalness: 0  
     }),
 
+    'lemon': new THREE.MeshStandardMaterial({
+        color: 0xbe9a47,
+        emissive: 0x676925,
+        roughness: .16,
+        flatShading: false,
+        metalness: 0  
+    }),
+
     'starfruit': new THREE.MeshStandardMaterial({
         color: 0xbe9a47,
         emissive: 0x676925,
@@ -109,21 +117,47 @@ const MATERIALS = {
     	flatShading: false,
     	roughness: .06
     }),
-    // 'watermelon': new THREE.MeshStandardMaterial({
-    // 	color: 0xb3f28b,
-    // 	emissive: 0x68841f,
-    // 	metalness: .5,
-    // 	flatShading: false,
-    // 	roughness: .06
-    // }),
-    //
-    // 'pumpkin': new THREE.MeshStandardMaterial({
-    // 	color: 0xb3f28b,
-    // 	emissive: 0x68841f,
-    // 	metalness: .5,
-    // 	flatShading: false,
-    // 	roughness: .06
-    // }),
+
+    'pear': new THREE.MeshStandardMaterial({
+    	color: 0xb3f28b,
+    	emissive: 0x68841f,
+    	metalness: .5,
+    	flatShading: false,
+    	roughness: .06
+    }),
+
+    'raspberry': new THREE.MeshStandardMaterial({
+    	color: 0xd9486b,
+    	emissive: 0x790f15,
+    	roughness: .14,
+    	flatShading: false,
+    	metalness: .3
+    }),
+
+    'watermelon': new THREE.MeshStandardMaterial({
+    	color: 0xb3f28b,
+    	emissive: 0x68841f,
+    	metalness: .5,
+    	flatShading: false,
+    	roughness: .06
+    }),
+    
+    'pumpkin': new THREE.MeshStandardMaterial({
+    	color: 0xb3f28b,
+    	emissive: 0x68841f,
+    	metalness: .5,
+    	flatShading: false,
+    	roughness: .06
+    }),
+
+    'orange': new THREE.MeshStandardMaterial({
+    	color: 0xfcfa37,
+    	emissive: 0xbd4215,
+    	metalness: .5,
+    	flatShading: false,
+    	roughness: .06
+    }),
+
     'key': new THREE.MeshLambertMaterial({
         color: 0xffffff,
         transparent: true,
@@ -142,61 +176,102 @@ const MATERIALS = {
 const MODEL_DATA = {
     'banana': {
         geometry: null,
-        force: .6,
+        force: .4,
         materials: MATERIALS['banana'],
         key: 'q',
-        sound: ''
+        sound: '',
+        scale: .4
     },
     'blueberry': {
-        force: 0.08,
+        force: 0.07,
         geometry: null,
         materials: MATERIALS['blueberry'],
         key: 'e',
-        sound: ''
+        sound: '',
+        scale: .6
     },
     'apple': {
-        scale: 0.1,
+        scale: 0.27,
         force: 5,
         geometry: null,
         materials: MATERIALS['apple'],
         key: 'a',
-        sound: ''
+        sound: '',
+        scale: .1
+    },
+    'pear': {
+        force: 0.06,
+        geometry: null,
+        materials: MATERIALS['pear'],
+        key: 'd',
+        sound: '',
+        scale: .65
+    },
+    'raspberry': {
+        force: 0.14,
+        geometry: null,
+        materials: MATERIALS['raspberry'],
+        key: 'd',
+        sound: '',
+        scale: .4
     },
     'grapes': {
-        force: 0.01,
+        force: 0.4,
         geometry: null,
         materials: MATERIALS['grapes'],
         key: 'd',
-        sound: ''
+        sound: '',
+        scale: .3
     },
     'starfruit': {
-        force: 0.01,
+        force: 0.7,
         geometry: null,
         materials: MATERIALS['starfruit'],
         key: 'd',
-        sound: ''
+        sound: '',
+        scale: .3
     },
-    'pineapple': {
-        force: 0.01,
+    'orange': {
+        force: 0.35,
         geometry: null,
-        materials: MATERIALS['pineapple'],
+        materials: MATERIALS['orange'],
         key: 'd',
-        sound: ''
+        sound: '',
+        scale: .3
     },
-    // 'pumpkin': {
-    //     force: 0.01,
+    // 'pineapple': {
+    //     force: 0.2,
     //     geometry: null,
     //     materials: MATERIALS['pineapple'],
     //     key: 'd',
     //     sound: ''
     // },
-    // 'watermelon': {
-    //     force: 0.01,
-    //     geometry: null,
-    //     materials: null,
-    //     key: 'd',
-    //     sound: ''
-    // }
+    'pumpkin': {
+        force: 0.5,
+        geometry: null,
+        materials: MATERIALS['pineapple'],
+        key: 'd',
+        sound: '',
+        scale: .35
+    },
+    'watermelon': {
+        force: 0.02,
+        scale: .95,
+        geometry: null,
+        materials: null,
+        key: 'd',
+        sound: '',
+        materials: MATERIALS['watermelon'],
+    },
+    'lemon': {
+        force: 4,
+        scale: .17,
+        geometry: null,
+        materials: null,
+        key: 'd',
+        sound: '',
+        materials: MATERIALS['lemon'],
+    }
 };
 
 const TEXTURE_DATA = {
