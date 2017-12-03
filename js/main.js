@@ -210,20 +210,20 @@ function init() {
         x += offsetX;
 
         let numFruits = Object.keys(MODEL_DATA).length,
-            fruitIndex = Math.floor(numFruits * Math.random()),
-            fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
+        fruitIndex = Math.floor(numFruits*Math.random()),
+        fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
 
-        let fruit = CreateFruit(
-            fruitData.geometry,
-            fruitData.materials.clone(),
-            fruitData.scale,
-            fruitData.force,
-            null
-        );
+	    let fruit = CreateFruit(
+	    	fruitData.geometry,
+	    	fruitData.materials.clone(),
+	    	fruitData.scale,
+	    	fruitData.force,
+	    	null
+	    );
 
-        KEY_MAPPINGS[k].fruit = fruit;
-        fruits.push(fruit);
-        fruit.mesh.position.set(x, 0, z);
+	    KEY_MAPPINGS[k].fruit = fruit;
+	    fruits.push(fruit);
+        fruit.mesh.position.set(x, 1, z);
         scene.add(fruit.mesh);
 
         fruit.defineConstraint();
