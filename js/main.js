@@ -247,7 +247,7 @@ function init() {
 
 	    KEY_MAPPINGS[k].fruit = fruit;
 	    fruits.push(fruit);
-        fruit.mesh.position.set(x, 0, z);
+        fruit.mesh.position.set(x, 1, z);
         scene.add(fruit.mesh);
 
         fruit.defineConstraint();
