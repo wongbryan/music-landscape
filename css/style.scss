@@ -5,7 +5,6 @@
   padding: 0;
   border-radius: 50%; 
   list-style: none;       
-  $extraRot: 90;
 
   > * {
     display: block;
@@ -13,10 +12,11 @@
     top:  50%; 
     left: 50%;
     width:  $item-size;
-    height: $item-size;
+    height: 1px;
     margin: -($item-size / 2);
   
     $angle: (360 / $item-count);
+    $extraRot: (180 / $item-count * 2);
     $rot: 0;
 
     @for $i from 1 through $item-count {
@@ -24,7 +24,7 @@
         transform: 
           rotate($rot * 1deg) 
           translate($circle-size / 2) 
-          rotate(($extraRot+$rot)*1deg);
+          rotate(180*1deg);
       }
 
       $rot: $rot + $angle;
@@ -49,26 +49,27 @@
 }
 
 #bars{
-  @include on-circle($item-count: 10, $circle-size: 20em, $item-size: 2em);
+  @include on-circle($item-count: 6, $circle-size: 20em, $item-size: 2em);
 }
 
 .bar {
   background: #666;
   bottom: 1px;
-  height: 3px;
+  height: 1px;
   position: absolute;
-  width: 3px;      
+  width: 3px;     
   animation: sound 0ms -800ms linear infinite alternate;
+  transform-origin: bottom;
 }
 
 @keyframes sound {
     0% {
        opacity: .35;
-        height: 3px; 
+       width: 3px; 
     }
     100% {
         opacity: 1;       
-        height: 28px;        
+        width: 28px;        
     }
 }
 
