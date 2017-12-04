@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify-es').default;
 var gutil = require('gulp-util');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
+var order = require("gulp-order");
 // var webserver = require('gulp-webserver');
 
 gulp.task('lib', function () {
@@ -24,24 +25,26 @@ gulp.task('lib', function () {
 });
 
 gulp.task('js', function () {
-    return gulp.src([
-        'js/data.js',
-        'js/Loader.js',
-        'js/Report.js',
-        'js/ui.js',
-        'js/Fruit.js',
-        'js/Text.js',
-        'js/Key.js',
-        'js/CameraController.js',
-        'js/Audio.js',
-        'js/WebAudio.js',
-        'js/BufferLoader.js',
-        'js/Autoplay.js',
-        'js/Cloud.js',
-        'js/main.js',
-    ])
+
+    return gulp.src('js/*.js')
+        .pipe(order([
+            'js/Report.js',
+            'js/Autoplay.js',
+            'js/data.js',
+            'js/Loader.js',
+            'js/ui.js',
+            'js/Fruit.js',
+            'js/Text.js',
+            'js/Key.js',
+            'js/CameraController.js',
+            'js/Audio.js',
+            'js/WebAudio.js',
+            'js/BufferLoader.js',
+            'js/Cloud.js',
+            'js/main.js'
+        ]))
         .pipe(concat('bundle.js'))
-        .pipe(uglify())
+        // .pipe(uglify())
         .on('error', function (err) {
             gutil.log(gutil.colors.red('[Error]'), err.toString());
         })
