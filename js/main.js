@@ -40,14 +40,15 @@ function loop() {
 }
 
 function init() {
-    var container = document.getElementById('container');
-    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf'});
+    // var container = document.getElementById('container');
+    var canvas = document.getElementsByTagName('canvas')[0];
+    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0xbfe7ff);
-    container.appendChild(renderer.domElement);
+    // container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
     camera.position.set(-50, 20, 50);
@@ -254,7 +255,7 @@ function init() {
 
         if (Autoplay.isPlaying())
         	return;
-        
+
         let key = codeToKey(e.keyCode);
         if (key) {
             let objs = KEY_MAPPINGS[key];

@@ -9,9 +9,7 @@ var less = require('gulp-less');
 gulp.task('lib', function () {
     return gulp.src([
         'lib/tween.js/src/Tween.js',
-        'bower_components/jquery/dist/jquery.slim.js',
         'bower_components/three.js/three.js',
-        'bower_components/threex.domevents/threex.domevents.js',
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/three.js/examples/js/modifiers/BufferSubdivisionModifier.js',
         'bower_components/three.js-examples/examples/js/controls/OrbitControls.js',
@@ -28,13 +26,18 @@ gulp.task('lib', function () {
 gulp.task('js', function () {
     return gulp.src([
         'js/data.js',
+        'js/Loader.js',
+        'js/Report.js',
+        'js/ui.js',
         'js/Fruit.js',
         'js/Text.js',
         'js/Key.js',
-        'js/Cube.js',
+        'js/CameraController.js',
+        'js/Audio.js',
+        'js/WebAudio.js',
+        'js/BufferLoader.js',
+        'js/Autoplay.js',
         'js/Cloud.js',
-        'js/StaticCube.js',
-        'js/Loader.js',
         'js/main.js',
     ])
         .pipe(concat('bundle.js'))
