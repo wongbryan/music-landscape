@@ -16,8 +16,9 @@
   ],
   "dependencies": {
     "three.js-examples": "^0.87.0",
-    "threex.domevents": "*",
-    "three.js": "^0.87.0",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "three.min.js": "https://raw.githubusercontent.com/mrdoob/three.js/master/build/three.min.js",
+    "physi.js": "https://raw.githubusercontent.com/chandlerprall/Physijs/master/physi.js",
+    "tween.js": "https://raw.githubusercontent.com/tweenjs/tween.js/master/src/Tween.js"
   }
 }

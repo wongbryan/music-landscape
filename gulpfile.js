@@ -9,12 +9,11 @@ var order = require("gulp-order");
 
 gulp.task('lib', function () {
     return gulp.src([
-        'lib/tween.js/src/Tween.js',
-        'bower_components/three.js/three.js',
+        'bower_components/three.min.js/index.js',
         'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/three.js/examples/js/modifiers/BufferSubdivisionModifier.js',
-        'bower_components/three.js-examples/examples/js/controls/OrbitControls.js',
-        'lib/Physijs/physi.js'
+        'bower_components/tween.js/index.js',
+        'bower_components/physi.js/index.js',
+        'bower_components/three.js-examples/examples/js/controls/OrbitControls.js'
     ])
         .pipe(concat('lib.js'))
         .pipe(uglify())

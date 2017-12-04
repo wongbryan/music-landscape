@@ -1,16 +1,12 @@
 'use strict';
 
-Physijs.scripts.worker = '../lib/Physijs/physijs_worker.js';
-Physijs.scripts.ammo = 'examples/js/ammo.js';
+Physijs.scripts.worker = '/lib/physijs_worker.js';
+Physijs.scripts.ammo = '/lib/ammo.js';
 
-var initScene, render, box, loader, renderer, scene, ground_material, ground, light, camera;
-
+var box, scene, ground_material, ground, light;
 var camera, scene, renderer, controls;
-var clock = new THREE.Clock();
-var force, offset;
-var boxes = [], fruits = [], clouds = [], pivots = [];
+var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener, Recorder;
-var isRecording = false;
 
 const WORLD_RADIUS = 150;
 

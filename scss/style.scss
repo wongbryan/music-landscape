@@ -110,6 +110,34 @@ body {
   }
 }
 
+#keyboard {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 20px;
+
+  .icon {
+    width: 100px;
+    height: 50px;
+    background: white;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+#keyboard-overlay {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.8);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  //display: none;
+  //opacity: 0;
+}
+
 #cameraToggle {
   position: fixed;
   top: 0;
