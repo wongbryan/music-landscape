@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Calibre-web/stylesheet.css"/>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Fugue-web/stylesheet.css"/>
 <head>
     <title>Landscape</title>
     <link rel="stylesheet" href="css/style.css">
@@ -11,19 +13,32 @@
     <div class="bar"></div>
 </div>
 
-<div id="menuWrapper">
-    <div class="menu">
-        <!--<div class="title">Midi</div>-->
-        <div class="start">Start</div>
-    </div>
+<div id="buttonMask">
+    <ul class="buttonContainer">
+        <li id="start" class="button"><a href="">start!</a></li>
+        <li id="dance" class="button"><a href="">dance!</a></li>
+    </ul>
 </div>
-
 <div id="container"></div>
-</body>
 <div id="cameraToggle">
+    <span class="title">camera</span>
     <ul class="buttons">
     </ul>
 </div>
+
+<canvas class="background"></canvas>
+
+<!-- <div id="play">
+    <div id="bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</div> -->
+</body>
 <script type="vsh" id="vertexShader">
 	void main(){
 		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
@@ -35,6 +50,7 @@
 		gl_FragColor = color;
 	}
 </script>
+<script src="js/ui.js"></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="lib/tween.js/src/Tween.js"></script>
 <script src="bower_components/three.js/three.js"></script>

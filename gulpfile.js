@@ -3,7 +3,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify-es').default;
 var gutil = require('gulp-util');
 var rename = require('gulp-rename');
-var less = require('gulp-less');
+var sass = require('gulp-sass');
 // var webserver = require('gulp-webserver');
 
 gulp.task('lib', function () {
@@ -46,15 +46,15 @@ gulp.task('js', function () {
 });
 
 gulp.task('css', function() {
-    return gulp.src(['less/style.less'])
-        .pipe(less())
+    return gulp.src(['scss/style.scss'])
+        .pipe(sass().on('error', sass.logError))
         .pipe(rename('style.css'))
         .pipe(gulp.dest('css'));
 })
 
 gulp.task('watch', function() {
     gulp.watch('js/**', ['js']);
-    gulp.watch('less/**', ['css']);
+    gulp.watch('scss/**', ['css']);
 });
 
 // gulp.task('serve', function () {

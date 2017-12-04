@@ -7,7 +7,7 @@ var Recorder;
         context = new AudioContext();
     }
     catch (e) {
-        console.err('Browser does not support Web Audio API. Recordings will not be possible.');
+        console.err('Browser does not support the Web Audio API. Recordings will not be possible.');
         return;
     }
 
@@ -18,8 +18,7 @@ var Recorder;
         sources = [],
         chunks = [],
         sound_paths = [],
-        audioRecordings = [],
-        activeAudio = document.createElement('audio');
+        audioRecordings = [];
 
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
@@ -34,31 +33,36 @@ var Recorder;
     );
 
     function loadComplete(bufferList) {
+
         if (bufferLoader.calledback)
             return;
 
         destination = context.createMediaStreamDestination();
         mediaRecorder = new MediaRecorder(destination.stream);
-        console.log(mediaRecorder);
 
         mediaRecorder.ondataavailable = function (e) {
             chunks.push(e.data);
         };
 
         mediaRecorder.onstop = function (e) {
-            var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
-            activeAudio.src = URL.createObjectURL(blob);
-            audioRecordings[0] = activeAudio;
+            try{
+              var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
+
+              if(blob.size == 0){
+                throw new Error('No input given to record.');
+              }
+
+              var audio = document.createElement('audio');
+              audio.src = URL.createObjectURL(blob);
+              audioRecordings.push(audio);
+
+              chunks = [];
+            } catch(e){
+              console.error(e.message);
+            }
         };
 
         bufferLoader.calledback = true;
-
-        // for (var i=0; i<bufferList.length; i++){
-        //   var source = context.createBufferSource();
-        //   source.buffer = bufferList[i];
-        //   source.connect(destination);
-        //   sources.push(source);
-        // }
 
         for (var key in KEY_MAPPINGS) {
             var index = ACTIVE_KEYS.indexOf(key);
@@ -66,29 +70,34 @@ var Recorder;
             KEY_MAPPINGS[key].web_audio_buffer = buffer;
         }
 
+        function getRecordingStatus(){
+          return isRecording;
+        }
+
+        function startRecording() {
+            isRecording = true;
+            mediaRecorder.start();
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            isRecording = false;
+        }
+
+        function playRecording() {
+            audioRecordings[0].play();
+        }
+
         Recorder = {
             context: context,
             destination: destination,
             mediaRecorder: mediaRecorder,
-            isRecording: isRecording,
+            isRecording: getRecordingStatus,
             startRecording: startRecording,
             stopRecording: stopRecording,
             playRecording: playRecording,
-            activeAudio: activeAudio,
             audioRecordings: audioRecordings
         }
-    }
-
-    function startRecording() {
-        mediaRecorder.start();
-    }
-
-    function stopRecording() {
-        mediaRecorder.stop();
-    }
-
-    function playRecording() {
-        audioRecordings[0].play();
     }
 
     bufferLoader.load();

@@ -51,7 +51,7 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-94, 197, 172);
+    camera.position.set(-313, 398, 313);
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -63,6 +63,7 @@ function init() {
 	var sound = new THREE.PositionalAudio(Listener);
 	
 	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
+	dance.onmousedown = Autoplay.play;
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -74,8 +75,6 @@ function init() {
             scene.simulate(undefined, 1);
         }
     );
-
-    // scene.add(camera);
 
     var numClouds = 7 + Math.floor(Math.random() * 7);
     var numPivots = 3;
@@ -156,9 +155,6 @@ function init() {
     );
 
     ground.position.y = -(platformHeight / 2);
-    // ground.position.y = -height/2;
-    // ground.rotation.x = Math.PI;
-    // ground.rotation.y = Math.PI/4;
     ground.receiveShadow = true;
     scene.add(ground);
 
@@ -206,20 +202,21 @@ function init() {
         x += offsetX;
 
         let numFruits = Object.keys(MODEL_DATA).length,
-            fruitIndex = Math.floor(numFruits * Math.random()),
-            fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
+        fruitIndex = Math.floor(numFruits*Math.random()),
+        fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
 
-        let fruit = CreateFruit(
-            fruitData.geometry,
-            fruitData.materials.clone(),
-            fruitData.scale,
-            fruitData.force,
-            null
-        );
+	    let fruit = CreateFruit(
+	    	fruitData.geometry,
+	    	fruitData.materials.clone(),
+	    	fruitData.scale,
+	    	fruitData.force,
+	    	null
+	    );
 
-        KEY_MAPPINGS[k].fruit = fruit;
-        fruits.push(fruit);
-        fruit.mesh.position.set(x, 0, z);
+	    KEY_MAPPINGS[k].fruit = fruit;
+	    fruits.push(fruit);
+        fruit.mesh.position.set(x, 5, z);
+        fruit.mesh.rotation.set(Math.random(), Math.random(), Math.random());
         scene.add(fruit.mesh);
 
         fruit.defineConstraint();
@@ -241,15 +238,10 @@ function init() {
 
     }
 
-    document.querySelector('#menuWrapper .start').addEventListener('click', () => {
+    document.querySelector('#start').addEventListener('click', () => {
         camera.controller.shiftPos(0);
-        $('#menuWrapper').animate({
-            opacity: 0,
-            top: "-=50",
-        }, 350, () => {
-            $('#menuWrapper').css('display', 'none');
-            initRest();
-        })
+        $('#buttonMask > .buttonContainer').addClass('started');
+        initRest();
     });
 
     scene.simulate();
@@ -265,12 +257,12 @@ function init() {
 }
 
 function initRest() {
-    $('.buttons > .button').each(function(i, b) {
+    $('#cameraToggle > .title, .buttons > .button').each(function(i, b) {
         const delay = 100 * i;
         setTimeout(function () {
             $(b).css('opacity', 1);
         }, delay);
-    })
+    });
 
 
     document.addEventListener('keydown', (e) => {
@@ -278,6 +270,9 @@ function initRest() {
             e.preventDefault();
         }
 
+        if (Autoplay.isPlaying())
+        	return;
+        
         let key = codeToKey(e.keyCode);
         if (key) {
             let objs = KEY_MAPPINGS[key];
@@ -300,7 +295,7 @@ function initRest() {
                     objs.audio.play();
                 }
 
-                if (objs.web_audio_buffer) {
+                if (objs.web_audio_buffer && Recorder.isRecording()) {
                     var source = Recorder.context.createBufferSource();
                     source.buffer = objs.web_audio_buffer;
                     source.connect(Recorder.destination);
@@ -322,18 +317,15 @@ function initRest() {
                             camera.controller.next();
                             break;
                         case 'spacebar':
-                            if (isRecording) {
-                                Recorder.stopRecording();
-                                isRecording = false;
-                            } else {
-                                Recorder.startRecording();
-                                isRecording = true;
-                            }
+                        	// if(Recorder.isRecording()){
+                        	// 	Recorder.stopRecording();
+                        	// }
+                        	// else{
+                        	// 	Recorder.startRecording();
+                        	// }
                             break;
                         case 'down arrow':
-                            Recorder.playRecording();
-                            break;
-                        case 'up arrow':
+                            // Recorder.playRecording();
                             break;
                         default:
                             break;
