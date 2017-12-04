@@ -1,7 +1,7 @@
 'use strict';
 
-Physijs.scripts.worker = '/lib/physijs_worker.js';
-Physijs.scripts.ammo = '/lib/ammo.js';
+Physijs.scripts.worker = 'lib/physijs_worker.js';
+Physijs.scripts.ammo = 'ammo.js';
 
 var box, scene, ground_material, ground, light;
 var camera, scene, renderer, controls;
