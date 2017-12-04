@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Calibre-web/stylesheet.css"/>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Fugue-web/stylesheet.css"/>
 <head>
     <title>Landscape</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div id="container"></div>
+<audio id="audio"></audio>
+<div id="progress">
+    <div class="percent">0%</div>
+    <div class="bar"></div>
+</div>
+
+<div id="buttonMask">
+    <ul class="buttonContainer">
+        <li id="start" class="button"><a href="">start!</a></li>
+        <li id="dance" class="button"><a href="">dance!</a></li>
+    </ul>
+</div>
+<div id="container">
+    <canvas></canvas>
+</div>
+<div id="cameraToggle">
+    <span class="title">camera</span>
+    <ul class="buttons">
+    </ul>
+</div>
+
+<!-- <div id="play">
+    <div id="bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</div> -->
+</body>
 <script type="vsh" id="vertexShader">
 	void main(){
 		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
