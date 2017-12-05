@@ -6,10 +6,11 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     var _interval = null;
 
     function play() {
+        $('.ui-bar').addClass('show');
         isPlaying = true;
         sound.play();
 
-        $('#controls').toggleClass('dancing');
+        $ui.removeClass('show');
 
         camera.controller.shiftPos(2);
         camera.pivot.speed = 1;
@@ -24,6 +25,7 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     }
 
     function stop() {
+        $('.ui-bar').removeClass('show');
         clearInterval(_interval);
         camera.pivot.speed = 0;
 
@@ -41,6 +43,8 @@ var CreateAutoplay = function (audio, timestamps, camera) {
             timestamps[key].trig = false;
         }
         isPlaying = false;
+
+        $ui.addClass('show');
         return;
     }
 

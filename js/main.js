@@ -254,7 +254,7 @@ function init() {
 
 function initRest() {
     $('#title').fadeOut(300);
-    $('#cameraToggle, #info, #dj, #buttonMask').addClass('show');
+    $ui.addClass('show');
 
     // Init Keyboard Overlay
     const $overlay = $('#keyboard-overlay > .keyboard');
@@ -269,8 +269,12 @@ function initRest() {
         $('#keyboard-overlay').toggleClass('show');
     });
 
+    document.querySelector('#info .info').addEventListener('click', (e) => {
+        $('#info-overlay').toggleClass('show');
+    });
+
     document.getElementById('dance').onmousedown = Autoplay.play;
-    document.getElementById('stop').onmousedown = Autoplay.stop;
+    // document.getElementById('stop').onmousedown = Autoplay.stop;
 
     document.getElementById('record').addEventListener('click', (e) => {
         if (SoundRecorder.isRecording()) {

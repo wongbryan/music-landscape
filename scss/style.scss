@@ -56,6 +56,57 @@ button {
   }
 }
 
+.ui-bar {
+  position: fixed;
+  height: 12vh;
+  width: 100vw;
+  background-color: black;
+  transition: all .7s ease;
+
+  &--top {
+    top: 0;
+    transform: translateY(-100%);
+  }
+
+  &--bottom {
+    bottom: 0;
+    transform: translateY(100%);
+  }
+
+  &.show {
+    transform: translateY(0%);
+  }
+}
+
+.ui-overlay {
+  z-index: 1;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.8);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  opacity: 0;
+  transition: opacity 350ms ease-in-out;
+  pointer-events: none;
+
+  .content {
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+}
+
 %ui-top {
   transform: translateY(-40px);
 }
@@ -113,26 +164,7 @@ button {
 }
 
 #keyboard-overlay {
-  z-index: 1;
-  position: fixed;
-  background: rgba(255, 255, 255, 0.8);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: block;
-  opacity: 0;
-  transition: opacity 350ms ease-in-out;
-  pointer-events: none;
-
   .keyboard {
-    width: 80vw;
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-
     .key {
       width: 100px;
       height: 100px;
@@ -143,11 +175,6 @@ button {
       text-transform: uppercase;
       font-family: sans-serif;
     }
-  }
-
-  &.show {
-    opacity: 1;
-    pointer-events: auto;
   }
 }
 
@@ -291,53 +318,6 @@ button {
   }
 
 
-}
-
-#controls {
-  display: flex;
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 100px;
-
-  &.started {
-
-    #record, #play {
-      opacity: 1;
-    }
-
-    #buttonMask > .buttonContainer {
-      transform: translateY(-150px);
-
-      #start {
-        opacity: 0;
-      }
-
-      #dance {
-        opacity: 1;
-      }
-    }
-  }
-
-
-  &.dancing {
-    #record, #play {
-      opacity: 0 !important;
-    }
-
-    #buttonMask > .buttonContainer {
-      transform: translateY(-200px) !important;
-
-      #dance {
-        opacity: 0 !important;
-      }
-
-      #stop {
-        opacity: 1 !important;
-      }
-    }
-  }
 }
 
 #buttonMask {

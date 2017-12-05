@@ -38,6 +38,44 @@ button {
     transform: translateY(0px) !important;
     opacity: 1 !important; }
 
+.ui-bar {
+  position: fixed;
+  height: 12vh;
+  width: 100vw;
+  background-color: black;
+  transition: all .7s ease; }
+  .ui-bar--top {
+    top: 0;
+    transform: translateY(-100%); }
+  .ui-bar--bottom {
+    bottom: 0;
+    transform: translateY(100%); }
+  .ui-bar.show {
+    transform: translateY(0%); }
+
+.ui-overlay {
+  z-index: 1;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.8);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  opacity: 0;
+  transition: opacity 350ms ease-in-out;
+  pointer-events: none; }
+  .ui-overlay .content {
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%); }
+  .ui-overlay.show {
+    opacity: 1;
+    pointer-events: auto; }
+
 #info, #cameraToggle {
   transform: translateY(-40px); }
 
@@ -82,37 +120,15 @@ button {
     #info .icon:hover {
       cursor: pointer; }
 
-#keyboard-overlay {
-  z-index: 1;
-  position: fixed;
-  background: rgba(255, 255, 255, 0.8);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: block;
-  opacity: 0;
-  transition: opacity 350ms ease-in-out;
-  pointer-events: none; }
-  #keyboard-overlay .keyboard {
-    width: 80vw;
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%); }
-    #keyboard-overlay .keyboard .key {
-      width: 100px;
-      height: 100px;
-      display: inline-block;
-      background: white;
-      margin: 5px;
-      line-height: 100px;
-      text-transform: uppercase;
-      font-family: sans-serif; }
-  #keyboard-overlay.show {
-    opacity: 1;
-    pointer-events: auto; }
+#keyboard-overlay .keyboard .key {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background: white;
+  margin: 5px;
+  line-height: 100px;
+  text-transform: uppercase;
+  font-family: sans-serif; }
 
 #title {
   position: fixed;
@@ -214,30 +230,6 @@ button {
       animation-duration: 0.4s;
       animation-iteration-count: infinite;
       animation-direction: alternate; }
-
-#controls {
-  display: flex;
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 100px; }
-  #controls.started #record, #controls.started #play {
-    opacity: 1; }
-  #controls.started #buttonMask > .buttonContainer {
-    transform: translateY(-150px); }
-    #controls.started #buttonMask > .buttonContainer #start {
-      opacity: 0; }
-    #controls.started #buttonMask > .buttonContainer #dance {
-      opacity: 1; }
-  #controls.dancing #record, #controls.dancing #play {
-    opacity: 0 !important; }
-  #controls.dancing #buttonMask > .buttonContainer {
-    transform: translateY(-200px) !important; }
-    #controls.dancing #buttonMask > .buttonContainer #dance {
-      opacity: 0 !important; }
-    #controls.dancing #buttonMask > .buttonContainer #stop {
-      opacity: 1 !important; }
 
 #buttonMask {
   bottom: 0;

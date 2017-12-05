@@ -20,11 +20,6 @@
     <span><i class="keyboard icon fa fa-keyboard-o"></i></span>
     <span><i class="info icon fa fa-info-circle"></i></span>
 </div>
-<div id="keyboard-overlay">
-    <div class="keyboard">
-
-    </div>
-</div>
 <div id="dj" class="ui">
     <button id="record">
         <div class="icon"></div>
@@ -47,13 +42,26 @@
         <li id="dance" class="ui-button"><a href="">dance!</a></li>
     </ul>
 </div>
-<div id="container">
-    <canvas></canvas>
-</div>
 <div id="cameraToggle" class="ui">
     <span class="title"><i class="icon fa fa-video-camera"></i></span>
     <ul class="buttons">
     </ul>
+</div>
+<div id="container">
+    <canvas></canvas>
+</div>
+
+
+<!-- OVERLAYS -->
+<div class="ui-bar ui-bar--top"></div>
+<div class="ui-bar ui-bar--bottom"></div>
+<div id="keyboard-overlay" class="ui-overlay">
+    <div class="keyboard content"></div>
+</div>
+<div id="info-overlay" class="ui-overlay">
+    <div class="info content">
+
+    </div>
 </div>
 </body>
 <script type="vsh" id="vertexShader">
