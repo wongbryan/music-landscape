@@ -1,6 +1,7 @@
 var CreateAutoplay = function (audio, timestamps, camera) {
     var sound = document.createElement('AUDIO');
     sound.src = 'assets/sounds/fresh.mp3';
+    sound.currentTime = 0;
 
     var isPlaying = false;
     var _interval = null;
@@ -50,7 +51,7 @@ var CreateAutoplay = function (audio, timestamps, camera) {
                 if (timestamps[key].trig) {
                     continue;
                 }
-
+                console.log(key);
                 if (timestamps[key].cameraToggle != undefined) {
                     camera.controller.shiftPos(timestamps[key].cameraToggle);
                 }
@@ -69,6 +70,21 @@ var CreateAutoplay = function (audio, timestamps, camera) {
 
                         KEY_MAPPINGS[button].text.play();
                     }
+                }
+
+                if(timestamps[key].pixelate != undefined){
+                	var time = timestamps[key].pixelate;
+                	composer.pixelate(time);
+                }
+
+                if(timestamps[key].wavify != undefined){
+                	var time = timestamps[key].wavify;
+                	composer.wavify(time);
+                }
+
+                if(timestamps[key].spin != undefined){
+                	var time = timestamps[key].spin;
+                	camera.controller.spin(time);
                 }
 
                 timestamps[key].trig = true;

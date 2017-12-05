@@ -9,6 +9,7 @@ var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
 
 var composer, wavePass, pixelPass, glitchPass;
+var postProcessing = false;
 
 const WORLD_RADIUS = 150;
 
@@ -35,8 +36,11 @@ function update() {
 
 function loop() {
     update();
-    // renderer.render(scene, camera);
-    composer.render();
+    if(postProcessing)
+        composer.render();
+    else
+        renderer.render(scene, camera);
+
     window.requestAnimationFrame(loop);
 }
 
@@ -264,17 +268,83 @@ function init() {
 	WaveShader.uniforms = uniforms;
     wavePass = new THREE.ShaderPass(WaveShader);
     wavePass.renderToScreen = true;
-    // composer.addPass(wavePass);
+    composer.addPass(wavePass);
 
     pixelPass = new THREE.ShaderPass(PixelShader);
-    pixelPass.renderToScreen = true;
+    // pixelPass.renderToScreen = true;
     composer.addPass(pixelPass);
     
-    composer.wavify = function(){
+    composer.wavify = function(time){
+        console.log(time);
+        postProcessing = true;
+        wavePass.renderToScreen = true;
+        time*=1000;
     	var cur = wavePass.uniforms['magnitude'];
-    	var target = { value: 0.1 };
-    	var tween = new TWEEN.Tween(cur).to(target, 1000);
+    	var target = { value: .1};
+    	var tween = new TWEEN.Tween(cur).to(target, time/2);
+        tween.easing(TWEEN.Easing.Quadratic.InOut);
+        tween.onUpdate(function(){
+            wavePass.uniforms.time.value+=.7;
+        })
+        tween.onComplete(function(){
+            var c = wavePass.uniforms['magnitude'];
+            var t = {value: 0.};
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.onComplete(function(){
+                postProcessing = false;
+                wavePass.renderToScreen = false;
+            });
+            rTween.onUpdate(function(){
+                wavePass.uniforms.time.value+=.7;
+            });
+            rTween.easing(TWEEN.Easing.Quadratic.InOut);
+
+            rTween.start();
+        });
+
     	tween.start();
+    }
+
+    composer.pixelate = function(time){
+        time *= 1000;
+        postProcessing = true;
+        pixelPass.renderToScreen = true;
+        var cur = pixelPass.uniforms['amount'];
+        var target = {
+            value: 128.
+        };
+
+        var cur2 = pixelPass.uniforms['steps'];
+        var target2 = {
+            value: 15.
+        };
+
+        var tween = new TWEEN.Tween(cur).to(target, time/1.5);
+        var tween2 = new TWEEN.Tween(cur2).to(target2, time/1.5);
+
+        tween.easing(TWEEN.Easing.Quadratic.Out);
+        tween2.easing(TWEEN.Easing.Quadratic.Out);
+
+        tween.onComplete(function(){
+            var c = pixelPass.uniforms['amount'];
+            var t = {value: 2048. }
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.start();
+        });
+
+        tween2.onComplete(function(){
+            var c = pixelPass.uniforms['steps'];
+            var t = {value: 1. }
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.onComplete(()=>{
+                postProcessing = false;
+                pixelPass.renderToScreen = false;
+            })
+            rTween.start();
+        })
+       
+        tween.start();
+        tween2.start();
     }
 
     scene.simulate();
