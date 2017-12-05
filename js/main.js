@@ -267,7 +267,7 @@ function init() {
 
 	WaveShader.uniforms = uniforms;
     wavePass = new THREE.ShaderPass(WaveShader);
-    wavePass.renderToScreen = true;
+    // wavePass.renderToScreen = true;
     composer.addPass(wavePass);
 
     pixelPass = new THREE.ShaderPass(PixelShader);
