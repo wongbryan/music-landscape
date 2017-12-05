@@ -1,5 +1,31 @@
 $Fugue: 'Fugue';
 $Calibre: 'Calibre';
+$Arcade: 'ArcadeClassic';
+
+#start{
+  font-family: $Arcade;
+  font-size: 100px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: flash .5s linear;
+}
+
+// @keyframes flash{
+//   0%{
+//     opacity: 0;
+//   }
+//   10%{
+//     opacity: 1;
+//   }
+//   50%{
+//     opacity: 1;
+//   }
+
+// }
 
 $button-bg: #2b2d2d;
 

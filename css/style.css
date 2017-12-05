@@ -1,3 +1,95 @@
+<<<<<<< HEAD
+=======
+#start {
+  font-family: "ArcadeClassic";
+  font-size: 100px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: flash .5s linear; }
+
+#play {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+  #play #bars {
+    position: relative;
+    width: 20em;
+    height: 20em;
+    padding: 0;
+    border-radius: 50%;
+    list-style: none; }
+    #play #bars > * {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2em;
+      height: 2em;
+      margin: -1em; }
+      #play #bars > *:nth-of-type(1) {
+        transform: rotate(0deg) translate(10em) rotate(180deg); }
+      #play #bars > *:nth-of-type(2) {
+        transform: rotate(60deg) translate(10em) rotate(180deg); }
+      #play #bars > *:nth-of-type(3) {
+        transform: rotate(120deg) translate(10em) rotate(180deg); }
+      #play #bars > *:nth-of-type(4) {
+        transform: rotate(180deg) translate(10em) rotate(180deg); }
+      #play #bars > *:nth-of-type(5) {
+        transform: rotate(240deg) translate(10em) rotate(180deg); }
+      #play #bars > *:nth-of-type(6) {
+        transform: rotate(300deg) translate(10em) rotate(180deg); }
+  #play .bar {
+    background: #666;
+    bottom: 1px;
+    height: 1px;
+    position: absolute;
+    width: 3px;
+    animation: sound 0ms -800ms linear infinite alternate;
+    transform-origin: bottom; }
+  #play .bar:nth-child(1) {
+    left: 1px;
+    animation-duration: 474ms; }
+  #play .bar:nth-child(2) {
+    left: 5px;
+    animation-duration: 433ms; }
+  #play .bar:nth-child(3) {
+    left: 9px;
+    animation-duration: 407ms; }
+  #play .bar:nth-child(4) {
+    left: 13px;
+    animation-duration: 458ms; }
+  #play .bar:nth-child(5) {
+    left: 17px;
+    animation-duration: 400ms; }
+  #play .bar:nth-child(6) {
+    left: 21px;
+    animation-duration: 427ms; }
+  #play .bar:nth-child(7) {
+    left: 25px;
+    animation-duration: 441ms; }
+  #play .bar:nth-child(8) {
+    left: 29px;
+    animation-duration: 419ms; }
+  #play .bar:nth-child(10) {
+    left: 37px;
+    animation-duration: 442ms; }
+  #play .bar:nth-child(9) {
+    left: 33px;
+    animation-duration: 487ms; }
+
+@keyframes sound {
+  0% {
+    opacity: .35;
+    width: 3px; }
+  100% {
+    opacity: 1;
+    width: 28px; } }
+>>>>>>> post-processing-3
 body {
   margin: 0;
   overflow: hidden;
@@ -206,6 +298,7 @@ body {
         font-size: 28px;
         line-height: 100px;
         pointer-events: none; }
+<<<<<<< HEAD
     #buttonMask .buttonContainer #dance {
       opacity: 0; }
       #buttonMask .buttonContainer #dance:hover {
@@ -233,3 +326,19 @@ body {
     opacity: 1; }
   to {
     opacity: 0; } }
+=======
+    #buttonMask .buttonContainer #dance:hover {
+      background-color: #2b2d2d;
+      cursor: pointer; }
+      #buttonMask .buttonContainer #dance:hover a {
+        text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000; }
+    #buttonMask .buttonContainer #start:hover {
+      background-color: #2b2d2d;
+      cursor: pointer; }
+      #buttonMask .buttonContainer #start:hover a {
+        color: white; }
+    #buttonMask .buttonContainer.started {
+      transform: translateY(-100px); }
+
+/*# sourceMappingURL=style.css.map */
+>>>>>>> post-processing-3
