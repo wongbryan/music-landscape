@@ -6,7 +6,7 @@ Physijs.scripts.ammo = 'ammo.js';
 var box, scene, ground_material, ground, light;
 var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
-var Autoplay, Listener, Recorder;
+var Autoplay, Listener;
 
 const WORLD_RADIUS = 150;
 
@@ -48,7 +48,7 @@ function init() {
     // container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-313, 398, 313);
+    camera.position.set(-50, 20, 50);
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -189,7 +189,6 @@ function init() {
             r = 2;
             c = (i + 1) % 10;
             maxCols = 7;
-            // offsetX =
             offsetX = -1.5 * SP;
         }
 
@@ -236,7 +235,7 @@ function init() {
     }
 
     document.querySelector('#start').addEventListener('click', () => {
-        camera.controller.shiftPos(0);
+        camera.controller.shiftPos(2);
         $('#buttonMask > .buttonContainer').addClass('started');
         initRest();
     });
@@ -259,6 +258,19 @@ function initRest() {
         setTimeout(function () {
             $(b).css('opacity', 1);
         }, delay);
+    });
+
+    // Init Keyboard Overlay
+    const $overlay = $('#keyboard-overlay');
+    ACTIVE_KEYS.forEach(letter => {
+
+        // let $test = $('div');
+        // $test.html();
+
+    });
+
+    document.getElementById('keyboard').addEventListener('click', (e) => {
+        $('#keyboard-overlay').toggleClass('show');
     });
 
 
@@ -323,6 +335,9 @@ function initRest() {
                             break;
                         case 'down arrow':
                             // Recorder.playRecording();
+                            break;
+                        case '/':
+                            $('#keyboard-overlay').toggleClass('show');
                             break;
                         default:
                             break;

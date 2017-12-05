@@ -33,38 +33,38 @@
 
 $Fugue: 'Fugue';
 $Calibre: 'Calibre';
-
-#play{
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  #bars{
-    @include on-circle($item-count: 6, $circle-size: 20em, $item-size: 2em);
-  }
-
-  .bar {
-    background: #666;
-    bottom: 1px;
-    height: 1px;
-    position: absolute;
-    width: 3px;
-    animation: sound 0ms -800ms linear infinite alternate;
-    transform-origin: bottom;
-  }
-
-  .bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
-  .bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
-  .bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
-  .bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
-  .bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
-  .bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
-  .bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
-  .bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
-  .bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
-  .bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
-}
+//
+//#play{
+//  position: fixed;
+//  left: 50%;
+//  top: 50%;
+//  transform: translate(-50%, -50%);
+//
+//  #bars{
+//    @include on-circle($item-count: 6, $circle-size: 20em, $item-size: 2em);
+//  }
+//
+//  .bar {
+//    background: #666;
+//    bottom: 1px;
+//    height: 1px;
+//    position: absolute;
+//    width: 3px;
+//    animation: sound 0ms -800ms linear infinite alternate;
+//    transform-origin: bottom;
+//  }
+//
+//  .bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
+//  .bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
+//  .bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
+//  .bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
+//  .bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
+//  .bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
+//  .bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
+//  .bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
+//  .bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
+//  .bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
+//}
 
 @keyframes sound {
   0% {
@@ -115,11 +115,11 @@ body {
   top: 0;
   right: 0;
   padding: 20px;
+  z-index: 2;
 
   .icon {
-    width: 100px;
-    height: 50px;
-    background: white;
+    color: white;
+    font-size: 32px;
 
     &:hover {
       cursor: pointer;
@@ -128,14 +128,22 @@ body {
 }
 
 #keyboard-overlay {
+  z-index: 1;
   position: fixed;
   background: rgba(255, 255, 255, 0.8);
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  //display: none;
-  //opacity: 0;
+  display: block;
+  opacity: 0;
+  transition: opacity 350ms ease-in-out;
+  pointer-events: none;
+
+  &.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 #cameraToggle {
@@ -143,13 +151,22 @@ body {
   top: 0;
   left: 0;
   padding: 20px;
+  display: flex;
+  align-items: center;
 
   .title {
+    vertical-align: middle;
     opacity: 0;
     text-transform: uppercase;
     color: white;
     font-family: $Fugue;
     transition: all 350ms ease-in-out;
+    margin-right: 15px;
+
+    .icon {
+      color: white;
+      font-size: 32px;
+    }
   }
 
   .buttons {
@@ -186,14 +203,32 @@ body {
   }
 }
 
-#buttonMask{
+#controls {
   position: fixed;
   bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   height: 100px;
+
+  #play, #record {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 15px;
+    background: white;
+    border-radius: 50%;
+    vertical-align: top;
+  }
+}
+
+#buttonMask {
+  height: 100px;
   width: 100px;
   overflow: hidden;
+  display: inline-block;
 
   .buttonContainer {
     width: 100%;
