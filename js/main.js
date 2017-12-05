@@ -8,7 +8,7 @@ var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener, Recorder;
 
-var composer, wavePass;
+var composer, wavePass, pixelPass, glitchPass;
 
 const WORLD_RADIUS = 150;
 
@@ -266,8 +266,12 @@ function init() {
 	WaveShader.uniforms = uniforms;
     wavePass = new THREE.ShaderPass(WaveShader);
     wavePass.renderToScreen = true;
-    composer.addPass(wavePass);
+    // composer.addPass(wavePass);
 
+    pixelPass = new THREE.ShaderPass(PixelShader);
+    pixelPass.renderToScreen = true;
+    composer.addPass(pixelPass);
+    
     composer.wavify = function(){
     	var cur = wavePass.uniforms['magnitude'];
     	var target = { value: 0.1 };
