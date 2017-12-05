@@ -1,4 +1,4 @@
-var Recorder;
+var RecorderData, recorder;
 
 (function () {
 
@@ -20,6 +20,8 @@ var Recorder;
         chunks = [],
         sound_paths = [],
         audioRecordings = [];
+
+    var isRecording = false;
 
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
@@ -91,7 +93,7 @@ var Recorder;
             audioRecordings[0].play();
         }
 
-        Recorder = {
+        RecorderData = {
             context: context,
             destination: destination,
             mediaRecorder: mediaRecorder,
@@ -101,6 +103,9 @@ var Recorder;
             playRecording: playRecording,
             audioRecordings: audioRecordings
         }
+
+        recorder = new Recorder(destination);
+        recorder.audioRecordings = [];
     }
 
     bufferLoader.load();
