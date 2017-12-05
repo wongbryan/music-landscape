@@ -9,6 +9,7 @@ var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener, Recorder;
 
 var composer, wavePass, pixelPass;
+var postProcessing;
 
 const WORLD_RADIUS = 150;
 
@@ -34,7 +35,10 @@ function update() {
 
 function loop() {
     update();
-    renderer.render(scene, camera);
+    if(postProcessing)
+        renderer.render(scene, camera);
+    else
+        composer.render();
     window.requestAnimationFrame(loop);
 }
 
@@ -238,6 +242,59 @@ function init() {
     }
 
     initRest();
+
+    composer = new THREE.EffectComposer(renderer);
+    var renderPass = new THREE.RenderPass(scene, camera);
+    // renderPass.renderToScreen = true;
+    composer.addPass(renderPass);
+
+    var noise = new THREE.TextureLoader().load('assets/images/noise.png');
+    noise.wrapT = noise.wrapS = THREE.RepeatWrapping;
+
+    var uniforms = {
+        tDiffuse: {value: null},
+        noise: {value: noise},
+        magnitude: {value : 0.0},
+        speed: {value : .5},
+        time: {value : 0},
+        scale: {value : new THREE.Vector2(1., 1.)}
+    }
+
+    WaveShader.uniforms = uniforms;
+    wavePass = new THREE.ShaderPass(WaveShader);
+    wavePass.renderToScreen = true;
+    // composer.addPass(wavePass);
+
+    pixelPass = new THREE.ShaderPass(PixelShader);
+    pixelPass.renderToScreen = true;
+    composer.addPass(pixelPass);
+
+    composer.wavify = function(){
+        var cur = wavePass.uniforms['magnitude'];
+        var target = { value: 0.1 };
+        var tween = new TWEEN.Tween(cur).to(target, 1000);
+        tween.start();
+    }
+
+    composer.glitch = function(){
+        var cur = {
+            amount: {value: pixelPass.uniforms.amount.value },
+            steps: {value: pixelPass.uniforms.steps.value }
+        };
+        var target = {
+            amount: {value: 512. },
+            steps: {value: 15.0 }
+        };
+
+        var tween = new TWEEN.Tween(cur).to(target, 1000);
+        tween.onUpdate(function(){
+            pixelPass.uniforms.amount.value = cur.amount.value;
+            pixelPass.uniforms.steps.value = cur.steps.value;
+        });
+        tween.start();
+    }
+
+    postProcessing = false;
 
     scene.simulate();
 
