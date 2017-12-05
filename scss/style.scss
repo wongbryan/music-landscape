@@ -1,6 +1,8 @@
 $Fugue: 'Fugue';
 $Calibre: 'Calibre';
 
+$button-bg: #2b2d2d;
+
 body {
   margin: 0;
   overflow: hidden;
@@ -150,6 +152,7 @@ body {
 }
 
 #controls {
+  display: flex;
   position: fixed;
   bottom: 60px;
   left: 50%;
@@ -157,8 +160,8 @@ body {
   height: 100px;
 
   #play, #record {
+    display: flex;
     opacity: 0;
-    display: inline-block;
     height: 50px;
     width: 50px;
     line-height: 50px;
@@ -168,16 +171,20 @@ body {
     margin: 0 15px;
     background: #f9f9f9;
     border-radius: 50%;
-    vertical-align: top;
-    transition: opacity 350ms ease-in-out;
+    transition: all 350ms ease-in-out;
+    justify-content: center;
 
-    border: none;
+    border: 0px solid white;
     padding: 0;
     outline: none;
 
     &:hover {
-      background: #ebebeb;
+      background: $button-bg;
       cursor: pointer;
+
+      .icon {
+        color: white;
+      }
     }
   }
 
@@ -185,7 +192,6 @@ body {
     .icon {
       color: #2b2d2d;
       font-size: 16px;
-      vertical-align: middle;
     }
   }
 
@@ -206,7 +212,14 @@ body {
     }
 
     &.recording {
+      background: $button-bg;
 
+      .icon {
+        animation-name: blink;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
     }
   }
 
@@ -282,7 +295,7 @@ body {
     #dance {
       opacity: 0;
       &:hover {
-        background-color: #2b2d2d;
+        background-color: $button-bg;
         cursor: pointer;
         a {
           text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
@@ -293,7 +306,7 @@ body {
     #start {
       opacity: 1;
       &:hover {
-        background-color: #2b2d2d;
+        background-color: $button-bg;
         cursor: pointer;
         a {
           color: white;
@@ -304,7 +317,7 @@ body {
     #stop {
       opacity: 0;
       &:hover {
-        background-color: #2b2d2d;
+        background-color: $button-bg;
         cursor: pointer;
         a {
           color: white;
@@ -312,5 +325,10 @@ body {
       }
     }
   }
+}
+
+@keyframes blink {
+  from {opacity: 1;}
+  to {opacity: 0;}
 }
 

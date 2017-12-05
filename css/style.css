@@ -118,14 +118,15 @@ body {
         color: black; }
 
 #controls {
+  display: flex;
   position: fixed;
   bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   height: 100px; }
   #controls #play, #controls #record {
+    display: flex;
     opacity: 0;
-    display: inline-block;
     height: 50px;
     width: 50px;
     line-height: 50px;
@@ -135,18 +136,19 @@ body {
     margin: 0 15px;
     background: #f9f9f9;
     border-radius: 50%;
-    vertical-align: top;
-    transition: opacity 350ms ease-in-out;
-    border: none;
+    transition: all 350ms ease-in-out;
+    justify-content: center;
+    border: 0px solid white;
     padding: 0;
     outline: none; }
     #controls #play:hover, #controls #record:hover {
-      background: #ebebeb;
+      background: #2b2d2d;
       cursor: pointer; }
+      #controls #play:hover .icon, #controls #record:hover .icon {
+        color: white; }
   #controls #play .icon {
     color: #2b2d2d;
-    font-size: 16px;
-    vertical-align: middle; }
+    font-size: 16px; }
   #controls #record .icon {
     width: 20px;
     height: 20px;
@@ -156,6 +158,13 @@ body {
     transition: all 350ms ease-in-out; }
   #controls #record:hover .icon {
     transform: scale(1.15); }
+  #controls #record.recording {
+    background: #2b2d2d; }
+    #controls #record.recording .icon {
+      animation-name: blink;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate; }
   #controls.started #record, #controls.started #play {
     opacity: 1; }
   #controls.started #buttonMask > .buttonContainer {
@@ -218,3 +227,9 @@ body {
         cursor: pointer; }
         #buttonMask .buttonContainer #stop:hover a {
           color: white; }
+
+@keyframes blink {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }

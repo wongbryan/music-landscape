@@ -276,6 +276,14 @@ function initRest() {
     document.getElementById('dance').onmousedown = Autoplay.play;
     document.getElementById('stop').onmousedown = Autoplay.stop;
 
+    document.getElementById('record').addEventListener('click', (e) => {
+        if (Recorder.isRecording()) {
+            Recorder.stopRecording();
+        } else {
+            Recorder.startRecording();
+        }
+    })
+
 
     document.addEventListener('keydown', (e) => {
         if (!e.metaKey) {

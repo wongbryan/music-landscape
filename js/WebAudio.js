@@ -15,6 +15,7 @@ var Recorder;
         bufferLoader,
         destination,
         mediaRecorder,
+        isRecording = false,
         sources = [],
         chunks = [],
         sound_paths = [],
@@ -75,11 +76,13 @@ var Recorder;
         }
 
         function startRecording() {
+            $('#record').toggleClass('recording');
             isRecording = true;
             mediaRecorder.start();
         }
 
         function stopRecording() {
+            $('#record').toggleClass('recording');
             mediaRecorder.stop();
             isRecording = false;
         }
