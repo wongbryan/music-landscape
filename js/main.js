@@ -48,7 +48,7 @@ function init() {
     // container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-313, 398, 313);
+    camera.position.set(-50, 20, 50);
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -235,11 +235,7 @@ function init() {
 
     }
 
-    document.querySelector('#start').addEventListener('click', () => {
-        camera.controller.shiftPos(0);
-        $('#buttonMask > .buttonContainer').addClass('started');
-        initRest();
-    });
+    initRest();
 
     scene.simulate();
 
