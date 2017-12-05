@@ -20,6 +20,8 @@ var Recorder;
         sound_paths = [],
         audioRecordings = [];
 
+    var isRecording = false;
+    
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
         var path = AUDIO_ASSETS_PATH + key + '.wav';

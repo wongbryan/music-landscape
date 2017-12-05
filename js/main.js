@@ -8,12 +8,15 @@ var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener, Recorder;
 
+var composer, wavePass;
+
 const WORLD_RADIUS = 150;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+
 }
 
 function update() {
@@ -26,13 +29,14 @@ function update() {
     }
 
     controls.update();
-
+    wavePass.uniforms.time.value += .05;
     TWEEN.update();
 }
 
 function loop() {
     update();
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
+    composer.render();
     window.requestAnimationFrame(loop);
 }
 
@@ -48,7 +52,8 @@ function init() {
     // container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-313, 398, 313);
+    // camera.position.set(-313, 398, 313);
+    camera.position.set(-50, 20, 50);
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -235,11 +240,40 @@ function init() {
 
     }
 
-    document.querySelector('#start').addEventListener('click', () => {
-        camera.controller.shiftPos(0);
-        $('#buttonMask > .buttonContainer').addClass('started');
-        initRest();
-    });
+    // document.querySelector('#start').addEventListener('click', () => {
+    //     camera.controller.shiftPos(0);
+    //     $('#buttonMask > .buttonContainer').addClass('started');
+    //     initRest();
+    // });
+
+    composer = new THREE.EffectComposer(renderer);
+    var renderPass = new THREE.RenderPass(scene, camera);
+    // renderPass.renderToScreen = true;
+    composer.addPass(renderPass);
+
+    var noise = new THREE.TextureLoader().load('assets/images/noise.png');
+	noise.wrapT = noise.wrapS = THREE.RepeatWrapping;
+
+	var uniforms = {
+		tDiffuse: {value: null},
+		noise: {value: noise},
+		magnitude: {value : 0.0},
+		speed: {value : .5},
+		time: {value : 0},
+		scale: {value : new THREE.Vector2(1., 1.)}
+	}
+
+	WaveShader.uniforms = uniforms;
+    wavePass = new THREE.ShaderPass(WaveShader);
+    wavePass.renderToScreen = true;
+    composer.addPass(wavePass);
+
+    composer.wavify = function(){
+    	var cur = wavePass.uniforms['magnitude'];
+    	var target = { value: 0.1 };
+    	var tween = new TWEEN.Tween(cur).to(target, 1000);
+    	tween.start();
+    }
 
     scene.simulate();
 

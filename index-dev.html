@@ -3,6 +3,7 @@
 <head>
     <base href="/">
     <title>Landscape</title>
+    <link rel="stylesheet" type="text/css" href="assets/fonts/Arcade-Classic-web/stylesheet.css"/>
     <link rel="stylesheet" type="text/css" href="assets/fonts/Calibre-web/stylesheet.css"/>
     <link rel="stylesheet" type="text/css" href="assets/fonts/Fugue-web/stylesheet.css"/>
     <link rel="stylesheet" href="css/style.css">
@@ -19,7 +20,7 @@
 <!--<div id="keyboard-overlay"></div>-->
 <div id="buttonMask">
     <ul class="buttonContainer">
-        <li id="start" class="button"><a href="">start!</a></li>
+        <!-- <li id="start" class="button"><a href="">start!</a></li> -->
         <li id="dance" class="button"><a href="">dance!</a></li>
     </ul>
 </div>
@@ -31,6 +32,9 @@
     <ul class="buttons">
     </ul>
 </div>
+<!-- <div id="start">
+    PRESS START
+</div> -->
 
 <!-- <div id="play">
     <div id="bars">
@@ -54,7 +58,14 @@
 		gl_FragColor = color;
 	}
 </script>
-<script src="bower_components/three.min.js/index.js"></script>
+<script src="bower_components/three.js/three.js"></script>
+<script src="js/WaveShader.js"></script>
+<script src="bower_components/three.js-examples/examples/js/shaders/CopyShader.js"></script>
+<script src="bower_components/three.js-examples/examples/js/shaders/SepiaShader.js"></script>
+<script src="bower_components/three.js-examples/examples/js/shaders/DigitalGlitch.js"></script>
+<script src="bower_components/three.js-examples/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="bower_components/three.js-examples/examples/js/postprocessing/RenderPass.js"></script>
+<script src="bower_components/three.js-examples/examples/js/postprocessing/ShaderPass.js"></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/tween.js/index.js"></script>
 <script src="bower_components/physi.js/index.js"></script>

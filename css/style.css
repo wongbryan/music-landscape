@@ -1,3 +1,14 @@
+#start {
+  font-family: "ArcadeClassic";
+  font-size: 100px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: flash .5s linear; }
+
 #play {
   position: fixed;
   left: 50%;
@@ -76,7 +87,6 @@
   100% {
     opacity: 1;
     width: 28px; } }
-
 body {
   margin: 0;
   overflow: hidden; }
@@ -203,3 +213,5 @@ body {
         color: white; }
     #buttonMask .buttonContainer.started {
       transform: translateY(-100px); }
+
+/*# sourceMappingURL=style.css.map */
