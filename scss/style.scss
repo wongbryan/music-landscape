@@ -34,38 +34,6 @@
 $Fugue: 'Fugue';
 $Calibre: 'Calibre';
 
-#play{
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  #bars{
-    @include on-circle($item-count: 6, $circle-size: 20em, $item-size: 2em);
-  }
-
-  .bar {
-    background: #666;
-    bottom: 1px;
-    height: 1px;
-    position: absolute;
-    width: 3px;
-    animation: sound 0ms -800ms linear infinite alternate;
-    transform-origin: bottom;
-  }
-
-  .bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
-  .bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
-  .bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
-  .bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
-  .bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
-  .bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
-  .bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
-  .bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
-  .bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
-  .bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
-}
-
 @keyframes sound {
   0% {
     opacity: .35;
@@ -110,8 +78,25 @@ body {
   }
 }
 
+#home-button{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 20px;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background-color: white;
+
+  
+}
+
+#home-button:hover{
+  cursor: pointer;
+}
+
 #keyboard {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   padding: 20px;
@@ -139,7 +124,7 @@ body {
 }
 
 #cameraToggle {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 20px;
@@ -191,42 +176,117 @@ body {
   }
 }
 
-#dance{
-  background: rgba(255, 255, 255, .5);
-  height: 100px;
-  width: 100px;
+#home{
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(44, 221, 255, 1);
+  .wrapper{
+    position: absolute;
+    left: 50%;
+    top: 37%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+
+     #playdance{
+      display: flex;
+      justify-content: space-around;
+      width: 70%;
+      margin: auto;
+     }
+
+     #title{
+        font-family: $Fugue;
+        font-size: 120px;
+        color: #ff59e0;
+        margin: auto;
+        margin-bottom: 30px;
+      }
+
+      #dance{
+        display: inline-block;
+      }
+
+      #dance:hover {
+        background-color: #2b2d2d;
+        cursor: pointer;
+        opacity: 1;
+        a {
+          text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+        }
+      }
+
+      #play{
+        display: inline-block;
+      }
+
+      #play:hover{
+        cursor: pointer;
+      }
+  }
+}
+
+.mainButton{
+  height: 125px;
+  width: 125px;
   border-radius: 100%;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  margin: 25px;
+  background: rgba(255, 255, 255, .5);
   text-align: center;
   a{
     color: #333333;
     font-family: $Fugue;
     font-size: 28px;
-    line-height: 100px;
+    line-height: 125px;
     pointer-events: none;
     text-decoration: none;
   }
 }
 
-#dance:hover {
-  background-color: #2b2d2d;
-  cursor: pointer;
-  opacity: 1;
-  a {
-    text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
-  }
+#record{
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
 }
 
-#title{
-  font-family: $Fugue;
-  font-size: 100px;
-  color: purple;
+.hide{
+  animation: fade .5s ease forwards 1;
+}
+
+@keyframes fade{
+  0%{opacity: 1; visibility: visible;} 
+  99%{opacity: .001; visibility: visible;}
+  100%{opacity: 0; visibility: hidden;}
+}
+
+.show{
+  animation: fadeIn .5s ease forwards 1;
+}
+
+@keyframes fadeIn{
+  0%{opacity: 0; display: block;} 
+  100%{opacity: 1; display: block;}
+}
+
+#container{
+  z-index:-2;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
 }
 
+#playUI{
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+}
+
+.bar{
+  position: fixed;
+  height: 12vh;
+  width: 100vw;
+  background-color: black;
+  transition: all .7s ease;
+}

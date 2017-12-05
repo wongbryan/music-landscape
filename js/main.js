@@ -60,7 +60,7 @@ function init() {
 	var sound = new THREE.PositionalAudio(Listener);
 	
 	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
-	dance.onmousedown = Autoplay.play;
+	// dance.onmousedown = Autoplay.play;
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -325,7 +325,6 @@ function initRest() {
                         	}
                             break;
                         case 'down arrow':
-                            // Recorder.playRecording();
                             break;
                         default:
                             break;

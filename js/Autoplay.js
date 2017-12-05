@@ -12,10 +12,6 @@ var CreateAutoplay = function(audio, timestamps, camera){
 	function play(){
 		isplaying = true;
 		sound.play();
-		dance.style.opacity = 0;
-		setTimeout(()=>{
-			dance.style.display = 'none';
-		}, 300);
 
 		camera.controller.shiftPos(2);
 		camera.pivot.speed = 1;
