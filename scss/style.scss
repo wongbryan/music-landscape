@@ -146,24 +146,29 @@ body {
 
   .title {
     opacity: 0;
-    text-transform: uppercase;
     color: white;
     font-family: $Fugue;
+    font-weight: normal;
+    font-size: 20px;
+    margin: 0;
     transition: all 350ms ease-in-out;
   }
 
   .buttons {
-    display: inline-block;
+    // display: inline-block;
     list-style-type: none;
     margin: 0;
+    margin-bottom: 7px;
     padding: 0;
 
     .button {
       display: inline-block;
       opacity: 0;
-      padding: 2px 4px;
-      margin: 0 5px;
-      border-radius: 50%;
+      padding: 4px 4px;
+      box-sizing: border;
+      margin: 0;
+      margin-right: 5px;
+      border-radius: 100%;
       border: 1px solid white;
       text-align: center;
       line-height: 30px;
@@ -186,62 +191,42 @@ body {
   }
 }
 
-#buttonMask{
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+#dance{
+  background: rgba(255, 255, 255, .5);
   height: 100px;
   width: 100px;
-  overflow: hidden;
-
-  .buttonContainer {
-    width: 100%;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    transition: transform 350ms ease-in-out;
-
-    .button {
-      width: 100px;
-      height: 100px;
-      border-radius: 100px;
-      background-color: #f7faff;
-      transition: background-color .1s ease, opacity .3s ease;
-      text-align: center;
-
-      a {
-        text-decoration: none;
-        font-family: $Fugue;
-        color: #333333;
-        font-size: 28px;
-        line-height: 100px;
-        pointer-events: none;
-      }
-
-    }
-
-    #dance:hover {
-      background-color: #2b2d2d;
-      cursor: pointer;
-      a {
-        text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
-      }
-    }
-
-    #start:hover {
-      background-color: #2b2d2d;
-      cursor: pointer;
-      a {
-        color: white;
-      }
-    }
-
-    &.started {
-      transform: translateY(-100px);
-    }
+  border-radius: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin: 25px;
+  text-align: center;
+  a{
+    color: #333333;
+    font-family: $Fugue;
+    font-size: 28px;
+    line-height: 100px;
+    pointer-events: none;
+    text-decoration: none;
   }
+}
 
+#dance:hover {
+  background-color: #2b2d2d;
+  cursor: pointer;
+  opacity: 1;
+  a {
+    text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+  }
+}
 
+#title{
+  font-family: $Fugue;
+  font-size: 100px;
+  color: purple;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
