@@ -27,6 +27,7 @@ gulp.task('js', function () {
 
     return gulp.src('js/*.js')
         .pipe(order([
+            'js/recorder.js',
             'js/Report.js',
             'js/Autoplay.js',
             'js/data.js',

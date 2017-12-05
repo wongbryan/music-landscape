@@ -4,6 +4,7 @@
     <base href="/">
     <title>Landscape</title>
     <link rel="stylesheet" type="text/css" href="assets/fonts/Calibre-web/stylesheet.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/fonts/Arcade-Classic-web/stylesheet.css"/>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/fonts/Fugue-web/stylesheet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -15,38 +16,52 @@
     <div class="percent">0%</div>
     <div class="bar"></div>
 </div>
-<div id="keyboard">
+<div id="info" class="ui">
     <span><i class="keyboard icon fa fa-keyboard-o"></i></span>
-    <span><i class="info icon fa fa-icon-circle"></i></span>
-
+    <span><i class="info icon fa fa-info-circle"></i></span>
 </div>
-<div id="keyboard-overlay">
-    <div class="keyboard">
-
-    </div>
-</div>
-<div id="controls">
+<div id="dj" class="ui">
     <button id="record">
         <div class="icon"></div>
     </button>
-    <div id="buttonMask">
-        <ul class="buttonContainer">
-            <li id="start" class="button"><a href="">start!</a></li>
-            <li id="dance" class="button"><a href="">dance!</a></li>
-        </ul>
-    </div>
     <button id="play">
         <i class="icon fa fa-play"></i>
     </button>
+    <button id="loops">
+        <i class="icon fa fa-bars"></i>
+    </button>
+</div>
 
+<div id="title">
+    <img src="./assets/images/title.svg" alt="" />
+    <button id="start" class="ui-button"><a href="">start</a></button>
+</div>
+
+<div id="buttonMask" class="ui">
+    <ul class="buttonContainer">
+        <li id="dance" class="ui-button"><a href="">dance!</a></li>
+    </ul>
+</div>
+<div id="cameraToggle" class="ui">
+    <span class="title"><i class="icon fa fa-video-camera"></i></span>
+    <ul class="buttons">
+    </ul>
 </div>
 <div id="container">
     <canvas></canvas>
 </div>
-<div id="cameraToggle">
-    <span class="title"><i class="icon fa fa-video-camera"></i></span>
-    <ul class="buttons">
-    </ul>
+
+
+<!-- OVERLAYS -->
+<div class="ui-bar ui-bar--top"></div>
+<div class="ui-bar ui-bar--bottom"></div>
+<div id="keyboard-overlay" class="ui-overlay">
+    <div class="keyboard content"></div>
+</div>
+<div id="info-overlay" class="ui-overlay">
+    <div class="info content">
+
+    </div>
 </div>
 </body>
 <script type="vsh" id="vertexShader">
