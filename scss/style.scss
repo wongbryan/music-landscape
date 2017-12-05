@@ -1,85 +1,10 @@
-@mixin on-circle($item-count, $circle-size, $item-size) {
-  position: relative;
-  width:  $circle-size;
-  height: $circle-size;
-  padding: 0;
-  border-radius: 50%;
-  list-style: none;
-
-  > * {
-    display: block;
-    position: absolute;
-    top:  50%;
-    left: 50%;
-    width:  $item-size;
-    height: $item-size;
-    margin: -($item-size / 2);
-
-    $angle: (360 / $item-count);
-    $rot: 0;
-
-    @for $i from 1 through $item-count {
-      &:nth-of-type(#{$i}) {
-        transform:
-                rotate($rot * 1deg)
-                translate($circle-size / 2)
-                rotate(180*1deg);
-      }
-
-      $rot: $rot + $angle;
-    }
-  }
-}
-
 $Fugue: 'Fugue';
 $Calibre: 'Calibre';
-//
-//#play{
-//  position: fixed;
-//  left: 50%;
-//  top: 50%;
-//  transform: translate(-50%, -50%);
-//
-//  #bars{
-//    @include on-circle($item-count: 6, $circle-size: 20em, $item-size: 2em);
-//  }
-//
-//  .bar {
-//    background: #666;
-//    bottom: 1px;
-//    height: 1px;
-//    position: absolute;
-//    width: 3px;
-//    animation: sound 0ms -800ms linear infinite alternate;
-//    transform-origin: bottom;
-//  }
-//
-//  .bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
-//  .bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
-//  .bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
-//  .bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
-//  .bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
-//  .bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
-//  .bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
-//  .bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
-//  .bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
-//  .bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
-//}
-
-@keyframes sound {
-  0% {
-    opacity: .35;
-    width: 3px;
-  }
-  100% {
-    opacity: 1;
-    width: 28px;
-  }
-}
 
 body {
   margin: 0;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 #progress {
@@ -116,6 +41,7 @@ body {
   right: 0;
   padding: 20px;
   z-index: 2;
+  opacity: 0;
 
   .icon {
     color: white;
@@ -139,6 +65,26 @@ body {
   opacity: 0;
   transition: opacity 350ms ease-in-out;
   pointer-events: none;
+
+  .keyboard {
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .key {
+      width: 100px;
+      height: 100px;
+      display: inline-block;
+      background: white;
+      margin: 5px;
+      line-height: 100px;
+      text-transform: uppercase;
+      font-family: sans-serif;
+    }
+  }
 
   &.show {
     opacity: 1;
@@ -178,7 +124,7 @@ body {
     .button {
       display: inline-block;
       opacity: 0;
-      padding: 2px 4px;
+      padding: 3px 4px;
       margin: 0 5px;
       border-radius: 50%;
       border: 1px solid white;
@@ -211,23 +157,100 @@ body {
   height: 100px;
 
   #play, #record {
+    opacity: 0;
     display: inline-block;
     height: 50px;
     width: 50px;
+    line-height: 50px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
     margin: 0 15px;
-    background: white;
+    background: #f9f9f9;
     border-radius: 50%;
     vertical-align: top;
+    transition: opacity 350ms ease-in-out;
+
+    border: none;
+    padding: 0;
+    outline: none;
+
+    &:hover {
+      background: #ebebeb;
+      cursor: pointer;
+    }
+  }
+
+  #play {
+    .icon {
+      color: #2b2d2d;
+      font-size: 16px;
+      vertical-align: middle;
+    }
+  }
+
+  #record {
+    .icon {
+      width: 20px;
+      height: 20px;
+      background: #f78a8a;
+      border-radius: 50%;
+      margin: 0 auto;
+      transition: all 350ms ease-in-out;
+    }
+
+    &:hover {
+      .icon {
+        transform: scale(1.15);
+      }
+    }
+
+    &.recording {
+
+    }
+  }
+
+  &.started {
+
+    #record, #play {
+      opacity: 1;
+    }
+
+    #buttonMask > .buttonContainer {
+      transform: translateY(-100px);
+
+      #start {
+        opacity: 0;
+      }
+
+      #dance {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.dancing {
+    #record, #play {
+      opacity: 0 !important;
+    }
+
+    #buttonMask > .buttonContainer {
+      transform: translateY(-200px) !important;
+
+      #dance {
+        opacity: 0 !important;
+      }
+
+      #stop {
+        opacity: 1 !important;
+      }
+    }
   }
 }
 
 #buttonMask {
   height: 100px;
   width: 100px;
-  overflow: hidden;
   display: inline-block;
 
   .buttonContainer {
@@ -242,7 +265,7 @@ body {
       height: 100px;
       border-radius: 100px;
       background-color: #f7faff;
-      transition: background-color .1s ease, opacity .3s ease;
+      transition: all 350ms ease-in-out;
       text-align: center;
 
       a {
@@ -256,27 +279,38 @@ body {
 
     }
 
-    #dance:hover {
-      background-color: #2b2d2d;
-      cursor: pointer;
-      a {
-        text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+    #dance {
+      opacity: 0;
+      &:hover {
+        background-color: #2b2d2d;
+        cursor: pointer;
+        a {
+          text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+        }
       }
     }
 
-    #start:hover {
-      background-color: #2b2d2d;
-      cursor: pointer;
-      a {
-        color: white;
+    #start {
+      opacity: 1;
+      &:hover {
+        background-color: #2b2d2d;
+        cursor: pointer;
+        a {
+          color: white;
+        }
       }
     }
 
-    &.started {
-      transform: translateY(-100px);
+    #stop {
+      opacity: 0;
+      &:hover {
+        background-color: #2b2d2d;
+        cursor: pointer;
+        a {
+          color: white;
+        }
+      }
     }
   }
-
-
 }
 

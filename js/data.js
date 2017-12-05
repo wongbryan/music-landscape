@@ -2425,6 +2425,11 @@ const AUDIO_DATA = {
     }
 };
 
+const SOUND_MAPPINGS_1 = {
+
+
+}
+
 const KEY_MAPPINGS = {
     // 'a' : { fruit: Fruit, text: Text, border: Border }
 };

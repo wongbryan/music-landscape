@@ -60,7 +60,6 @@ function init() {
 	var sound = new THREE.PositionalAudio(Listener);
 	
 	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
-	dance.onmousedown = Autoplay.play;
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -189,6 +188,7 @@ function init() {
             r = 2;
             c = (i + 1) % 10;
             maxCols = 7;
+            // offsetX = -ROW_OFFSET * SP;
             offsetX = -1.5 * SP;
         }
 
@@ -236,7 +236,7 @@ function init() {
 
     document.querySelector('#start').addEventListener('click', () => {
         camera.controller.shiftPos(2);
-        $('#buttonMask > .buttonContainer').addClass('started');
+        $('#controls').addClass('started');
         initRest();
     });
 
@@ -253,7 +253,7 @@ function init() {
 }
 
 function initRest() {
-    $('#cameraToggle > .title, .buttons > .button').each(function(i, b) {
+    $('#cameraToggle > .title, .buttons > .button, #keyboard').each(function(i, b) {
         const delay = 100 * i;
         setTimeout(function () {
             $(b).css('opacity', 1);
@@ -261,17 +261,20 @@ function initRest() {
     });
 
     // Init Keyboard Overlay
-    const $overlay = $('#keyboard-overlay');
-    ACTIVE_KEYS.forEach(letter => {
-
-        // let $test = $('div');
-        // $test.html();
-
+    const $overlay = $('#keyboard-overlay > .keyboard');
+    ACTIVE_KEYS.forEach((letter, i) => {
+        if (i === 10 || i === 19) {
+            $overlay.append('<br/>');
+        }
+        $overlay.append(`<div class="key">${letter}</div>`)
     });
 
     document.getElementById('keyboard').addEventListener('click', (e) => {
         $('#keyboard-overlay').toggleClass('show');
     });
+
+    document.getElementById('dance').onmousedown = Autoplay.play;
+    document.getElementById('stop').onmousedown = Autoplay.stop;
 
 
     document.addEventListener('keydown', (e) => {
@@ -279,8 +282,7 @@ function initRest() {
             e.preventDefault();
         }
 
-        if (Autoplay.isPlaying())
-        	return;
+        if (Autoplay.isPlaying) return;
 
         let key = codeToKey(e.keyCode);
         if (key) {

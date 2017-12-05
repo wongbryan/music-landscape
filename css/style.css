@@ -1,14 +1,7 @@
-@keyframes sound {
-  0% {
-    opacity: .35;
-    width: 3px; }
-  100% {
-    opacity: 1;
-    width: 28px; } }
-
 body {
   margin: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  box-sizing: border-box; }
 
 #progress {
   position: fixed;
@@ -40,7 +33,8 @@ body {
   top: 0;
   right: 0;
   padding: 20px;
-  z-index: 2; }
+  z-index: 2;
+  opacity: 0; }
   #keyboard .icon {
     color: white;
     font-size: 32px; }
@@ -59,6 +53,22 @@ body {
   opacity: 0;
   transition: opacity 350ms ease-in-out;
   pointer-events: none; }
+  #keyboard-overlay .keyboard {
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%); }
+    #keyboard-overlay .keyboard .key {
+      width: 100px;
+      height: 100px;
+      display: inline-block;
+      background: white;
+      margin: 5px;
+      line-height: 100px;
+      text-transform: uppercase;
+      font-family: sans-serif; }
   #keyboard-overlay.show {
     opacity: 1;
     pointer-events: auto; }
@@ -89,7 +99,7 @@ body {
     #cameraToggle .buttons .button {
       display: inline-block;
       opacity: 0;
-      padding: 2px 4px;
+      padding: 3px 4px;
       margin: 0 5px;
       border-radius: 50%;
       border: 1px solid white;
@@ -114,21 +124,58 @@ body {
   transform: translateX(-50%);
   height: 100px; }
   #controls #play, #controls #record {
+    opacity: 0;
     display: inline-block;
     height: 50px;
     width: 50px;
+    line-height: 50px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
     margin: 0 15px;
-    background: white;
+    background: #f9f9f9;
     border-radius: 50%;
-    vertical-align: top; }
+    vertical-align: top;
+    transition: opacity 350ms ease-in-out;
+    border: none;
+    padding: 0;
+    outline: none; }
+    #controls #play:hover, #controls #record:hover {
+      background: #ebebeb;
+      cursor: pointer; }
+  #controls #play .icon {
+    color: #2b2d2d;
+    font-size: 16px;
+    vertical-align: middle; }
+  #controls #record .icon {
+    width: 20px;
+    height: 20px;
+    background: #f78a8a;
+    border-radius: 50%;
+    margin: 0 auto;
+    transition: all 350ms ease-in-out; }
+  #controls #record:hover .icon {
+    transform: scale(1.15); }
+  #controls.started #record, #controls.started #play {
+    opacity: 1; }
+  #controls.started #buttonMask > .buttonContainer {
+    transform: translateY(-100px); }
+    #controls.started #buttonMask > .buttonContainer #start {
+      opacity: 0; }
+    #controls.started #buttonMask > .buttonContainer #dance {
+      opacity: 1; }
+  #controls.dancing #record, #controls.dancing #play {
+    opacity: 0 !important; }
+  #controls.dancing #buttonMask > .buttonContainer {
+    transform: translateY(-200px) !important; }
+    #controls.dancing #buttonMask > .buttonContainer #dance {
+      opacity: 0 !important; }
+    #controls.dancing #buttonMask > .buttonContainer #stop {
+      opacity: 1 !important; }
 
 #buttonMask {
   height: 100px;
   width: 100px;
-  overflow: hidden;
   display: inline-block; }
   #buttonMask .buttonContainer {
     width: 100%;
@@ -141,7 +188,7 @@ body {
       height: 100px;
       border-radius: 100px;
       background-color: #f7faff;
-      transition: background-color .1s ease, opacity .3s ease;
+      transition: all 350ms ease-in-out;
       text-align: center; }
       #buttonMask .buttonContainer .button a {
         text-decoration: none;
@@ -150,15 +197,24 @@ body {
         font-size: 28px;
         line-height: 100px;
         pointer-events: none; }
-    #buttonMask .buttonContainer #dance:hover {
-      background-color: #2b2d2d;
-      cursor: pointer; }
-      #buttonMask .buttonContainer #dance:hover a {
-        text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000; }
-    #buttonMask .buttonContainer #start:hover {
-      background-color: #2b2d2d;
-      cursor: pointer; }
-      #buttonMask .buttonContainer #start:hover a {
-        color: white; }
-    #buttonMask .buttonContainer.started {
-      transform: translateY(-100px); }
+    #buttonMask .buttonContainer #dance {
+      opacity: 0; }
+      #buttonMask .buttonContainer #dance:hover {
+        background-color: #2b2d2d;
+        cursor: pointer; }
+        #buttonMask .buttonContainer #dance:hover a {
+          text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000; }
+    #buttonMask .buttonContainer #start {
+      opacity: 1; }
+      #buttonMask .buttonContainer #start:hover {
+        background-color: #2b2d2d;
+        cursor: pointer; }
+        #buttonMask .buttonContainer #start:hover a {
+          color: white; }
+    #buttonMask .buttonContainer #stop {
+      opacity: 0; }
+      #buttonMask .buttonContainer #stop:hover {
+        background-color: #2b2d2d;
+        cursor: pointer; }
+        #buttonMask .buttonContainer #stop:hover a {
+          color: white; }

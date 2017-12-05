@@ -45,20 +45,20 @@ var Recorder;
         };
 
         mediaRecorder.onstop = function (e) {
-            try{
-              var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
+            try {
+                var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
 
-              if(blob.size == 0){
-                throw new Error('No input given to record.');
-              }
+                if (blob.size == 0) {
+                    throw new Error('No input given to record.');
+                }
 
-              var audio = document.createElement('audio');
-              audio.src = URL.createObjectURL(blob);
-              audioRecordings.push(audio);
+                var audio = document.createElement('audio');
+                audio.src = URL.createObjectURL(blob);
+                audioRecordings.push(audio);
 
-              chunks = [];
-            } catch(e){
-              console.error(e.message);
+                chunks = [];
+            } catch (e) {
+                console.error(e.message);
             }
         };
 
@@ -70,8 +70,8 @@ var Recorder;
             KEY_MAPPINGS[key].web_audio_buffer = buffer;
         }
 
-        function getRecordingStatus(){
-          return isRecording;
+        function getRecordingStatus() {
+            return isRecording;
         }
 
         function startRecording() {

@@ -6,7 +6,6 @@ const DANCE_COLORS = [
 '#6f1df2' 
 ];
 
-var dance = document.getElementById('dance');
 var color = '#333333';
 
 dance.addEventListener('mouseover', ()=>{
