@@ -292,10 +292,10 @@ function initRest() {
                     objs.audio.play();
                 }
 
-                if (objs.web_audio_buffer && Recorder.isRecording()) {
-                    var source = Recorder.context.createBufferSource();
+                if (objs.web_audio_buffer && recorder.recording) {
+                    var source = recorder.context.createBufferSource();
                     source.buffer = objs.web_audio_buffer;
-                    source.connect(Recorder.destination);
+                    source.connect(recorder.node);
                     source.start(0);
                 }
 
@@ -314,12 +314,19 @@ function initRest() {
                             camera.controller.next();
                             break;
                         case 'spacebar':
-                        	// if(Recorder.isRecording()){
-                        	// 	Recorder.stopRecording();
-                        	// }
-                        	// else{
-                        	// 	Recorder.startRecording();
-                        	// }
+                        	if(recorder.recording){
+                        		recorder.stop();
+                        		recorder.exportWAV(function(blob){
+                        			var url = URL.createObjectURL(blob);
+                        			var audio = document.createElement('audio');
+                        			audio.src = url;
+                        			recorder.audioRecordings.push(audio);
+                        		});
+                        	}
+                        	else{
+                        		recorder.clear();
+                        		recorder.record();
+                        	}
                             break;
                         case 'down arrow':
                             // Recorder.playRecording();
