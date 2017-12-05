@@ -1,5 +1,6 @@
 $Fugue: 'Fugue';
 $Calibre: 'Calibre';
+$Press-Start-2P: 'Press Start 2P';
 
 $button-bg: #2b2d2d;
 
@@ -7,6 +8,60 @@ body {
   margin: 0;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0px solid white;
+  border-radius: 0px;
+  outline: none;
+}
+
+.ui-button {
+  text-transform: uppercase;
+  width: 100px;
+  height: 50px;
+  background-color: #f7faff;
+  transition: all 350ms ease-in-out;
+  text-align: center;
+
+  a {
+    font-family: $Press-Start-2P, monospace;
+    text-decoration: none;
+    color: #333333;
+    font-size: 12px;
+    line-height: 50px;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: $button-bg;
+    cursor: pointer;
+
+    a {
+      color: white;
+    }
+  }
+}
+
+.ui {
+  opacity: 0;
+  transition: opacity 350ms ease-in-out, transform 350ms ease-in-out;
+
+  &.show {
+    transform: translateY(0px) !important;
+    opacity: 1 !important;
+  }
+}
+
+%ui-top {
+  transform: translateY(-40px);
+}
+
+%ui-bottom {
+  transform: translateY(40px);
 }
 
 #progress {
@@ -17,6 +72,7 @@ body {
   bottom: 0;
   right: 0;
   background: #f6f6f6;
+
   .percent {
     color: #919191;
     text-align: center;
@@ -37,17 +93,18 @@ body {
   }
 }
 
-#keyboard {
+#info {
+  @extend %ui-top;
   position: fixed;
   top: 0;
   right: 0;
   padding: 20px;
   z-index: 2;
-  opacity: 0;
 
   .icon {
     color: white;
     font-size: 32px;
+    margin: 0 10px;
 
     &:hover {
       cursor: pointer;
@@ -94,7 +151,27 @@ body {
   }
 }
 
+#title {
+  position: fixed;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  width: 400px;
+
+  #start {
+    display: block;
+    bottom: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 #cameraToggle {
+  @extend %ui-top;
   position: fixed;
   top: 0;
   left: 0;
@@ -104,7 +181,6 @@ body {
 
   .title {
     vertical-align: middle;
-    opacity: 0;
     text-transform: uppercase;
     color: white;
     font-family: $Fugue;
@@ -125,7 +201,6 @@ body {
 
     .button {
       display: inline-block;
-      opacity: 0;
       padding: 3px 4px;
       margin: 0 5px;
       border-radius: 50%;
@@ -144,39 +219,31 @@ body {
         cursor: pointer;
         background: white;
         color: black;
-
       }
-
     }
   }
 }
 
-#controls {
+#dj {
+  @extend %ui-bottom;
   display: flex;
   position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 100px;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+  height: 50px;
 
-  #play, #record {
+  #play, #record, #loops {
     display: flex;
-    opacity: 0;
     height: 50px;
     width: 50px;
     line-height: 50px;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0 15px;
+    margin-right: 10px;
     background: #f9f9f9;
-    border-radius: 50%;
+    border-radius: 50px;
     transition: all 350ms ease-in-out;
     justify-content: center;
-
-    border: 0px solid white;
-    padding: 0;
-    outline: none;
 
     &:hover {
       background: $button-bg;
@@ -223,6 +290,17 @@ body {
     }
   }
 
+
+}
+
+#controls {
+  display: flex;
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100px;
+
   &.started {
 
     #record, #play {
@@ -230,7 +308,7 @@ body {
     }
 
     #buttonMask > .buttonContainer {
-      transform: translateY(-100px);
+      transform: translateY(-150px);
 
       #start {
         opacity: 0;
@@ -241,6 +319,7 @@ body {
       }
     }
   }
+
 
   &.dancing {
     #record, #play {
@@ -262,65 +341,25 @@ body {
 }
 
 #buttonMask {
-  height: 100px;
-  width: 100px;
+  @extend %ui-bottom;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  padding: 20px;
   display: inline-block;
 
   .buttonContainer {
-    width: 100%;
+    height: 50px;
+    width: 100px;
     list-style-type: none;
     padding: 0;
     margin: 0;
     transition: transform 350ms ease-in-out;
 
-    .button {
-      width: 100px;
-      height: 100px;
-      border-radius: 100px;
-      background-color: #f7faff;
-      transition: all 350ms ease-in-out;
-      text-align: center;
-
-      a {
-        text-decoration: none;
-        font-family: $Fugue;
-        color: #333333;
-        font-size: 28px;
-        line-height: 100px;
-        pointer-events: none;
-      }
-
-    }
-
     #dance {
-      opacity: 0;
       &:hover {
-        background-color: $button-bg;
-        cursor: pointer;
         a {
           text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
-        }
-      }
-    }
-
-    #start {
-      opacity: 1;
-      &:hover {
-        background-color: $button-bg;
-        cursor: pointer;
-        a {
-          color: white;
-        }
-      }
-    }
-
-    #stop {
-      opacity: 0;
-      &:hover {
-        background-color: $button-bg;
-        cursor: pointer;
-        a {
-          color: white;
         }
       }
     }

@@ -253,12 +253,8 @@ function init() {
 }
 
 function initRest() {
-    $('#cameraToggle > .title, .buttons > .button, #keyboard').each(function(i, b) {
-        const delay = 100 * i;
-        setTimeout(function () {
-            $(b).css('opacity', 1);
-        }, delay);
-    });
+    $('#title').fadeOut(300);
+    $('#cameraToggle, #info, #dj, #buttonMask').addClass('show');
 
     // Init Keyboard Overlay
     const $overlay = $('#keyboard-overlay > .keyboard');
@@ -269,7 +265,7 @@ function initRest() {
         $overlay.append(`<div class="key">${letter}</div>`)
     });
 
-    document.getElementById('keyboard').addEventListener('click', (e) => {
+    document.querySelector('#info .keyboard').addEventListener('click', (e) => {
         $('#keyboard-overlay').toggleClass('show');
     });
 
