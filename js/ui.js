@@ -42,6 +42,8 @@ var UIController = (function(){
 
 	var homeUI = document.getElementById('home');
 
+	var playMode = false;
+
 	function hideHome(){
 		homeUI.classList.remove('show');
 		homeUI.classList.add('hide');
@@ -63,42 +65,51 @@ var UIController = (function(){
 	}
 
 	function goPlay(){
+		playMode = true;
 		hideHome();
 		showPlayUI();
 	}
 
 	function goDance(){
-		console.log('hello');
+		playMode = false;
 		hideHome();
 		hidePlayUI();
 	}
 
 	function goHome(){
-		console.log('home');
+		playMode = false;
 		hidePlayUI();
 		showHome();
+	}
+
+	function onPlayMode(){
+		return playMode;
 	}
 
 	play.onmousedown = function(){
 		goPlay();
 		setTimeout(()=>{
 			camera.controller.shiftPos(2);
-		}, 200);
+		}, 400);
 	}
 	dance.onmousedown = function(){
 		goDance();
 		var bars = document.getElementsByClassName('bar');
 		bars[0].style.top = "0%";
 		bars[1].style.bottom = "0%";
-		setTimeout(function(){Autoplay.play();}, 200);
+		setTimeout(function(){Autoplay.play();}, 400);
 	};
 
 	var homeBut = document.getElementById('home-button');
-	homeBut.onmousedown = goHome;
+	homeBut.onmousedown = function(){
+		goHome();
+		setTimeout(()=>{camera.controller.shiftPos(0);}, 400);
+	};
 
 	return{
 		play: goPlay,
 		dance: goDance,
-		home: goHome
+		home: goHome,
+		onPlayMode: onPlayMode
 	}
 })();

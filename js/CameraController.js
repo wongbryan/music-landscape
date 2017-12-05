@@ -1,7 +1,7 @@
 var CameraController = function(camera){
 	var cur = 0;
 	var positions = [
-        new THREE.Vector3(-50, 20, 50),
+        new THREE.Vector3(-50, 20, 40),
 		new THREE.Vector3(0, 3.5, 18),
 		new THREE.Vector3(0, 25, 1),
 	];

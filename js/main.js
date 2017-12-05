@@ -8,6 +8,8 @@ var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener, Recorder;
 
+var composer, wavePass, pixelPass;
+
 const WORLD_RADIUS = 150;
 
 function resize() {
@@ -263,7 +265,7 @@ function initRest() {
             e.preventDefault();
         }
 
-        if (Autoplay.isPlaying())
+        if (Autoplay.isPlaying() || !UIController.onPlayMode())
         	return;
 
         let key = codeToKey(e.keyCode);
