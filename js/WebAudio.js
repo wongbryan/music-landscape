@@ -1,4 +1,4 @@
-var RecorderData, recorder;
+var SoundRecorder;
 
 (function () {
 
@@ -11,11 +11,10 @@ var RecorderData, recorder;
         return;
     }
 
-    var context,
+    var recorder,
+        context,
         bufferLoader,
         destination,
-        mediaRecorder,
-        isRecording = false,
         sources = [],
         chunks = [],
         sound_paths = [],
@@ -41,31 +40,10 @@ var RecorderData, recorder;
             return;
 
         destination = context.createMediaStreamDestination();
-        mediaRecorder = new MediaRecorder(destination.stream);
-
-        mediaRecorder.ondataavailable = function (e) {
-            chunks.push(e.data);
-        };
-
-        mediaRecorder.onstop = function (e) {
-            try {
-                var blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
-
-                if (blob.size == 0) {
-                    throw new Error('No input given to record.');
-                }
-
-                var audio = document.createElement('audio');
-                audio.src = URL.createObjectURL(blob);
-                audioRecordings.push(audio);
-
-                chunks = [];
-            } catch (e) {
-                console.error(e.message);
-            }
-        };
 
         bufferLoader.calledback = true;
+
+        recorder = new Recorder(destination);
 
         for (var key in KEY_MAPPINGS) {
             var index = ACTIVE_KEYS.indexOf(key);
@@ -74,18 +52,24 @@ var RecorderData, recorder;
         }
 
         function getRecordingStatus() {
-            return isRecording;
+            return recorder.recording;
         }
 
-        function startRecording() {
+        function record() {
             $('#record').toggleClass('recording');
-            isRecording = true;
-            mediaRecorder.start();
+            recorder.clear();
+            recorder.record();
         }
 
-        function stopRecording() {
+        function stop() {
             $('#record').toggleClass('recording');
-            mediaRecorder.stop();
+            recorder.stop();
+            recorder.exportWAV(function(blob){
+                var url = URL.createObjectURL(blob);
+                var audio = document.createElement('audio');
+                audio.src = url;
+                audioRecordings.push(audio);
+            });
             isRecording = false;
         }
 
@@ -93,19 +77,16 @@ var RecorderData, recorder;
             audioRecordings[0].play();
         }
 
-        RecorderData = {
+        SoundRecorder = {
+            recorder: recorder,
             context: context,
             destination: destination,
-            mediaRecorder: mediaRecorder,
             isRecording: getRecordingStatus,
-            startRecording: startRecording,
-            stopRecording: stopRecording,
+            record: record,
+            stop: stop,
             playRecording: playRecording,
             audioRecordings: audioRecordings
         }
-
-        recorder = new Recorder(destination);
-        recorder.audioRecordings = [];
     }
 
     bufferLoader.load();

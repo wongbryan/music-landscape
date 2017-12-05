@@ -277,10 +277,10 @@ function initRest() {
     document.getElementById('stop').onmousedown = Autoplay.stop;
 
     document.getElementById('record').addEventListener('click', (e) => {
-        if (Recorder.isRecording()) {
-            Recorder.stopRecording();
+        if (SoundRecorder.isRecording()) {
+           SoundRecorder.stop();
         } else {
-            Recorder.startRecording();
+            SoundRecorder.record();
         }
     })
 
@@ -314,10 +314,10 @@ function initRest() {
                     objs.audio.play();
                 }
 
-                if (objs.web_audio_buffer && recorder.recording) {
-                    var source = recorder.context.createBufferSource();
+                if (objs.web_audio_buffer && SoundRecorder.isRecording()) {
+                    var source = SoundRecorder.context.createBufferSource();
                     source.buffer = objs.web_audio_buffer;
-                    source.connect(recorder.node);
+                    source.connect(SoundRecorder.recorder.node);
                     source.start(0);
                 }
 
@@ -336,18 +336,11 @@ function initRest() {
                             camera.controller.next();
                             break;
                         case 'spacebar':
-                        	if(recorder.recording){
-                        		recorder.stop();
-                        		recorder.exportWAV(function(blob){
-                        			var url = URL.createObjectURL(blob);
-                        			var audio = document.createElement('audio');
-                        			audio.src = url;
-                        			recorder.audioRecordings.push(audio);
-                        		});
+                        	if(SoundRecorder.isRecording()){
+                        		SoundRecorder.stop();
                         	}
                         	else{
-                        		recorder.clear();
-                        		recorder.record();
+                        		SoundRecorder.record();
                         	}
                             break;
                         case 'down arrow':
