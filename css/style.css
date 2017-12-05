@@ -162,7 +162,7 @@ body {
     background: #2b2d2d; }
     #controls #record.recording .icon {
       animation-name: blink;
-      animation-duration: 1s;
+      animation-duration: 0.4s;
       animation-iteration-count: infinite;
       animation-direction: alternate; }
   #controls.started #record, #controls.started #play {

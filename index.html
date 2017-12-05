@@ -17,16 +17,25 @@
 <div id="keyboard">
     <i class="icon fa fa-keyboard-o"></i>
 </div>
-<div id="keyboard-overlay"></div>
+<div id="keyboard-overlay">
+    <div class="keyboard">
+
+    </div>
+</div>
 <div id="controls">
-    <div id="record"></div>
+    <button id="record">
+        <div class="icon"></div>
+    </button>
     <div id="buttonMask">
         <ul class="buttonContainer">
             <li id="start" class="button"><a href="">start!</a></li>
             <li id="dance" class="button"><a href="">dance!</a></li>
+            <li id="stop" class="button"><a href="">stop!</a></li>
         </ul>
     </div>
-    <div id="play"></div>
+    <button id="play">
+        <i class="icon fa fa-play"></i>
+    </button>
 
 </div>
 <div id="container">
@@ -45,15 +54,14 @@
 
 </script>
 <script type="fsh" id="fragmentShader">
-
 	void main(){
 		vec4 color = vec4(1., 0., 0., 0.);
 		gl_FragColor = color;
 	}
 
 </script>
-    <script src="dist/lib.js"></script>
-    <script src="dist/bundle.js"></script>
+<script src="dist/lib.js"></script>
+<script src="dist/bundle.js"></script>
 </body>
 
 
