@@ -2,12 +2,14 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     var sound = document.createElement('AUDIO');
     sound.src = 'assets/sounds/fresh.mp3';
 
-    var isPlaying = false;
     var _interval = null;
 
     function play() {
+        $('#pause-overlay').removeClass('show');
         $('.ui-bar').addClass('show');
-        isPlaying = true;
+        AutoplayProps.isPlaying = true;
+        AutoplayProps.paused = false;
+
         sound.play();
 
         $ui.removeClass('show');
@@ -24,8 +26,34 @@ var CreateAutoplay = function (audio, timestamps, camera) {
         }, 50);
     }
 
+    function pause() {
+        camera.pivot.speed = 0;
+        sound.pause();
+        AutoplayProps.paused = true;
+
+        const $overlay = $('#pause-overlay');
+        $overlay.addClass('show');
+
+        let curr = `${format(sound.currentTime / 60)}:${format(sound.currentTime % 60)}`;
+        let total = `${format(sound.duration / 60)}:${format(sound.duration % 60)}`;
+
+        $overlay.find('.curr').html(curr);
+        $overlay.find('.total').html(total);
+    }
+
+    function format(num) {
+        let rounded = new String(parseInt(num, 10));
+        while (rounded.length < 2) {
+            rounded = '0' + rounded;
+        }
+
+        return rounded;
+    }
+
     function stop() {
         $('.ui-bar').removeClass('show');
+        $('#pause-overlay').removeClass('show');
+
         clearInterval(_interval);
         camera.pivot.speed = 0;
 
@@ -37,12 +65,13 @@ var CreateAutoplay = function (audio, timestamps, camera) {
         sound.pause();
         sound.currentTime = 0;
 
-        $('#controls').toggleClass('dancing');
-
         for (var key in timestamps) {
             timestamps[key].trig = false;
         }
-        isPlaying = false;
+
+        AutoplayProps.isPlaying = false;
+        AutoplayProps.paused = false;
+
 
         $ui.addClass('show');
         return;
@@ -87,7 +116,9 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     }
 
     return {
-        isPlaying: isPlaying,
+        // isPlaying: props.isPlaying,
+        // paused: props.paused,
+        pause: pause,
         play: play,
         stop: stop,
         sound: sound,

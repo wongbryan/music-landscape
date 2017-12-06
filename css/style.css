@@ -231,6 +231,16 @@ button {
       animation-iteration-count: infinite;
       animation-direction: alternate; }
 
+#pause-overlay .time {
+  color: black;
+  font-family: "Fugue", sans-serif;
+  font-size: 4rem; }
+
+#pause-overlay .instructions {
+  color: #919191;
+  font-family: "Press Start 2P", monospace;
+  margin-top: 50px; }
+
 #buttonMask {
   bottom: 0;
   right: 0;

@@ -1,3 +1,314 @@
+var CreateAudio = function(path){
+	var audio = document.createElement('AUDIO');
+	audio.src = path;
+
+	function stop(){
+		audio.currentTime = 0;
+	}
+
+	function play(){
+		audio.play();
+	}
+
+	function pause(){
+		audio.pause();
+	}
+
+	return {
+		stop: stop,
+		play: play,
+		pause: pause,
+		cur: audio.cur
+	}
+}
+var CreateAutoplay = function (audio, timestamps, camera) {
+    var sound = document.createElement('AUDIO');
+    sound.src = 'assets/sounds/fresh.mp3';
+
+    var _interval = null;
+
+    function play() {
+        $('#pause-overlay').removeClass('show');
+        $('.ui-bar').addClass('show');
+        AutoplayProps.isPlaying = true;
+        AutoplayProps.paused = false;
+
+        sound.play();
+
+        $ui.removeClass('show');
+
+        camera.controller.shiftPos(2);
+        camera.pivot.speed = 1;
+
+        _interval = setInterval(function () {
+            var cur = sound.currentTime;
+            if (cur >= sound.duration) {
+                stop();
+            }
+            checkTimestamps(cur);
+        }, 50);
+    }
+
+    function pause() {
+        camera.pivot.speed = 0;
+        sound.pause();
+        AutoplayProps.paused = true;
+
+        const $overlay = $('#pause-overlay');
+        $overlay.addClass('show');
+
+        let curr = `${format(sound.currentTime / 60)}:${format(sound.currentTime % 60)}`;
+        let total = `${format(sound.duration / 60)}:${format(sound.duration % 60)}`;
+
+        $overlay.find('.curr').html(curr);
+        $overlay.find('.total').html(total);
+    }
+
+    function format(num) {
+        let rounded = new String(parseInt(num, 10));
+        while (rounded.length < 2) {
+            rounded = '0' + rounded;
+        }
+
+        return rounded;
+    }
+
+    function stop() {
+        $('.ui-bar').removeClass('show');
+        $('#pause-overlay').removeClass('show');
+
+        clearInterval(_interval);
+        camera.pivot.speed = 0;
+
+        var tween = new TWEEN.Tween(camera.pivot.rotation).to(new THREE.Vector3(0, 0, 0), 400);
+        tween.easing(TWEEN.Easing.Quadratic.InOut);
+        tween.start();
+
+        camera.controller.shiftPos(2);
+        sound.pause();
+        sound.currentTime = 0;
+
+        for (var key in timestamps) {
+            timestamps[key].trig = false;
+        }
+
+        AutoplayProps.isPlaying = false;
+        AutoplayProps.paused = false;
+
+
+        $ui.addClass('show');
+        return;
+    }
+
+    function checkTimestamps(cur) {
+        for (var key in timestamps) {
+            if (Math.round(10 * cur) / 10 == Number.parseFloat(key)) {
+                if (timestamps[key].trig) {
+                    continue;
+                }
+
+                if (timestamps[key].cameraToggle != undefined) {
+                    camera.controller.shiftPos(timestamps[key].cameraToggle);
+                }
+
+                var mag = timestamps[key].mag;
+                bounceAll(fruits, mag);
+
+                var lightkeys = timestamps[key].lightkeys;
+
+                if (lightkeys) {
+                    for (var i = 0; i < lightkeys; i++) {
+                        var index;
+                        index = (lightkeys == 26) ? i : Math.floor(Object.keys(KEY_MAPPINGS).length * Math.random());
+                        var button = Object.keys(KEY_MAPPINGS)[index];
+                        KEY_MAPPINGS[button].border.play();
+
+                        KEY_MAPPINGS[button].text.play();
+                    }
+                }
+
+                timestamps[key].trig = true;
+            }
+        }
+    }
+
+    function bounceAll(fruits, mag) {
+        for (var i = 0; i < fruits.length; i++) {
+            fruits[i].applyImpulse(mag);
+        }
+    }
+
+    return {
+        // isPlaying: props.isPlaying,
+        // paused: props.paused,
+        pause: pause,
+        play: play,
+        stop: stop,
+        sound: sound,
+        timestamps: timestamps
+    }
+}
+function BufferLoader(context, urlList, callback) {
+  this.context = context;
+  this.urlList = urlList;
+  this.onload = callback;
+  this.bufferList = new Array();
+  this.loadCount = 0;
+  this.calledback = false;
+}
+
+BufferLoader.prototype.loadBuffer = function(url, index) {
+  // Load buffer asynchronously
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  var loader = this;
+
+  request.onload = function() {
+    // Asynchronously decode the audio file data in request.response
+    loader.context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        loader.bufferList[index] = buffer;
+        if (++loader.loadCount == loader.urlList.length)
+          loader.onload(loader.bufferList);
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  }
+
+  request.onerror = function() {
+    alert('BufferLoader: XHR error');
+  }
+
+  request.send();
+}
+
+BufferLoader.prototype.load = function() {
+  for (var i = 0; i < this.urlList.length; ++i)
+  this.loadBuffer(this.urlList[i], i);
+}
+var CameraController = function(camera){
+	var cur = 0;
+	var positions = [
+        new THREE.Vector3(-50, 20, 50),
+		new THREE.Vector3(0, 3.5, 18),
+		new THREE.Vector3(0, 25, 0.1),
+	];
+
+	function shiftPos(index){
+		var target = positions[index];
+		var cameraPos = camera.position;
+		var tween = new TWEEN.Tween(cameraPos).to(target, 800);
+		tween.easing(TWEEN.Easing.Quadratic.InOut);
+		tween.onUpdate(function(){
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+		});
+
+		tween.start();
+
+        $('.buttons > .active').removeClass('active');
+        $('.buttons').children()[index].classList.add('active');
+	}
+
+	function next(){
+		var next = (cur == positions.length-1) ? 0 : (cur+1);
+		shiftPos(next);
+		cur = next;
+	}
+
+	function prev() {
+        var prev = (cur == 0) ? positions.length - 1 : (cur-1);
+        shiftPos(prev);
+        cur = prev;
+	}
+
+	function reset(){
+		cur = 0;
+		shiftPos(0);
+		camera.pivot.speed = 0;
+
+		var cur = camera.pivot.rotation;
+		var target = new THREE.Vector3(0, 0, 0);
+		var tween = new TWEEN.Tween(cur).to(target, 300);
+		tween.start();
+	}
+
+	const $buttons = $('#cameraToggle > .buttons')
+	for (let i = 0; i < positions.length; i++) {
+        let $button = $("<li>", {class: "button", id: i});
+        $button.html(i + 1);
+        $buttons.append($button);
+	}
+
+	$buttons[0].addEventListener('click', (e) => {
+		if (e.target.classList.contains('button')) {
+			let newInd = parseInt(e.target.id, 10);
+			shiftPos(newInd);
+		}
+	});
+
+	return {
+		positions: positions,
+		next: next,
+		prev: prev,
+		shiftPos: shiftPos,
+		reset: reset
+	}
+
+}
+var CreateCloud = function(pivot, x, y, z){
+	var mesh = new THREE.Object3D();
+
+	var mat = new THREE.MeshPhongMaterial({
+		color: 0x3f3772,
+		emissive: 0xcbd9ef,
+        side: THREE.DoubleSide
+	});
+
+	var nBlocs = 3+Math.floor(Math.random()*3);
+	for (var i=0; i<nBlocs; i++ ){
+
+		var geom = (Math.random()>.4) ? new THREE.SphereGeometry(20, 6, 6) : new THREE.BoxGeometry(20,20,20);
+
+		var m = new THREE.Mesh(geom, mat); 
+		
+		m.position.x = i*15;
+		m.position.y = Math.random()*10;
+		m.position.z = Math.random()*10;
+		m.rotation.z = Math.random()*Math.PI*2;
+		m.rotation.y = Math.random()*Math.PI*2;
+		
+		var s = .1 + Math.random()*.9;
+		m.scale.set(s,s,s);
+
+		m.castShadow = true;
+		m.receiveShadow = true;
+
+		mesh.add(m);
+	}
+
+	mesh.position.set(x, y, z);
+
+	pivot.add(mesh);
+
+	var speed = Math.random()*.8 + .8;
+	function update(){
+		mesh.rotation.x += speed*.0015;
+	}
+
+	return {
+		mesh: pivot,
+		update: update
+	}
+}
 const KEYCODES = {
     27: "escape",
     32: "spacebar",
@@ -2436,3 +2747,1509 @@ const KEY_MAPPINGS = {
 };
 
 const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'];
+var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
+
+	var mat = Physijs.createMaterial(
+		material,	
+		.8, // high friction
+		.3 // low restitution
+	);
+
+	var mesh = new Physijs.BoxMesh(morphGeom, mat);
+	mesh.castShadow = true;
+	// scale += (2*Math.random()-1)*(.5*scale);
+	// scale = (scale < .1) ? .2:scale;
+
+	mesh.scale.set(scale, scale, scale);
+
+	var force = new THREE.Vector3(500, 2200, 500).multiplyScalar(force),
+	offset = new THREE.Vector3(1, 5, 2);
+
+	function applyImpulse(mag=1){
+
+		var f = new THREE.Vector3();
+		f.copy(force);
+
+		var x = 0,
+		y = 5+Math.random() * 2.5,
+		z = 0;
+
+		offset.set(x, y, z);
+		mesh.applyImpulse(f.multiplyScalar(mag), offset);
+	}
+
+	function defineConstraint(){
+		var linear_lower = new THREE.Vector3(-1, -10, -1),
+		linear_upper = new THREE.Vector3(1, 15, 1);
+
+		var constraint = new Physijs.DOFConstraint(
+		    mesh, // First object to be constrained
+		    null, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+		  	mesh.position, // point in the scene to apply the constraint
+		);
+
+		scene.addConstraint(constraint);
+
+		constraint.setLinearLowerLimit( linear_lower );
+		constraint.setLinearUpperLimit( linear_upper );
+	}
+
+	function play(){
+		applyImpulse();
+	}
+
+	return {
+		applyImpulse: applyImpulse,
+		mesh: mesh,
+		force: force,
+		offset: offset,
+		play: play,
+		defineConstraint: defineConstraint,
+	}
+}
+var CreateKey = function () {
+    var keyGeometry = new THREE.CubeGeometry(4 / 1.05, 0.1, 4 / 1.05);
+    let mesh = new THREE.Mesh(
+        keyGeometry,
+        MATERIALS['key'].clone()
+    );
+
+    function play() {
+        // need to tween this
+        mesh.material.opacity = 0.8;
+        setTimeout(() => {
+            mesh.material.opacity = MATERIALS['key'].opacity;
+        }, 200);
+
+    };
+
+    return {
+        mesh: mesh,
+        play: play
+    }
+
+}
+const ASSETS_PATH = 'assets/models/';
+const FONT_ASSETS_PATH = 'assets/fonts/';
+const TEXTURE_ASSETS_PATH = 'assets/images/';
+const AUDIO_ASSETS_PATH = 'assets/sounds/';
+
+var Loader = (function () {
+    const manager = new THREE.LoadingManager();
+    const loader = new THREE.JSONLoader(manager);
+    const fontLoader = new THREE.FontLoader(manager);
+    const textureLoader = new THREE.TextureLoader(manager);
+    const audioLoader = new THREE.AudioLoader(manager);
+    const $progress = $('#progress');
+
+    manager.onProgress = function (item, loaded, total) {
+        let percent = Math.ceil(loaded / total * 100);
+
+
+        $progress.find('.percent').html(percent + '%');
+        $progress.find('.bar').css({ 'height':  percent + '%' });
+
+        if (percent >= 100) {
+            setTimeout(() => {
+                $('#progress').fadeOut()
+            }, 350);
+        }
+    };
+
+    manager.onLoad = function () {
+        init();
+    };
+
+    this.loadModel = function(file) {
+        loader.load( 
+            ASSETS_PATH + file + '.json',
+
+            function(geometry, materials){
+                MODEL_DATA[file].geometry = geometry;
+
+                // if (materials !== undefined)
+                //     MODEL_DATA[file].materials = materials;
+            }
+        );
+    };
+
+    this.loadTexture = function(file){
+        textureLoader.load(
+            TEXTURE_ASSETS_PATH + file + '.png',
+
+            function(texture){
+                TEXTURE_DATA[file] = texture;
+            }
+        )
+    };
+
+    this.loadFont = function(file) {
+        fontLoader.load(
+            FONT_ASSETS_PATH + file + '.typeface.json',
+
+            function(font) {
+                FONTS_DATA[file].font = font;
+            }
+        );
+    };
+
+    this.loadAudio = function(file, ext) {
+        audioLoader.load(
+            AUDIO_ASSETS_PATH + file + ext,
+
+            function(buffer) {
+                console.log(buffer);
+                AUDIO_DATA[file].buffer = buffer;
+            }
+        );
+    }
+
+    return this;
+}());
+
+for (var obj in MODEL_DATA) {
+    Loader.loadModel(obj);
+}
+
+for (var key in TEXTURE_DATA) {
+    Loader.loadTexture(key);
+}
+
+for (var key in FONTS_DATA) {
+    Loader.loadFont(key);
+}
+
+for (var key in AUDIO_DATA) {
+    var ext = AUDIO_DATA[key].ext;
+    Loader.loadAudio(key, ext);
+}
+
+
+'use strict';
+
+Physijs.scripts.worker = 'lib/physijs_worker.js';
+Physijs.scripts.ammo = 'ammo.js';
+
+var box, scene, ground_material, ground, light;
+var camera, scene, renderer, controls;
+var fruits = [], clouds = [], pivots = [];
+var Autoplay, Listener;
+var AutoplayProps = {
+    isPlaying: false,
+    paused: false
+}
+const WORLD_RADIUS = 150;
+
+function resize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function update() {
+    for (var i = 0; i < pivots.length; i++) {
+        pivots[i].rotation.y += .001 * pivots[i].speed;
+    }
+
+    for (var i = 0; i < clouds.length; i++) {
+        clouds[i].update();
+    }
+
+    controls.update();
+
+    TWEEN.update();
+}
+
+function loop() {
+    update();
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(loop);
+}
+
+function init() {
+    // var container = document.getElementById('container');
+    var canvas = document.getElementsByTagName('canvas')[0];
+    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCSoftShadowMap;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0xbfe7ff);
+    // container.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
+    camera.position.set(-50, 20, 50);
+    camera.controller = CameraController(camera);
+
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    Listener = new THREE.AudioListener();
+    camera.add(Listener);
+
+    var audioLoader = new THREE.AudioLoader();
+	var sound = new THREE.PositionalAudio(Listener);
+	
+	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    scene = new Physijs.Scene;
+    scene.setGravity(new THREE.Vector3(0, -60, 0));
+    scene.addEventListener(
+        'update',
+        function () {
+            scene.simulate(undefined, 1);
+        }
+    );
+
+    var numClouds = 7 + Math.floor(Math.random() * 7);
+    var numPivots = 3;
+
+    for (var i = 0; i < numPivots; i++) {
+        pivots[i] = new THREE.Object3D();
+        pivots[i].speed = 1 + Math.random() * 2;
+    }
+
+    for (var i = 0; i < numClouds; i++) {
+        var index = Math.floor(Math.random() * numPivots);
+
+        var angle = Math.random() * Math.PI * 2;
+        var x = WORLD_RADIUS * Math.cos(angle),
+            y = Math.random() * 50 + 10,
+            z = WORLD_RADIUS * Math.sin(angle)
+        var cloud = CreateCloud(pivots[index], x, y, z);
+
+        clouds.push(cloud);
+        scene.add(cloud.mesh);
+    }
+
+    var hemisphereLight = new THREE.HemisphereLight(0xfceafc, 0x000000, .8)
+
+    var shadowLight = new THREE.DirectionalLight(0xffffff, .5);
+
+    shadowLight.position.set(150, 75, 150);
+
+    shadowLight.castShadow = true;
+
+    shadowLight.shadow.camera.left = -100;
+    shadowLight.shadow.camera.right = 100;
+    shadowLight.shadow.camera.top = 100;
+    shadowLight.shadow.camera.bottom = -100;
+    shadowLight.shadow.camera.near = 1;
+    shadowLight.shadow.camera.far = 1000;
+
+    shadowLight.shadow.mapSize.width = 2048;
+    shadowLight.shadow.mapSize.height = 2048;
+
+    var shadowLight2 = shadowLight.clone();
+    shadowLight2.castShadow = false;
+    shadowLight2.intensity = .2;
+    shadowLight2.position.set(-150, 75, -150);
+
+    var shadowLight3 = shadowLight.clone();
+    shadowLight3.castShadow = false;
+    shadowLight3.intensity = .1;
+    shadowLight3.position.set(0, 125, 0);
+
+    scene.add(hemisphereLight);
+    scene.add(shadowLight);
+    scene.add(shadowLight2);
+    scene.add(shadowLight3);
+
+    const platformWidth = 60,
+        platformDepth = 25,
+        platformHeight = 150;
+
+    var groundMat = new THREE.MeshPhongMaterial({
+        color: 0xffd3ff,
+        transparent: true,
+        opacity: 1,
+        shading: THREE.FlatShading,
+    });
+
+    ground_material = Physijs.createMaterial(
+        groundMat,
+        1., // high friction
+        1. // low restitution
+    );
+
+    ground = new Physijs.BoxMesh(
+        new THREE.BoxGeometry(platformWidth, platformHeight, platformDepth),
+        // new THREE.ConeGeometry(radius, height, 32, 1),
+        ground_material,
+        0 // mass
+    );
+
+    ground.position.y = -(platformHeight / 2);
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const ROWS = 3;
+    const ROW_OFFSET = 2;
+    const COLS = 4;
+    const SP = 4;
+
+    for (let i = 0; i < ACTIVE_KEYS.length; i++) {
+        let k = ACTIVE_KEYS[i];
+
+        KEY_MAPPINGS[k] = {
+            fruit: null,
+            text: null,
+            border: null,
+            audio: null,
+            web_audio_buffer: null
+        };
+
+        let r, c, offsetX, maxRows = 3, maxCols;
+
+        if (i <= 9) {
+            r = 0;
+            c = i;
+            maxCols = 10;
+            offsetX = 0;
+        }
+        else if (i <= 18) {
+            r = 1;
+            c = i % 10;
+            maxCols = 9;
+            offsetX = -SP;
+        }
+        else {
+            r = 2;
+            c = (i + 1) % 10;
+            maxCols = 7;
+            // offsetX = -ROW_OFFSET * SP;
+            offsetX = -1.5 * SP;
+        }
+
+        let x = SP * (c - Math.floor(maxCols / 2));
+        let z = SP * (r - Math.floor(maxRows / 2));
+        x += (r * ROW_OFFSET);
+        x += offsetX;
+
+        let numFruits = Object.keys(MODEL_DATA).length,
+        fruitIndex = Math.floor(numFruits*Math.random()),
+        fruitData = MODEL_DATA[Object.keys(MODEL_DATA)[fruitIndex]];
+
+	    let fruit = CreateFruit(
+	    	fruitData.geometry,
+	    	fruitData.materials.clone(),
+	    	fruitData.scale,
+	    	fruitData.force,
+	    	null
+	    );
+
+	    KEY_MAPPINGS[k].fruit = fruit;
+	    fruits.push(fruit);
+        fruit.mesh.position.set(x, 5, z);
+        fruit.mesh.rotation.set(Math.random(), Math.random(), Math.random());
+        scene.add(fruit.mesh);
+
+        fruit.defineConstraint();
+
+        let square = CreateKey();
+        square.mesh.position.set(x, .1, z);
+        KEY_MAPPINGS[k].border = square;
+        scene.add(square.mesh);
+
+        let text = CreateText(k);
+        text.mesh.position.set(x - 1, .2, z + 1);
+        text.mesh.rotation.x = -Math.PI / 2;
+        KEY_MAPPINGS[k].text = text;
+        scene.add(text.mesh);
+
+        let path = 'assets/sounds/' + k + '.wav';
+        let audio = CreateAudio(path);
+        KEY_MAPPINGS[k].audio = audio;
+
+    }
+
+    document.querySelector('#start').addEventListener('click', () => {
+        camera.controller.shiftPos(2);
+        $('#controls').addClass('started');
+        initRest();
+    });
+
+    scene.simulate();
+
+    camera.pivot = new THREE.Object3D();
+    camera.pivot.add(camera);
+    camera.pivot.speed = 0;
+    scene.add(camera.pivot);
+    pivots.push(camera.pivot);
+
+    window.addEventListener('resize', resize);
+    loop();
+}
+
+function initRest() {
+    $('#title').fadeOut(300);
+    $ui.addClass('show');
+
+    // Init Keyboard Overlay
+    const $overlay = $('#keyboard-overlay > .keyboard');
+    ACTIVE_KEYS.forEach((letter, i) => {
+        if (i === 10 || i === 19) {
+            $overlay.append('<br/>');
+        }
+        $overlay.append(`<div class="key">${letter}</div>`)
+    });
+
+    document.querySelector('#info .keyboard').addEventListener('click', (e) => {
+        $('#keyboard-overlay').toggleClass('show');
+    });
+
+    document.querySelector('#info .info').addEventListener('click', (e) => {
+        $('#info-overlay').toggleClass('show');
+    });
+
+    document.getElementById('dance').onmousedown = Autoplay.play;
+    // document.getElementById('stop').onmousedown = Autoplay.stop;
+
+    document.getElementById('record').addEventListener('click', (e) => {
+        if (SoundRecorder.isRecording()) {
+           SoundRecorder.stop();
+        } else {
+            SoundRecorder.record();
+        }
+    });
+
+
+    document.addEventListener('keydown', (e) => {
+        if (!e.metaKey) {
+            e.preventDefault();
+        }
+
+        if (Autoplay.isPlaying) return;
+
+        let key = codeToKey(e.keyCode);
+        if (key) {
+            let objs = KEY_MAPPINGS[key];
+
+            if (objs) {
+                if (objs.fruit) {
+                    objs.fruit.play();
+                }
+
+                if (objs.text) {
+                    objs.text.play();
+                }
+
+                if (objs.border) {
+                    objs.border.play();
+                }
+
+                if (objs.audio) {
+                    objs.audio.stop();
+                    objs.audio.play();
+                }
+
+                if (objs.web_audio_buffer && SoundRecorder.isRecording()) {
+                    var source = SoundRecorder.context.createBufferSource();
+                    source.buffer = objs.web_audio_buffer;
+                    source.connect(SoundRecorder.recorder.node);
+                    source.start(0);
+                }
+
+            } else {
+                if (!isNaN(key)) {
+                    let i = parseInt(key, 10);
+                    if (i > 0 && camera.controller.positions.length - 1 >= i - 1) {
+                        camera.controller.shiftPos(i - 1);
+                    }
+                } else {
+                    switch (key) {
+                        case 'left arrow':
+                            camera.controller.prev();
+                            break;
+                        case 'right arrow':
+                            camera.controller.next();
+                            break;
+                        case 'escape':
+                            Autoplay.stop();
+                            break;
+                        case 'spacebar':
+                            if (AutoplayProps.paused) {
+                                Autoplay.play();
+                            } else if (AutoplayProps.isPlaying) {
+                                Autoplay.pause();
+
+                            } else {
+                                if( SoundRecorder.isRecording()){
+                                    SoundRecorder.stop();
+                                }
+                                else{
+                                    SoundRecorder.record();
+                                }
+                            }
+                            break;
+                        case 'down arrow':
+                            // Recorder.playRecording();
+                            break;
+                        case '/':
+                            $('#keyboard-overlay').toggleClass('show');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+        }
+    });
+}
+
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Recorder = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+
+module.exports = require("./recorder").Recorder;
+
+},{"./recorder":2}],2:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+})();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Recorder = undefined;
+
+var _inlineWorker = require('inline-worker');
+
+var _inlineWorker2 = _interopRequireDefault(_inlineWorker);
+
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
+
+var Recorder = exports.Recorder = (function () {
+    function Recorder(source, cfg) {
+        var _this = this;
+
+        _classCallCheck(this, Recorder);
+
+        this.config = {
+            bufferLen: 4096,
+            numChannels: 2,
+            mimeType: 'audio/wav'
+        };
+        this.recording = false;
+        this.callbacks = {
+            getBuffer: [],
+            exportWAV: []
+        };
+
+        Object.assign(this.config, cfg);
+        this.context = source.context;
+        this.node = (this.context.createScriptProcessor || this.context.createJavaScriptNode).call(this.context, this.config.bufferLen, this.config.numChannels, this.config.numChannels);
+
+        this.node.onaudioprocess = function (e) {
+            if (!_this.recording) return;
+
+            var buffer = [];
+            for (var channel = 0; channel < _this.config.numChannels; channel++) {
+                buffer.push(e.inputBuffer.getChannelData(channel));
+            }
+            _this.worker.postMessage({
+                command: 'record',
+                buffer: buffer
+            });
+        };
+
+        source.connect(this.node);
+        this.node.connect(this.context.destination); //this should not be necessary
+
+        var self = {};
+        this.worker = new _inlineWorker2.default(function () {
+            var recLength = 0,
+                recBuffers = [],
+                sampleRate = undefined,
+                numChannels = undefined;
+
+            self.onmessage = function (e) {
+                switch (e.data.command) {
+                    case 'init':
+                        init(e.data.config);
+                        break;
+                    case 'record':
+                        record(e.data.buffer);
+                        break;
+                    case 'exportWAV':
+                        exportWAV(e.data.type);
+                        break;
+                    case 'getBuffer':
+                        getBuffer();
+                        break;
+                    case 'clear':
+                        clear();
+                        break;
+                }
+            };
+
+            function init(config) {
+                sampleRate = config.sampleRate;
+                numChannels = config.numChannels;
+                initBuffers();
+            }
+
+            function record(inputBuffer) {
+                for (var channel = 0; channel < numChannels; channel++) {
+                    recBuffers[channel].push(inputBuffer[channel]);
+                }
+                recLength += inputBuffer[0].length;
+            }
+
+            function exportWAV(type) {
+                var buffers = [];
+                for (var channel = 0; channel < numChannels; channel++) {
+                    buffers.push(mergeBuffers(recBuffers[channel], recLength));
+                }
+                var interleaved = undefined;
+                if (numChannels === 2) {
+                    interleaved = interleave(buffers[0], buffers[1]);
+                } else {
+                    interleaved = buffers[0];
+                }
+                var dataview = encodeWAV(interleaved);
+                var audioBlob = new Blob([dataview], { type: type });
+
+                self.postMessage({ command: 'exportWAV', data: audioBlob });
+            }
+
+            function getBuffer() {
+                var buffers = [];
+                for (var channel = 0; channel < numChannels; channel++) {
+                    buffers.push(mergeBuffers(recBuffers[channel], recLength));
+                }
+                self.postMessage({ command: 'getBuffer', data: buffers });
+            }
+
+            function clear() {
+                recLength = 0;
+                recBuffers = [];
+                initBuffers();
+            }
+
+            function initBuffers() {
+                for (var channel = 0; channel < numChannels; channel++) {
+                    recBuffers[channel] = [];
+                }
+            }
+
+            function mergeBuffers(recBuffers, recLength) {
+                var result = new Float32Array(recLength);
+                var offset = 0;
+                for (var i = 0; i < recBuffers.length; i++) {
+                    result.set(recBuffers[i], offset);
+                    offset += recBuffers[i].length;
+                }
+                return result;
+            }
+
+            function interleave(inputL, inputR) {
+                var length = inputL.length + inputR.length;
+                var result = new Float32Array(length);
+
+                var index = 0,
+                    inputIndex = 0;
+
+                while (index < length) {
+                    result[index++] = inputL[inputIndex];
+                    result[index++] = inputR[inputIndex];
+                    inputIndex++;
+                }
+                return result;
+            }
+
+            function floatTo16BitPCM(output, offset, input) {
+                for (var i = 0; i < input.length; i++, offset += 2) {
+                    var s = Math.max(-1, Math.min(1, input[i]));
+                    output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+                }
+            }
+
+            function writeString(view, offset, string) {
+                for (var i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            }
+
+            function encodeWAV(samples) {
+                var buffer = new ArrayBuffer(44 + samples.length * 2);
+                var view = new DataView(buffer);
+
+                /* RIFF identifier */
+                writeString(view, 0, 'RIFF');
+                /* RIFF chunk length */
+                view.setUint32(4, 36 + samples.length * 2, true);
+                /* RIFF type */
+                writeString(view, 8, 'WAVE');
+                /* format chunk identifier */
+                writeString(view, 12, 'fmt ');
+                /* format chunk length */
+                view.setUint32(16, 16, true);
+                /* sample format (raw) */
+                view.setUint16(20, 1, true);
+                /* channel count */
+                view.setUint16(22, numChannels, true);
+                /* sample rate */
+                view.setUint32(24, sampleRate, true);
+                /* byte rate (sample rate * block align) */
+                view.setUint32(28, sampleRate * 4, true);
+                /* block align (channel count * bytes per sample) */
+                view.setUint16(32, numChannels * 2, true);
+                /* bits per sample */
+                view.setUint16(34, 16, true);
+                /* data chunk identifier */
+                writeString(view, 36, 'data');
+                /* data chunk length */
+                view.setUint32(40, samples.length * 2, true);
+
+                floatTo16BitPCM(view, 44, samples);
+
+                return view;
+            }
+        }, self);
+
+        this.worker.postMessage({
+            command: 'init',
+            config: {
+                sampleRate: this.context.sampleRate,
+                numChannels: this.config.numChannels
+            }
+        });
+
+        this.worker.onmessage = function (e) {
+            var cb = _this.callbacks[e.data.command].pop();
+            if (typeof cb == 'function') {
+                cb(e.data.data);
+            }
+        };
+    }
+
+    _createClass(Recorder, [{
+        key: 'record',
+        value: function record() {
+            this.recording = true;
+        }
+    }, {
+        key: 'stop',
+        value: function stop() {
+            this.recording = false;
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.worker.postMessage({ command: 'clear' });
+        }
+    }, {
+        key: 'getBuffer',
+        value: function getBuffer(cb) {
+            cb = cb || this.config.callback;
+            if (!cb) throw new Error('Callback not set');
+
+            this.callbacks.getBuffer.push(cb);
+
+            this.worker.postMessage({ command: 'getBuffer' });
+        }
+    }, {
+        key: 'exportWAV',
+        value: function exportWAV(cb, mimeType) {
+            mimeType = mimeType || this.config.mimeType;
+            cb = cb || this.config.callback;
+            if (!cb) throw new Error('Callback not set');
+
+            this.callbacks.exportWAV.push(cb);
+
+            this.worker.postMessage({
+                command: 'exportWAV',
+                type: mimeType
+            });
+        }
+    }], [{
+        key: 'forceDownload',
+        value: function forceDownload(blob, filename) {
+            var url = (window.URL || window.webkitURL).createObjectURL(blob);
+            var link = window.document.createElement('a');
+            link.href = url;
+            link.download = filename || 'output.wav';
+            var click = document.createEvent("Event");
+            click.initEvent("click", true, true);
+            link.dispatchEvent(click);
+        }
+    }]);
+
+    return Recorder;
+})();
+
+exports.default = Recorder;
+
+},{"inline-worker":3}],3:[function(require,module,exports){
+"use strict";
+
+module.exports = require("./inline-worker");
+},{"./inline-worker":4}],4:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var WORKER_ENABLED = !!(global === global.window && global.URL && global.Blob && global.Worker);
+
+var InlineWorker = (function () {
+  function InlineWorker(func, self) {
+    var _this = this;
+
+    _classCallCheck(this, InlineWorker);
+
+    if (WORKER_ENABLED) {
+      var functionBody = func.toString().trim().match(/^function\s*\w*\s*\([\w\s,]*\)\s*{([\w\W]*?)}$/)[1];
+      var url = global.URL.createObjectURL(new global.Blob([functionBody], { type: "text/javascript" }));
+
+      return new global.Worker(url);
+    }
+
+    this.self = self;
+    this.self.postMessage = function (data) {
+      setTimeout(function () {
+        _this.onmessage({ data: data });
+      }, 0);
+    };
+
+    setTimeout(function () {
+      func.call(self);
+    }, 0);
+  }
+
+  _createClass(InlineWorker, {
+    postMessage: {
+      value: function postMessage(data) {
+        var _this = this;
+
+        setTimeout(function () {
+          _this.self.onmessage({ data: data });
+        }, 0);
+      }
+    }
+  });
+
+  return InlineWorker;
+})();
+
+module.exports = InlineWorker;
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}]},{},[1])(1)
+});
+/* AUTHOR: Analytical Graphics, Inc.
+Test functions taken from 'webglreport':
+https://github.com/AnalyticalGraphicsInc/webglreport 
+*/
+
+const REPORT = (function(){
+	var webglVersion = window.location.search.indexOf('v=2') > 0 ? 2 : 1;
+
+    // var template = _.template($('#reportTemplate').html());
+    var report = {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent,
+        webglVersion: webglVersion
+    };
+
+    var canvas = document.getElementsByTagName('canvas')[0];
+    var gl;
+
+    var possibleNames = (webglVersion === 2) ? ['webgl2', 'experimental-webgl2'] : ['webgl', 'experimental-webgl'];
+    var contextName;
+    for(var i=0; i<possibleNames.length; i++){
+    	var name = possibleNames[i];
+    	if (canvas.getContext(name, { stencil: true }) == null){
+    		continue;
+    	}
+    	else{
+    		contextName = name;
+    		gl = canvas.getContext(name, { stencil: true });
+    	}
+    }
+
+    report.gl = gl;
+    report.contextName = contextName;
+
+
+    function describeRange(value) {
+        return '[' + value[0] + ', ' + value[1] + ']';
+    }
+
+    function getMaxAnisotropy() {
+        var e = gl.getExtension('EXT_texture_filter_anisotropic')
+                || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic')
+                || gl.getExtension('MOZ_EXT_texture_filter_anisotropic');
+
+        if (e) {
+            var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+            // See Canary bug: https://code.google.com/p/chromium/issues/detail?id=117450
+            if (max === 0) {
+                max = 2;
+            }
+            return max;
+        }
+        return 'n/a';
+    }
+
+    function formatPower(exponent, verbose) {
+        if (verbose) {
+            return '' + Math.pow(2, exponent);
+        } else {
+            return '2<sup>' + exponent + '</sup>';
+        }
+    }
+
+    function getPrecisionDescription(precision, verbose) {
+        var verbosePart = verbose ? ' bit mantissa' : '';
+        return '[-' + formatPower(precision.rangeMin, verbose) + ', ' + formatPower(precision.rangeMax, verbose) + '] (' + precision.precision + verbosePart + ')'
+    }
+
+    function getBestFloatPrecision(shaderType) {
+        var high = gl.getShaderPrecisionFormat(shaderType, gl.HIGH_FLOAT);
+        var medium = gl.getShaderPrecisionFormat(shaderType, gl.MEDIUM_FLOAT);
+        var low = gl.getShaderPrecisionFormat(shaderType, gl.LOW_FLOAT);
+
+        var best = high;
+        if (high.precision === 0) {
+            best = medium;
+        }
+
+        return '<span title="High: ' + getPrecisionDescription(high, true) + '\n\nMedium: ' + getPrecisionDescription(medium, true) + '\n\nLow: ' + getPrecisionDescription(low, true) + '">' +
+            getPrecisionDescription(best, false) + '</span>';
+    }
+
+    function getFloatIntPrecision(gl) {
+        var high = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+        var s = (high.precision !== 0) ? 'highp/' : 'mediump/';
+
+        high = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_INT);
+        s += (high.rangeMax !== 0) ? 'highp' : 'lowp';
+
+        return s;
+    }
+
+    function isPowerOfTwo(n) {
+        return (n !== 0) && ((n & (n - 1)) === 0);
+    }
+
+    function getAngle(gl) {
+        var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
+
+        // Heuristic: ANGLE is only on Windows, not in IE, and not in Edge, and does not implement line width greater than one.
+        var angle = ((navigator.platform === 'Win32') || (navigator.platform === 'Win64')) &&
+            (gl.getParameter(gl.RENDERER) !== 'Internet Explorer') &&
+            (gl.getParameter(gl.RENDERER) !== 'Microsoft Edge') &&
+            (lineWidthRange === describeRange([1,1]));
+
+        if (angle) {
+            // Heuristic: D3D11 backend does not appear to reserve uniforms like the D3D9 backend, e.g.,
+            // D3D11 may have 1024 uniforms per stage, but D3D9 has 254 and 221.
+            //
+            // We could also test for WEBGL_draw_buffers, but many systems do not have it yet
+            // due to driver bugs, etc.
+            if (isPowerOfTwo(gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)) && isPowerOfTwo(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS))) {
+                return 'Yes, D3D11';
+            } else {
+                return 'Yes, D3D9';
+            }
+        }
+
+        return 'No';
+    }
+
+    function getMajorPerformanceCaveat(contextName) {
+        // Does context creation fail to do a major performance caveat?
+        var canvas2 = document.createElement('canvas');
+        var gl = canvas2.getContext(contextName, { failIfMajorPerformanceCaveat : true });
+        canvas2.remove();
+
+        if (!gl) {
+            // Our original context creation passed.  This did not.
+            return 'Yes';
+    }
+
+        if (typeof gl.getContextAttributes().failIfMajorPerformanceCaveat === 'undefined') {
+            // If getContextAttributes() doesn't include the failIfMajorPerformanceCaveat
+            // property, assume the browser doesn't implement it yet.
+            return 'Not implemented';
+        }
+
+    return 'No';
+    }
+
+    function getDraftExtensionsInstructions() {
+        if (navigator.userAgent.indexOf('Chrome') !== -1) {
+            return 'To see draft extensions in Chrome, browse to about:flags, enable the "Enable WebGL Draft Extensions" option, and relaunch.';
+        } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+            return 'To see draft extensions in Firefox, browse to about:config and set webgl.enable-draft-extensions to true.';
+        }
+
+        return '';
+    }
+
+    function getMaxColorBuffers(gl) {
+        var maxColorBuffers = 1;
+        var ext = gl.getExtension("WEBGL_draw_buffers");
+        if (ext != null) 
+            maxColorBuffers = gl.getParameter(ext.MAX_DRAW_BUFFERS_WEBGL);
+        
+        return maxColorBuffers;
+    }
+
+    function getUnmaskedInfo(gl) {
+        var unMaskedInfo = {
+            renderer: '',
+            vendor: ''
+        };
+        
+        var dbgRenderInfo = gl.getExtension("WEBGL_debug_renderer_info");
+        if (dbgRenderInfo != null) {
+            unMaskedInfo.renderer = gl.getParameter(dbgRenderInfo.UNMASKED_RENDERER_WEBGL);
+            unMaskedInfo.vendor   = gl.getParameter(dbgRenderInfo.UNMASKED_VENDOR_WEBGL);
+        }
+        
+        return unMaskedInfo;
+    }
+
+    function showNull(v) {
+        return (v === null) ? 'n/a' : v;
+    }
+    
+    var webglToEsNames = {
+        'getInternalformatParameter' : 'getInternalformativ',
+        'uniform1ui' : 'uniform',
+        'uniform2ui' : 'uniform',
+        'uniform3ui' : 'uniform',
+        'uniform4ui' : 'uniform',
+        'uniform1uiv' : 'uniform',
+        'uniform2uiv' : 'uniform',
+        'uniform3uiv' : 'uniform',
+        'uniform4uiv' : 'uniform',
+        'uniformMatrix2x3fv' : 'uniform',
+        'uniformMatrix3x2fv' : 'uniform',
+        'uniformMatrix2x4fv' : 'uniform',
+        'uniformMatrix4x2fv' : 'uniform',
+        'uniformMatrix3x4fv' : 'uniform',
+        'uniformMatrix4x3fv' : 'uniform',
+        'vertexAttribI4i' : 'vertexAttrib',
+        'vertexAttribI4iv' : 'vertexAttrib',
+        'vertexAttribI4ui' : 'vertexAttrib',
+        'vertexAttribI4uiv' : 'vertexAttrib',
+        'vertexAttribIPointer' : 'vertexAttribPointer',
+        'vertexAttribDivisor' : 'vertexAttribDivisor',
+        'createQuery' : 'genQueries',
+        'deleteQuery' : 'deleteQueries',
+        'endQuery' : 'beginQuery',
+        'getQuery' : 'getQueryiv',
+        'getQueryParameter' : 'getQueryObjectuiv',
+        'samplerParameteri' : 'samplerParameter',
+        'samplerParameterf' : 'samplerParameter',
+        'clearBufferiv' : 'clearBuffer',
+        'clearBufferuiv' : 'clearBuffer',
+        'clearBufferfv' : 'clearBuffer',
+        'clearBufferfi' : 'clearBuffer',
+        'createSampler' : 'genSamplers',
+        'deleteSampler' : 'deleteSamplers',
+        'getSyncParameter' : 'getSynciv',
+        'createTransformFeedback' : 'genTransformFeedbacks',
+        'deleteTransformFeedback' : 'deleteTransformFeedbacks',
+        'endTransformFeedback' : 'beginTransformFeedback',
+        'getIndexedParameter' : 'get',
+        'getActiveUniforms' : 'getActiveUniformsiv',
+        'getActiveUniformBlockParameter' : 'getActiveUniformBlockiv',
+        'createVertexArray' : 'genVertexArrays',
+        'deleteVertexArray' : 'deleteVertexArrays'
+    };
+
+    function getWebGL2ExtensionUrl(name) {
+        if (name === 'getBufferSubData') {
+            return 'http://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetBufferSubData.xml';
+        }
+
+        if (webglToEsNames[name]) {
+            name = webglToEsNames[name];
+        }
+
+        var filename = 'gl' + name[0].toUpperCase() + name.substring(1) + '.xhtml';
+        return 'http://www.khronos.org/opengles/sdk/docs/man3/html/' + filename;
+    }
+
+    function getWebGL2Status(gl, contextName) {
+        var webgl2Names = [
+            'copyBufferSubData',
+            'getBufferSubData',
+            'blitFramebuffer',
+            'framebufferTextureLayer',
+            'getInternalformatParameter',
+            'invalidateFramebuffer',
+            'invalidateSubFramebuffer',
+            'readBuffer',
+            'renderbufferStorageMultisample',
+            'texStorage2D',
+            'texStorage3D',
+            'texImage3D',
+            'texSubImage3D',
+            'copyTexSubImage3D',
+            'compressedTexImage3D',
+            'compressedTexSubImage3D',
+            'getFragDataLocation',
+            'uniform1ui',
+            'uniform2ui',
+            'uniform3ui',
+            'uniform4ui',
+            'uniform1uiv',
+            'uniform2uiv',
+            'uniform3uiv',
+            'uniform4uiv',
+            'uniformMatrix2x3fv',
+            'uniformMatrix3x2fv',
+            'uniformMatrix2x4fv',
+            'uniformMatrix4x2fv',
+            'uniformMatrix3x4fv',
+            'uniformMatrix4x3fv',
+            'vertexAttribI4i',
+            'vertexAttribI4iv',
+            'vertexAttribI4ui',
+            'vertexAttribI4uiv',
+            'vertexAttribIPointer',
+            'vertexAttribDivisor',
+            'drawArraysInstanced',
+            'drawElementsInstanced',
+            'drawRangeElements',
+            'drawBuffers',
+            'clearBufferiv',
+            'clearBufferuiv',
+            'clearBufferfv',
+            'clearBufferfi',
+            'createQuery',
+            'deleteQuery',
+            'isQuery',
+            'beginQuery',
+            'endQuery',
+            'getQuery',
+            'getQueryParameter',
+            'createSampler',
+            'deleteSampler',
+            'isSampler',
+            'bindSampler',
+            'samplerParameteri',
+            'samplerParameterf',
+            'getSamplerParameter',
+            'fenceSync',
+            'isSync',
+            'deleteSync',
+            'clientWaitSync',
+            'waitSync',
+            'getSyncParameter',
+            'createTransformFeedback',
+            'deleteTransformFeedback',
+            'isTransformFeedback',
+            'bindTransformFeedback',
+            'beginTransformFeedback',
+            'endTransformFeedback',
+            'transformFeedbackVaryings',
+            'getTransformFeedbackVarying',
+            'pauseTransformFeedback',
+            'resumeTransformFeedback',
+            'bindBufferBase',
+            'bindBufferRange',
+            'getIndexedParameter',
+            'getUniformIndices',
+            'getActiveUniforms',
+            'getUniformBlockIndex',
+            'getActiveUniformBlockParameter',
+            'getActiveUniformBlockName',
+            'uniformBlockBinding',
+            'createVertexArray',
+            'deleteVertexArray',
+            'isVertexArray',
+            'bindVertexArray'
+        ];
+
+        var webgl2 = (contextName.indexOf('webgl2') !== -1);
+
+        var functions = [];
+        var totalImplemented = 0;
+        var length = webgl2Names.length;
+
+        if (webgl2) {
+            for (var i = 0; i < length; ++i) {
+                var name = webgl2Names[i];
+                var className = 'extension';
+                if (webgl2 && gl[name]) {
+                    ++totalImplemented;
+                } else {
+                    className += ' unsupported';
+                }
+                functions.push({ name: name, className: className });
+            }
+        }
+
+        return {
+            status : webgl2 ? (totalImplemented + ' of ' + length + ' new functions implemented.') :
+                'webgl2 and experimental-webgl2 contexts not available.',
+            functions : functions
+        };
+    }
+
+    var webgl2Status = getWebGL2Status(gl, contextName);
+
+
+    report = Object.assign(report, {
+        contextName: contextName,
+        glVersion: gl.getParameter(gl.VERSION),
+        shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+        vendor: gl.getParameter(gl.VENDOR),
+        renderer: gl.getParameter(gl.RENDERER),
+        unMaskedVendor: getUnmaskedInfo(gl).vendor,
+        unMaskedRenderer: getUnmaskedInfo(gl).renderer,
+        antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
+        angle: getAngle(gl),
+        majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
+        maxColorBuffers: getMaxColorBuffers(gl),
+        redBits: gl.getParameter(gl.RED_BITS),
+        greenBits: gl.getParameter(gl.GREEN_BITS),
+        blueBits: gl.getParameter(gl.BLUE_BITS),
+        alphaBits: gl.getParameter(gl.ALPHA_BITS),
+        depthBits: gl.getParameter(gl.DEPTH_BITS),
+        stencilBits: gl.getParameter(gl.STENCIL_BITS),
+        maxRenderBufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+        maxCombinedTextureImageUnits: gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS),
+        maxCubeMapTextureSize: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE),
+        maxFragmentUniformVectors: gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS),
+        maxTextureImageUnits: gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS),
+        maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+        maxVaryingVectors: gl.getParameter(gl.MAX_VARYING_VECTORS),
+        maxVertexAttributes: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
+        maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
+        maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
+        aliasedLineWidthRange: describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)),
+        aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
+        maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
+        maxAnisotropy: getMaxAnisotropy(),
+        vertexShaderBestPrecision: getBestFloatPrecision(gl.VERTEX_SHADER),
+        fragmentShaderBestPrecision: getBestFloatPrecision(gl.FRAGMENT_SHADER),
+        fragmentShaderFloatIntPrecision: getFloatIntPrecision(gl),
+
+        extensions: gl.getSupportedExtensions(),
+        draftExtensionsInstructions: getDraftExtensionsInstructions(),
+
+        webgl2Status : webgl2Status.status,
+        webgl2Functions : webgl2Status.functions
+    });
+
+    if (webglVersion > 1) {
+        report = Object.assign(report, {
+            maxVertexUniformComponents: showNull(gl.getParameter(gl.MAX_VERTEX_UNIFORM_COMPONENTS)),
+            maxVertexUniformBlocks: showNull(gl.getParameter(gl.MAX_VERTEX_UNIFORM_BLOCKS)),
+            maxVertexOutputComponents: showNull(gl.getParameter(gl.MAX_VERTEX_OUTPUT_COMPONENTS)),
+            maxVaryingComponents: showNull(gl.getParameter(gl.MAX_VARYING_COMPONENTS)),
+            maxFragmentUniformComponents: showNull(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_COMPONENTS)),
+            maxFragmentUniformBlocks: showNull(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_BLOCKS)),
+            maxFragmentInputComponents: showNull(gl.getParameter(gl.MAX_FRAGMENT_INPUT_COMPONENTS)),
+            minProgramTexelOffset: showNull(gl.getParameter(gl.MIN_PROGRAM_TEXEL_OFFSET)),
+            maxProgramTexelOffset: showNull(gl.getParameter(gl.MAX_PROGRAM_TEXEL_OFFSET)),
+            maxDrawBuffers: showNull(gl.getParameter(gl.MAX_DRAW_BUFFERS)),
+            maxColorAttachments: showNull(gl.getParameter(gl.MAX_COLOR_ATTACHMENTS)),
+            maxSamples: showNull(gl.getParameter(gl.MAX_SAMPLES)),
+            max3dTextureSize: showNull(gl.getParameter(gl.MAX_3D_TEXTURE_SIZE)),
+            maxArrayTextureLayers: showNull(gl.getParameter(gl.MAX_ARRAY_TEXTURE_LAYERS)),
+            maxTextureLodBias: showNull(gl.getParameter(gl.MAX_TEXTURE_LOD_BIAS)),
+            maxUniformBufferBindings: showNull(gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS)),
+            maxUniformBlockSize: showNull(gl.getParameter(gl.MAX_UNIFORM_BLOCK_SIZE)),
+            uniformBufferOffsetAlignment: showNull(gl.getParameter(gl.UNIFORM_BUFFER_OFFSET_ALIGNMENT)),
+            maxCombinedUniformBlocks: showNull(gl.getParameter(gl.MAX_COMBINED_UNIFORM_BLOCKS)),
+            maxCombinedVertexUniformComponents: showNull(gl.getParameter(gl.MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS)),
+            maxCombinedFragmentUniformComponents: showNull(gl.getParameter(gl.MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS)),
+            maxTransformFeedbackInterleavedComponents: showNull(gl.getParameter(gl.MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS)),
+            maxTransformFeedbackSeparateAttribs: showNull(gl.getParameter(gl.MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS)),
+            maxTransformFeedbackSeparateComponents: showNull(gl.getParameter(gl.MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS)),
+            maxElementIndex: showNull(gl.getParameter(gl.MAX_ELEMENT_INDEX)),
+            maxServerWaitTimeout: showNull(gl.getParameter(gl.MAX_SERVER_WAIT_TIMEOUT))
+        });
+    }
+
+
+    return report;
+
+})();
+const TEXT_COLORS = {
+    orange: new THREE.Color(0xffb13d),
+    blue: new THREE.Color(0x3e9ce0),
+    pink: new THREE.Color(0xe03e82),
+    green: new THREE.Color(0x336633),
+    purple: new THREE.Color(0x6c0fff)
+};
+
+var CreateText = function(letter) {
+
+    var textGeometry = new THREE.TextGeometry(letter, {
+        font: FONTS_DATA['fugue'].font,
+        size: 2,
+        height: 0.15,
+        curveSegments: 20
+    });
+    textGeometry.computeBoundingBox();
+
+    let index = Math.floor(Math.random()*(Object.keys(TEXT_COLORS).length-1));
+    let color = TEXT_COLORS[ Object.keys(TEXT_COLORS)[index] ];
+    let mat = MATERIALS['text'].clone();
+    mat.color = color;
+
+    let mesh = new THREE.Mesh(textGeometry, mat);
+
+    function play() {
+        changeColor();
+    };
+
+    function changeColor(){
+        let index = Math.floor(Math.random()*(Object.keys(TEXT_COLORS).length-1));
+        let color = TEXT_COLORS[ Object.keys(TEXT_COLORS)[index] ];
+        mesh.material.color = (mesh.material.color == color) ? TEXT_COLORS[ Object.keys(TEXT_COLORS)[index+1] ] : color; 
+    }
+
+    return {
+        mesh: mesh,
+        // changeColor: changeColor,
+        play: play
+    }
+
+}
+const DANCE_COLORS = [
+'#ff960c',
+'#23cfff',
+'#ff237f',
+'#28ff28',
+'#6f1df2' 
+];
+
+var color = '#333333';
+var dance = document.getElementById('dance');
+var $ui = $('#cameraToggle, #info, #dj, #buttonMask');
+
+dance.addEventListener('mouseover', ()=>{
+	var index = Math.floor(Math.random()*(DANCE_COLORS.length-1));
+	color = (DANCE_COLORS[index] == color) ? DANCE_COLORS[index+1] : DANCE_COLORS[index];
+
+	var text = dance.getElementsByTagName('a')[0];
+	text.style.color = color;
+});
+
+dance.addEventListener('mouseout', ()=>{
+	var text = dance.getElementsByTagName('a')[0];
+	text.style.color = '#333333';
+});
+var SoundRecorder;
+
+(function () {
+
+    try {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        context = new AudioContext();
+    }
+    catch (e) {
+        console.err('Browser does not support the Web Audio API. Recordings will not be possible.');
+        return;
+    }
+
+    var recorder,
+        context,
+        bufferLoader,
+        destination,
+        sources = [],
+        chunks = [],
+        sound_paths = [],
+        audioRecordings = [];
+
+    var isRecording = false;
+
+    for (var i = 0; i < ACTIVE_KEYS.length; i++) {
+        var key = ACTIVE_KEYS[i];
+        var path = AUDIO_ASSETS_PATH + key + '.wav';
+        sound_paths.push(path);
+    }
+
+    bufferLoader = new BufferLoader(
+        context,
+        sound_paths,
+        loadComplete
+    );
+
+    function loadComplete(bufferList) {
+
+        if (bufferLoader.calledback)
+            return;
+
+        destination = context.createMediaStreamDestination();
+
+        bufferLoader.calledback = true;
+
+        recorder = new Recorder(destination);
+
+        for (var key in KEY_MAPPINGS) {
+            var index = ACTIVE_KEYS.indexOf(key);
+            var buffer = bufferList[index];
+            KEY_MAPPINGS[key].web_audio_buffer = buffer;
+        }
+
+        function getRecordingStatus() {
+            return recorder.recording;
+        }
+
+        function record() {
+            $('#record').toggleClass('recording');
+            recorder.clear();
+            recorder.record();
+        }
+
+        function stop() {
+            $('#record').toggleClass('recording');
+            recorder.stop();
+            recorder.exportWAV(function(blob){
+                var url = URL.createObjectURL(blob);
+                var audio = document.createElement('audio');
+                audio.src = url;
+                audioRecordings.push(audio);
+            });
+            isRecording = false;
+        }
+
+        function playRecording() {
+            audioRecordings[0].play();
+        }
+
+        SoundRecorder = {
+            recorder: recorder,
+            context: context,
+            destination: destination,
+            isRecording: getRecordingStatus,
+            record: record,
+            stop: stop,
+            playRecording: playRecording,
+            audioRecordings: audioRecordings
+        }
+    }
+
+    bufferLoader.load();
+
+})();

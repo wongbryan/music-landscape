@@ -320,6 +320,21 @@ button {
 
 }
 
+#pause-overlay {
+
+  .time {
+    color: black;
+    font-family: $Fugue, sans-serif;
+    font-size: 4rem;
+  }
+
+  .instructions {
+    color: #919191;
+    font-family: $Press-Start-2P, monospace;
+    margin-top: 50px;
+  }
+}
+
 #buttonMask {
   @extend %ui-bottom;
   bottom: 0;

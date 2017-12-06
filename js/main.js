@@ -7,7 +7,10 @@ var box, scene, ground_material, ground, light;
 var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
-
+var AutoplayProps = {
+    isPlaying: false,
+    paused: false
+}
 const WORLD_RADIUS = 150;
 
 function resize() {
@@ -282,7 +285,7 @@ function initRest() {
         } else {
             SoundRecorder.record();
         }
-    })
+    });
 
 
     document.addEventListener('keydown', (e) => {
@@ -335,13 +338,23 @@ function initRest() {
                         case 'right arrow':
                             camera.controller.next();
                             break;
+                        case 'escape':
+                            Autoplay.stop();
+                            break;
                         case 'spacebar':
-                        	if(SoundRecorder.isRecording()){
-                        		SoundRecorder.stop();
-                        	}
-                        	else{
-                        		SoundRecorder.record();
-                        	}
+                            if (AutoplayProps.paused) {
+                                Autoplay.play();
+                            } else if (AutoplayProps.isPlaying) {
+                                Autoplay.pause();
+
+                            } else {
+                                if( SoundRecorder.isRecording()){
+                                    SoundRecorder.stop();
+                                }
+                                else{
+                                    SoundRecorder.record();
+                                }
+                            }
                             break;
                         case 'down arrow':
                             // Recorder.playRecording();
