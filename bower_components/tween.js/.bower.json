@@ -1,0 +1,13 @@
+{
+  "name": "tween.js",
+  "_cacheHeaders": {
+    "ETag": "\"b45c0d6e2b0f0063e480812017c91bfdbe0dcae4\"",
+    "Content-Length": "3942",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:b45c0d6e2",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/tweenjs/tween.js/master/src/Tween.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/tweenjs/tween.js/master/src/Tween.js"
+}

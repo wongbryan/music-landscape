@@ -1,0 +1,13 @@
+{
+  "name": "physi.js",
+  "_cacheHeaders": {
+    "ETag": "\"9d5b7166d406b7be6b47f1c91165c3d844b3472e\"",
+    "Content-Length": "8091",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:9d5b7166d",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/chandlerprall/Physijs/master/physi.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/chandlerprall/Physijs/master/physi.js"
+}
