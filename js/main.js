@@ -403,7 +403,7 @@ function initRest() {
         let $loops = $('<div>');
         SoundRecorder.audioRecordings.forEach((rec,i) => {
             let $loop = $('<div>', {class: 'loop'});
-            let $controls = $('<div', {class: 'controls'});
+            let $controls = $('<div>', {class: 'controls'});
             let $icon = $('<i>', {class: 'fa fa-play'});
             (function() {
                 $icon[0].addEventListener('click', () => {
@@ -421,7 +421,7 @@ function initRest() {
         $('#bottom').toggleClass('showLoops');
     });
 
-    $('#loops-drawer').addEventListener('click', (e) => {
+    $('#loops-drawer')[0].addEventListener('click', (e) => {
         let t = e.target;
         if (t.classList.contains('loop')) {
             $(t).find('')
