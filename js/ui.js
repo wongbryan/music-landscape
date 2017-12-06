@@ -8,7 +8,7 @@ const DANCE_COLORS = [
 
 var color = '#333333';
 var dance = document.getElementById('dance');
-var $ui = $('#cameraToggle, #info, #dj, #buttonMask');
+var $ui = $('#cameraToggle, #info, #bottom');
 
 dance.addEventListener('mouseover', ()=>{
 	var index = Math.floor(Math.random()*(DANCE_COLORS.length-1));

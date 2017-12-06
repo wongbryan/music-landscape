@@ -84,7 +84,6 @@ var CreateAutoplay = function (audio, timestamps, camera) {
                 if (timestamps[key].trig) {
                     continue;
                 }
-                console.log(key);
                 if (timestamps[key].cameraToggle != undefined) {
                     camera.controller.shiftPos(timestamps[key].cameraToggle);
                 }

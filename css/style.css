@@ -1,6 +1,8 @@
 body {
   margin: 0;
-  overflow: hidden;
+  overflow: hidden; }
+
+* {
   box-sizing: border-box; }
 
 button {
@@ -10,6 +12,20 @@ button {
   border: 0px solid white;
   border-radius: 0px;
   outline: none; }
+
+#container {
+  position: relative;
+  height: 100vh;
+  width: 100vw; }
+
+#loops-drawer {
+  background: white;
+  height: 20vh;
+  width: 100vw;
+  position: relative;
+  clear: both;
+  top: 20px;
+  margin: 0 -20px; }
 
 .ui-button {
   text-transform: uppercase;
@@ -39,7 +55,7 @@ button {
     opacity: 1 !important; }
 
 .ui-bar {
-  position: fixed;
+  position: absolute;
   height: 12vh;
   width: 100vw;
   background-color: black;
@@ -79,7 +95,7 @@ button {
 #info, #cameraToggle {
   transform: translateY(-40px); }
 
-#dj, #buttonMask {
+#bottom {
   transform: translateY(40px); }
 
 #progress {
@@ -108,7 +124,7 @@ button {
     width: 100%; }
 
 #info {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   padding: 20px;
@@ -131,7 +147,7 @@ button {
   font-family: sans-serif; }
 
 #title {
-  position: fixed;
+  position: absolute;
   margin: auto;
   top: 0;
   left: 0;
@@ -147,7 +163,7 @@ button {
     transform: translateX(-50%); }
 
 #cameraToggle {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 20px;
@@ -188,12 +204,19 @@ button {
         background: white;
         color: black; }
 
+#bottom {
+  position: absolute;
+  padding: 20px;
+  bottom: -20vh;
+  transition: bottom 350ms ease-in-out;
+  width: 100%; }
+  #bottom.showLoops {
+    bottom: 0; }
+
 #dj {
   display: flex;
-  position: fixed;
-  padding: 20px;
-  bottom: 0;
-  left: 0;
+  position: relative;
+  float: left;
   height: 50px; }
   #dj #play, #dj #record, #dj #loops {
     display: flex;
@@ -242,10 +265,8 @@ button {
   margin-top: 50px; }
 
 #buttonMask {
-  bottom: 0;
-  right: 0;
-  position: fixed;
-  padding: 20px;
+  float: right;
+  position: relative;
   display: inline-block; }
   #buttonMask .buttonContainer {
     height: 50px;
@@ -262,5 +283,3 @@ button {
     opacity: 1; }
   to {
     opacity: 0; } }
-
-/*# sourceMappingURL=style.css.map */

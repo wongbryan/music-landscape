@@ -67,7 +67,6 @@ var Loader = (function () {
             AUDIO_ASSETS_PATH + file + ext,
 
             function(buffer) {
-                console.log(buffer);
                 AUDIO_DATA[file].buffer = buffer;
             }
         );

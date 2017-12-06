@@ -107,7 +107,6 @@ var CreateAutoplay = function (audio, timestamps, camera) {
                 if (timestamps[key].trig) {
                     continue;
                 }
-                console.log(key);
                 if (timestamps[key].cameraToggle != undefined) {
                     camera.controller.shiftPos(timestamps[key].cameraToggle);
                 }
@@ -2953,7 +2952,6 @@ var Loader = (function () {
             AUDIO_ASSETS_PATH + file + ext,
 
             function(buffer) {
-                console.log(buffer);
                 AUDIO_DATA[file].buffer = buffer;
             }
         );
@@ -2989,24 +2987,21 @@ var box, scene, ground_material, ground, light;
 var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
-<<<<<<< HEAD
 var AutoplayProps = {
     isPlaying: false,
     paused: false
 }
-=======
-
 var composer, wavePass, pixelPass, glitchPass;
 var postProcessing = false;
-
->>>>>>> final-post-processing
 const WORLD_RADIUS = 150;
 
 function resize() {
+    var container = document.getElementById('container');
+    // camera.aspect = container.clientWidth / container.clientHeight;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    // renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setSize(window.innerWidth, window.innerHeight);
-
 }
 
 function update() {
@@ -3034,12 +3029,13 @@ function loop() {
 }
 
 function init() {
-    // var container = document.getElementById('container');
+    var container = document.getElementById('container');
     var canvas = document.getElementsByTagName('canvas')[0];
     renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
+    // renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0xbfe7ff);
     // container.appendChild(renderer.domElement);
@@ -3370,7 +3366,6 @@ function initRest() {
     });
 
     document.getElementById('dance').onmousedown = Autoplay.play;
-    // document.getElementById('stop').onmousedown = Autoplay.stop;
 
     document.getElementById('record').addEventListener('click', (e) => {
         if (SoundRecorder.isRecording()) {
@@ -3379,6 +3374,14 @@ function initRest() {
             SoundRecorder.record();
         }
     });
+
+    document.getElementById('play').addEventListener('click', () => {
+        SoundRecorder.playRecording();
+    });
+
+    document.getElementById('loops').addEventListener('click', () => {
+        $('#bottom').toggleClass('showLoops');
+    })
 
 
     document.addEventListener('keydown', (e) => {
@@ -4342,7 +4345,7 @@ const DANCE_COLORS = [
 
 var color = '#333333';
 var dance = document.getElementById('dance');
-var $ui = $('#cameraToggle, #info, #dj, #buttonMask');
+var $ui = $('#cameraToggle, #info, #bottom');
 
 dance.addEventListener('mouseover', ()=>{
 	var index = Math.floor(Math.random()*(DANCE_COLORS.length-1));
