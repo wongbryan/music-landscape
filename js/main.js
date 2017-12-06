@@ -400,8 +400,19 @@ function initRest() {
     });
 
     document.getElementById('loops').addEventListener('click', () => {
+        let $loops = $('<div>');
+        SoundRecorder.audioRecordings.forEach((rec,i) => {
+            let $loop = $('<div>', {class: 'loop'});
+            $loop.append('<div class="title">Loop ' + i + '</div>');
+            $loop.append('<div class="controls"><i class="fa fa-play"></div>')
+
+            $loops.append($loop);
+        });
+
+        $('#loops-drawer').html($loops);
+
         $('#bottom').toggleClass('showLoops');
-    })
+    });
 
 
     document.addEventListener('keydown', (e) => {

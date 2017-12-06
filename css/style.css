@@ -25,7 +25,18 @@ button {
   position: relative;
   clear: both;
   top: 20px;
-  margin: 0 -20px; }
+  margin: 0 -20px;
+  overflow-y: scroll; }
+  #loops-drawer .loop {
+    width: 100%;
+    height: 40px;
+    background: whitesmoke;
+    padding: 10px;
+    font-family: "Fugue", sans-serif;
+    display: flex;
+    justify-content: space-between; }
+    #loops-drawer .loop:nth-child(even) {
+      background: white; }
 
 .ui-button {
   text-transform: uppercase;
@@ -186,7 +197,7 @@ button {
     padding: 0; }
     #cameraToggle .buttons .button {
       display: inline-block;
-      padding: 3px 4px;
+      padding: 1px 4px;
       margin: 0 5px;
       border-radius: 50%;
       border: 1px solid white;
