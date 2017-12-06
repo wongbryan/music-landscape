@@ -3383,16 +3383,31 @@ function initRest() {
         let $loops = $('<div>');
         SoundRecorder.audioRecordings.forEach((rec,i) => {
             let $loop = $('<div>', {class: 'loop'});
+            let $controls = $('<div', {class: 'controls'});
+            let $icon = $('<i>', {class: 'fa fa-play'});
+            (function() {
+                $icon[0].addEventListener('click', () => {
+                    SoundRecorder.audioRecordings[i].play();
+                });
+            }(i));
             $loop.append('<div class="title">Loop ' + i + '</div>');
-            $loop.append('<div class="controls"><i class="fa fa-play"></div>')
+            $controls.append($icon);
+            $loop.append($controls);
 
             $loops.append($loop);
         });
 
         $('#loops-drawer').html($loops);
-
         $('#bottom').toggleClass('showLoops');
     });
+
+    $('#loops-drawer').addEventListener('click', (e) => {
+        let t = e.target;
+        if (t.classList.contains('loop')) {
+            $(t).find('')
+
+        }
+    })
 
 
     document.addEventListener('keydown', (e) => {
@@ -4484,6 +4499,7 @@ var SoundRecorder;
                 var url = URL.createObjectURL(blob);
                 var audio = document.createElement('audio');
                 audio.src = url;
+                audio.loop = true;
                 audioRecordings.push(audio);
             });
             isRecording = false;

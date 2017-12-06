@@ -68,6 +68,7 @@ var SoundRecorder;
                 var url = URL.createObjectURL(blob);
                 var audio = document.createElement('audio');
                 audio.src = url;
+                audio.loop = true;
                 audioRecordings.push(audio);
             });
             isRecording = false;
