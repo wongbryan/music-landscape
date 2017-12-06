@@ -44,6 +44,18 @@ var CameraController = function(camera){
 		tween.start();
 	}
 
+	function spin(time){
+		var cur = camera.pivot.rotation;
+		var target = new THREE.Vector3();
+		target.x = camera.pivot.rotation.x;
+		target.y = camera.pivot.rotation.y+(4*Math.PI);
+		target.z = camera.pivot.rotation.z;
+
+		var tween = new TWEEN.Tween(cur).to(target, time*1000);
+		tween.easing(TWEEN.Easing.Quadratic.InOut);
+		tween.start();
+	}
+
 	const $buttons = $('#cameraToggle > .buttons')
 	for (let i = 0; i < positions.length; i++) {
         let $button = $("<li>", {class: "button", id: i});
@@ -63,7 +75,8 @@ var CameraController = function(camera){
 		next: next,
 		prev: prev,
 		shiftPos: shiftPos,
-		reset: reset
+		reset: reset,
+		spin: spin
 	}
 
 }

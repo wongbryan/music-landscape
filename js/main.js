@@ -11,12 +11,15 @@ var AutoplayProps = {
     isPlaying: false,
     paused: false
 }
+var composer, wavePass, pixelPass, glitchPass;
+var postProcessing = false;
 const WORLD_RADIUS = 150;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+
 }
 
 function update() {
@@ -29,13 +32,17 @@ function update() {
     }
 
     controls.update();
-
+    wavePass.uniforms.time.value += .05;
     TWEEN.update();
 }
 
 function loop() {
     update();
-    renderer.render(scene, camera);
+    if(postProcessing)
+        composer.render();
+    else
+        renderer.render(scene, camera);
+
     window.requestAnimationFrame(loop);
 }
 
@@ -242,6 +249,105 @@ function init() {
         $('#controls').addClass('started');
         initRest();
     });
+
+    composer = new THREE.EffectComposer(renderer);
+    var renderPass = new THREE.RenderPass(scene, camera);
+    // renderPass.renderToScreen = true;
+    composer.addPass(renderPass);
+
+    var noise = new THREE.TextureLoader().load('assets/images/noise.png');
+	noise.wrapT = noise.wrapS = THREE.RepeatWrapping;
+
+	var uniforms = {
+		tDiffuse: {value: null},
+		noise: {value: noise},
+		magnitude: {value : 0.0},
+		speed: {value : .5},
+		time: {value : 0},
+		scale: {value : new THREE.Vector2(1., 1.)}
+	}
+
+	WaveShader.uniforms = uniforms;
+    wavePass = new THREE.ShaderPass(WaveShader);
+    // wavePass.renderToScreen = true;
+    composer.addPass(wavePass);
+
+    pixelPass = new THREE.ShaderPass(PixelShader);
+    // pixelPass.renderToScreen = true;
+    composer.addPass(pixelPass);
+    
+    composer.wavify = function(time){
+        console.log(time);
+        postProcessing = true;
+        wavePass.renderToScreen = true;
+        time*=1000;
+    	var cur = wavePass.uniforms['magnitude'];
+    	var target = { value: .1};
+    	var tween = new TWEEN.Tween(cur).to(target, time/2);
+        tween.easing(TWEEN.Easing.Quadratic.InOut);
+        tween.onUpdate(function(){
+            wavePass.uniforms.time.value+=.7;
+        })
+        tween.onComplete(function(){
+            var c = wavePass.uniforms['magnitude'];
+            var t = {value: 0.};
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.onComplete(function(){
+                postProcessing = false;
+                wavePass.renderToScreen = false;
+            });
+            rTween.onUpdate(function(){
+                wavePass.uniforms.time.value+=.7;
+            });
+            rTween.easing(TWEEN.Easing.Quadratic.InOut);
+
+            rTween.start();
+        });
+
+    	tween.start();
+    }
+
+    composer.pixelate = function(time){
+        time *= 1000;
+        postProcessing = true;
+        pixelPass.renderToScreen = true;
+        var cur = pixelPass.uniforms['amount'];
+        var target = {
+            value: 128.
+        };
+
+        var cur2 = pixelPass.uniforms['steps'];
+        var target2 = {
+            value: 15.
+        };
+
+        var tween = new TWEEN.Tween(cur).to(target, time/1.5);
+        var tween2 = new TWEEN.Tween(cur2).to(target2, time/1.5);
+
+        tween.easing(TWEEN.Easing.Quadratic.Out);
+        tween2.easing(TWEEN.Easing.Quadratic.Out);
+
+        tween.onComplete(function(){
+            var c = pixelPass.uniforms['amount'];
+            var t = {value: 2048. }
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.start();
+        });
+
+        tween2.onComplete(function(){
+            var c = pixelPass.uniforms['steps'];
+            var t = {value: 1. }
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.onComplete(()=>{
+                postProcessing = false;
+                pixelPass.renderToScreen = false;
+            })
+            rTween.start();
+        })
+       
+        tween.start();
+        tween2.start();
+    }
 
     scene.simulate();
 

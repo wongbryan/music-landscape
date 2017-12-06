@@ -417,6 +417,13 @@ const AUDIO_DATA = {
                 trig: false,
                 lightkeys: 8,
             },
+            '17.7': {
+                mag: 0,
+                trig: false,
+                lightkeys: 26,
+                pixelate: 2,
+                spin: 2
+            },
             '17.8': {
                 mag: 1,
                 trig: false,
@@ -446,6 +453,7 @@ const AUDIO_DATA = {
                 mag: .3,
                 trig: false,
                 lightkeys: 3,
+
             },
             '20.5': {
                 mag: .3,
@@ -511,6 +519,7 @@ const AUDIO_DATA = {
                 mag: 1.3,
                 trig: false,
                 lightkeys: 12,
+                cameraToggle: 2
             },
             '30.8': {
                 mag: .75,
@@ -581,6 +590,8 @@ const AUDIO_DATA = {
                 mag: 1.3,
                 trig: false,
                 lightkeys: 18,
+                cameraToggle: 1,
+                pixelate: .4
             },
             '40': {
                 mag: .75,
@@ -671,6 +682,8 @@ const AUDIO_DATA = {
                 mag: 1,
                 trig: false,
                 lightkeys: 20,
+                pixelate: .4,
+                cameraToggle: 2
             },
             '49': {
                 mag: .3,
@@ -1181,6 +1194,8 @@ const AUDIO_DATA = {
                 mag: 1,
                 trig: false,
                 lightkeys: 15,
+                cameraToggle: 1,
+                wavify: .5
             },
             '82.7': {
                 mag: .3,
@@ -1426,6 +1441,8 @@ const AUDIO_DATA = {
                 mag: .7,
                 trig: false,
                 lightkeys: 15,
+                cameraToggle: 2,
+                pixelate: .3
             },
             '101.6': {
                 mag: .7,
@@ -1671,6 +1688,8 @@ const AUDIO_DATA = {
                 mag: .45,
                 trig: false,
                 lightkeys: 15,
+                wavify: .6,
+                cameraToggle: 1
             },
             '119.5': {
                 mag: .5,
@@ -1691,6 +1710,8 @@ const AUDIO_DATA = {
                 mag: 1.7,
                 trig: false,
                 lightkeys: 26,
+                spin: .6,
+                pixelate: .5
             },
             '121.2': {
                 mag: .4,
@@ -1816,6 +1837,7 @@ const AUDIO_DATA = {
                 mag: 1.,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4
             },
             '130.8': {
                 mag: .4,
@@ -1846,6 +1868,7 @@ const AUDIO_DATA = {
                 mag: 1,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4,
             },
             '132.7': {
                 mag: .4,
@@ -1946,6 +1969,7 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4,
             },
             '139.6': {
                 mag: .4,
@@ -2106,6 +2130,7 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4
             },
             '149.4': {
                 mag: .4,
@@ -2351,6 +2376,7 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .6
             },
             '167.3': {
                 mag: 1.4,

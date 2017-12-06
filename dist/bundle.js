@@ -24,6 +24,7 @@ var CreateAudio = function(path){
 var CreateAutoplay = function (audio, timestamps, camera) {
     var sound = document.createElement('AUDIO');
     sound.src = 'assets/sounds/fresh.mp3';
+    sound.currentTime = 0;
 
     var _interval = null;
 
@@ -106,7 +107,7 @@ var CreateAutoplay = function (audio, timestamps, camera) {
                 if (timestamps[key].trig) {
                     continue;
                 }
-
+                console.log(key);
                 if (timestamps[key].cameraToggle != undefined) {
                     camera.controller.shiftPos(timestamps[key].cameraToggle);
                 }
@@ -125,6 +126,21 @@ var CreateAutoplay = function (audio, timestamps, camera) {
 
                         KEY_MAPPINGS[button].text.play();
                     }
+                }
+
+                if(timestamps[key].pixelate != undefined){
+                	var time = timestamps[key].pixelate;
+                	composer.pixelate(time);
+                }
+
+                if(timestamps[key].wavify != undefined){
+                	var time = timestamps[key].wavify;
+                	composer.wavify(time);
+                }
+
+                if(timestamps[key].spin != undefined){
+                	var time = timestamps[key].spin;
+                	camera.controller.spin(time);
                 }
 
                 timestamps[key].trig = true;
@@ -241,6 +257,18 @@ var CameraController = function(camera){
 		tween.start();
 	}
 
+	function spin(time){
+		var cur = camera.pivot.rotation;
+		var target = new THREE.Vector3();
+		target.x = camera.pivot.rotation.x;
+		target.y = camera.pivot.rotation.y+(4*Math.PI);
+		target.z = camera.pivot.rotation.z;
+
+		var tween = new TWEEN.Tween(cur).to(target, time*1000);
+		tween.easing(TWEEN.Easing.Quadratic.InOut);
+		tween.start();
+	}
+
 	const $buttons = $('#cameraToggle > .buttons')
 	for (let i = 0; i < positions.length; i++) {
         let $button = $("<li>", {class: "button", id: i});
@@ -260,7 +288,8 @@ var CameraController = function(camera){
 		next: next,
 		prev: prev,
 		shiftPos: shiftPos,
-		reset: reset
+		reset: reset,
+		spin: spin
 	}
 
 }
@@ -728,6 +757,13 @@ const AUDIO_DATA = {
                 trig: false,
                 lightkeys: 8,
             },
+            '17.7': {
+                mag: 0,
+                trig: false,
+                lightkeys: 26,
+                pixelate: 2,
+                spin: 2
+            },
             '17.8': {
                 mag: 1,
                 trig: false,
@@ -757,6 +793,7 @@ const AUDIO_DATA = {
                 mag: .3,
                 trig: false,
                 lightkeys: 3,
+
             },
             '20.5': {
                 mag: .3,
@@ -822,6 +859,7 @@ const AUDIO_DATA = {
                 mag: 1.3,
                 trig: false,
                 lightkeys: 12,
+                cameraToggle: 2
             },
             '30.8': {
                 mag: .75,
@@ -892,6 +930,8 @@ const AUDIO_DATA = {
                 mag: 1.3,
                 trig: false,
                 lightkeys: 18,
+                cameraToggle: 1,
+                pixelate: .4
             },
             '40': {
                 mag: .75,
@@ -982,6 +1022,8 @@ const AUDIO_DATA = {
                 mag: 1,
                 trig: false,
                 lightkeys: 20,
+                pixelate: .4,
+                cameraToggle: 2
             },
             '49': {
                 mag: .3,
@@ -1492,6 +1534,8 @@ const AUDIO_DATA = {
                 mag: 1,
                 trig: false,
                 lightkeys: 15,
+                cameraToggle: 1,
+                wavify: .5
             },
             '82.7': {
                 mag: .3,
@@ -1737,6 +1781,8 @@ const AUDIO_DATA = {
                 mag: .7,
                 trig: false,
                 lightkeys: 15,
+                cameraToggle: 2,
+                pixelate: .3
             },
             '101.6': {
                 mag: .7,
@@ -1982,6 +2028,8 @@ const AUDIO_DATA = {
                 mag: .45,
                 trig: false,
                 lightkeys: 15,
+                wavify: .6,
+                cameraToggle: 1
             },
             '119.5': {
                 mag: .5,
@@ -2002,6 +2050,8 @@ const AUDIO_DATA = {
                 mag: 1.7,
                 trig: false,
                 lightkeys: 26,
+                spin: .6,
+                pixelate: .5
             },
             '121.2': {
                 mag: .4,
@@ -2127,6 +2177,7 @@ const AUDIO_DATA = {
                 mag: 1.,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4
             },
             '130.8': {
                 mag: .4,
@@ -2157,6 +2208,7 @@ const AUDIO_DATA = {
                 mag: 1,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4,
             },
             '132.7': {
                 mag: .4,
@@ -2257,6 +2309,7 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4,
             },
             '139.6': {
                 mag: .4,
@@ -2417,6 +2470,7 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .4
             },
             '149.4': {
                 mag: .4,
@@ -2662,6 +2716,7 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
+                pixelate: .6
             },
             '167.3': {
                 mag: 1.4,
@@ -2934,16 +2989,24 @@ var box, scene, ground_material, ground, light;
 var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
+<<<<<<< HEAD
 var AutoplayProps = {
     isPlaying: false,
     paused: false
 }
+=======
+
+var composer, wavePass, pixelPass, glitchPass;
+var postProcessing = false;
+
+>>>>>>> final-post-processing
 const WORLD_RADIUS = 150;
 
 function resize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+
 }
 
 function update() {
@@ -2956,13 +3019,17 @@ function update() {
     }
 
     controls.update();
-
+    wavePass.uniforms.time.value += .05;
     TWEEN.update();
 }
 
 function loop() {
     update();
-    renderer.render(scene, camera);
+    if(postProcessing)
+        composer.render();
+    else
+        renderer.render(scene, camera);
+
     window.requestAnimationFrame(loop);
 }
 
@@ -3170,6 +3237,105 @@ function init() {
         initRest();
     });
 
+    composer = new THREE.EffectComposer(renderer);
+    var renderPass = new THREE.RenderPass(scene, camera);
+    // renderPass.renderToScreen = true;
+    composer.addPass(renderPass);
+
+    var noise = new THREE.TextureLoader().load('assets/images/noise.png');
+	noise.wrapT = noise.wrapS = THREE.RepeatWrapping;
+
+	var uniforms = {
+		tDiffuse: {value: null},
+		noise: {value: noise},
+		magnitude: {value : 0.0},
+		speed: {value : .5},
+		time: {value : 0},
+		scale: {value : new THREE.Vector2(1., 1.)}
+	}
+
+	WaveShader.uniforms = uniforms;
+    wavePass = new THREE.ShaderPass(WaveShader);
+    // wavePass.renderToScreen = true;
+    composer.addPass(wavePass);
+
+    pixelPass = new THREE.ShaderPass(PixelShader);
+    // pixelPass.renderToScreen = true;
+    composer.addPass(pixelPass);
+    
+    composer.wavify = function(time){
+        console.log(time);
+        postProcessing = true;
+        wavePass.renderToScreen = true;
+        time*=1000;
+    	var cur = wavePass.uniforms['magnitude'];
+    	var target = { value: .1};
+    	var tween = new TWEEN.Tween(cur).to(target, time/2);
+        tween.easing(TWEEN.Easing.Quadratic.InOut);
+        tween.onUpdate(function(){
+            wavePass.uniforms.time.value+=.7;
+        })
+        tween.onComplete(function(){
+            var c = wavePass.uniforms['magnitude'];
+            var t = {value: 0.};
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.onComplete(function(){
+                postProcessing = false;
+                wavePass.renderToScreen = false;
+            });
+            rTween.onUpdate(function(){
+                wavePass.uniforms.time.value+=.7;
+            });
+            rTween.easing(TWEEN.Easing.Quadratic.InOut);
+
+            rTween.start();
+        });
+
+    	tween.start();
+    }
+
+    composer.pixelate = function(time){
+        time *= 1000;
+        postProcessing = true;
+        pixelPass.renderToScreen = true;
+        var cur = pixelPass.uniforms['amount'];
+        var target = {
+            value: 128.
+        };
+
+        var cur2 = pixelPass.uniforms['steps'];
+        var target2 = {
+            value: 15.
+        };
+
+        var tween = new TWEEN.Tween(cur).to(target, time/1.5);
+        var tween2 = new TWEEN.Tween(cur2).to(target2, time/1.5);
+
+        tween.easing(TWEEN.Easing.Quadratic.Out);
+        tween2.easing(TWEEN.Easing.Quadratic.Out);
+
+        tween.onComplete(function(){
+            var c = pixelPass.uniforms['amount'];
+            var t = {value: 2048. }
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.start();
+        });
+
+        tween2.onComplete(function(){
+            var c = pixelPass.uniforms['steps'];
+            var t = {value: 1. }
+            var rTween = new TWEEN.Tween(c).to(t, time/2);
+            rTween.onComplete(()=>{
+                postProcessing = false;
+                pixelPass.renderToScreen = false;
+            })
+            rTween.start();
+        })
+       
+        tween.start();
+        tween2.start();
+    }
+
     scene.simulate();
 
     camera.pivot = new THREE.Object3D();
@@ -3299,6 +3465,37 @@ function initRest() {
     });
 }
 
+var PixelShader = {
+	uniforms: {
+		"tDiffuse": { value: null },
+		"amount": { value: 2048. },
+		"steps": { value: 1. }
+	},
+	vertexShader: [
+		"varying highp vec2 vUv;",
+		"void main() {",
+			"vUv = uv;",
+
+			"gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+		"}"
+	].join("\n"),
+
+	fragmentShader: [
+		"uniform sampler2D tDiffuse;",
+		"uniform float amount;",
+		"uniform float steps;",
+
+		"varying highp vec2 vUv;",
+
+		"void main(){",	
+			"float pixels = amount;",
+			"float dx = steps*(1.0 / pixels);",
+			"float dy = steps*(1.0 / pixels);",
+			"vec2 coord = vec2(dx * floor(vUv.x / dx), dy * floor(vUv.y / dy));",
+			"gl_FragColor = texture2D(tDiffuse, coord);",
+		"}"
+	].join("\n")
+}
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Recorder = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
@@ -4159,6 +4356,50 @@ dance.addEventListener('mouseout', ()=>{
 	var text = dance.getElementsByTagName('a')[0];
 	text.style.color = '#333333';
 });
+var WaveShader = {
+	uniforms: {
+		"tDiffuse": { value: null },
+		"noise": { value: null },
+		"magnitude": { value: null },
+		"time": { value: 0 },
+		"speed": { value: null },
+		"scale":   { value: null },
+	},
+	vertexShader: [
+		"varying highp vec2 vUv;",
+		"void main() {",
+			"vUv = uv;",
+
+			"gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+		"}"
+	].join("\n"),
+
+	fragmentShader: [
+		"uniform highp sampler2D tDiffuse;",
+		"uniform sampler2D noise;",
+		"uniform float magnitude;",
+		"uniform float time;",
+		"uniform float speed;",
+		"uniform vec2 scale;",
+
+		"varying highp vec2 vUv;",
+
+		"void main(){",
+
+			"/*get displacement w perlin noise*/",
+			"vec4 map = texture2D(noise, vUv + time*speed*.01);",
+			"map -= .5;",
+
+			"/*add sin movement to displacement for slight wave effect*/",
+			"map.xy *= sin(vUv.y*100.+time*speed);",
+			"map.xy *= scale * .8 * magnitude;",
+
+			"vec4 color = texture2D(tDiffuse, vec2(vUv.x - map.x, vUv.y - map.y));",
+
+			"gl_FragColor = color;",
+		"}"
+	].join("\n")
+}
 var SoundRecorder;
 
 (function () {
@@ -4182,7 +4423,7 @@ var SoundRecorder;
         audioRecordings = [];
 
     var isRecording = false;
-
+    
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
         var path = AUDIO_ASSETS_PATH + key + '.wav';
