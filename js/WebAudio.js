@@ -91,7 +91,8 @@ var SoundRecorder;
 
                 (function() {
                     $iconPause[0].addEventListener('click', () => {
-                        SoundRecorder.audioRecordings[i].play();
+                        SoundRecorder.audioRecordings[i].pause();
+                        SoundRecorder.audioRecordings[i].currentTime = 0;
                         $icon.removeClass('hide');
                         $icon.addClass('show');
                         $iconPause.removeClass('show');
@@ -99,7 +100,7 @@ var SoundRecorder;
                     });
                 }(i));
 
-                $loop.append('<div class="title">Loop ' + i + '</div>');
+                $loop.append('<div class="title">Loop ' + i+1 + '</div>');
                 $controls.append($icon);
                 $controls.append($iconPause);
                 $loop.append($controls);

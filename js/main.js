@@ -399,42 +399,7 @@ function initRest() {
         SoundRecorder.playRecording();
     });
 
-    document.getElementById('loops').addEventListener('click', () => {
-        let $loops = $('<div>');
-        SoundRecorder.audioRecordings.forEach((rec,i) => {
-            let $loop = $('<div>', {class: 'loop'});
-            let $controls = $('<div>', {class: 'controls'});
-            let $icon = $('<i>', {class: 'fa fa-play show'});
-            let $iconPause = $('<i>', {class: 'fa fa-pause hide'});
-            (function() {
-                $icon[0].addEventListener('click', () => {
-                    SoundRecorder.audioRecordings[i].play();
-                    $iconPause.removeClass('hide');
-                    $iconPause.addClass('show');
-                    $icon.removeClass('show');
-                    $icon.addClass('hide');
-                });
-            }(i));
-
-            (function() {
-                $iconPause[0].addEventListener('click', () => {
-                    SoundRecorder.audioRecordings[i].play();
-                    $icon.removeClass('hide');
-                    $icon.addClass('show');
-                    $iconPause.removeClass('show');
-                    $iconPause.addClass('hide');
-                });
-            }(i));
-
-            $loop.append('<div class="title">Loop ' + i + '</div>');
-            $controls.append($icon);
-            $controls.append($iconPause);
-            $loop.append($controls);
-
-            $loops.append($loop);
-        });
-
-        $('#loops-drawer').html($loops);
+    document.getElementById('loops').addEventListener('click', ()=>{
         $('#bottom').toggleClass('showLoops');
     });
 
@@ -445,7 +410,6 @@ function initRest() {
 
         }
     })
-
 
     document.addEventListener('keydown', (e) => {
         if (!e.metaKey) {
