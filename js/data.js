@@ -2130,7 +2130,8 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
-                pixelate: .4
+                pixelate: .4,
+                cameraToggle: 2
             },
             '149.4': {
                 mag: .4,
@@ -2376,7 +2377,8 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
-                pixelate: .6
+                pixelate: .6,
+                cameraToggle: 1
             },
             '167.3': {
                 mag: 1.4,

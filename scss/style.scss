@@ -29,7 +29,7 @@ button {
 }
 
 #loops-drawer {
-  background: white;
+  background: rgba(240, 240, 240, .7);
   height: 20vh;
   width: 100vw;
   position: relative;
@@ -49,6 +49,14 @@ button {
 
     &:nth-child(even) {
       background: white;
+    }
+
+    .controls{
+      transition: all .2s;
+      &:hover{
+        cursor: pointer;
+        opacity: .5;
+      }
     }
 
   }
@@ -220,8 +228,8 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 300px;
-  width: 400px;
+  height: 350px;
+  width: 500px;
 
   #start {
     display: block;
@@ -408,3 +416,10 @@ button {
   to {opacity: 0;}
 }
 
+.hide{
+  display: none;
+}
+
+.show{
+  display: block;
+}

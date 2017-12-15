@@ -19,7 +19,7 @@ button {
   width: 100vw; }
 
 #loops-drawer {
-  background: white;
+  background: rgba(240, 240, 240, 0.7);
   height: 20vh;
   width: 100vw;
   position: relative;
@@ -37,6 +37,11 @@ button {
     justify-content: space-between; }
     #loops-drawer .loop:nth-child(even) {
       background: white; }
+    #loops-drawer .loop .controls {
+      transition: all .2s; }
+      #loops-drawer .loop .controls:hover {
+        cursor: pointer;
+        opacity: .5; }
 
 .ui-button {
   text-transform: uppercase;
@@ -164,8 +169,8 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 300px;
-  width: 400px; }
+  height: 350px;
+  width: 500px; }
   #title #start {
     display: block;
     bottom: 0;
@@ -269,7 +274,6 @@ button {
   color: black;
   font-family: "Fugue", sans-serif;
   font-size: 4rem; }
-
 #pause-overlay .instructions {
   color: #919191;
   font-family: "Press Start 2P", monospace;
@@ -294,3 +298,10 @@ button {
     opacity: 1; }
   to {
     opacity: 0; } }
+.hide {
+  display: none; }
+
+.show {
+  display: block; }
+
+/*# sourceMappingURL=style.css.map */

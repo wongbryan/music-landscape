@@ -70,7 +70,45 @@ var SoundRecorder;
                 audio.src = url;
                 audio.loop = true;
                 audioRecordings.push(audio);
+
+                let i = audioRecordings.length-1;
+
+                let $loops = $('#loops-drawer');
+                
+                let $loop = $('<div>', {class: 'loop'});
+                let $controls = $('<div>', {class: 'controls'});
+                let $icon = $('<i>', {class: 'fa fa-play show'});
+                let $iconPause = $('<i>', {class: 'fa fa-pause hide'});
+                (function() {
+                    $icon[0].addEventListener('click', () => {
+                        SoundRecorder.audioRecordings[i].play();
+                        $iconPause.removeClass('hide');
+                        $iconPause.addClass('show');
+                        $icon.removeClass('show');
+                        $icon.addClass('hide');
+                    });
+                }(i));
+
+                (function() {
+                    $iconPause[0].addEventListener('click', () => {
+                        SoundRecorder.audioRecordings[i].play();
+                        $icon.removeClass('hide');
+                        $icon.addClass('show');
+                        $iconPause.removeClass('show');
+                        $iconPause.addClass('hide');
+                    });
+                }(i));
+
+                $loop.append('<div class="title">Loop ' + i + '</div>');
+                $controls.append($icon);
+                $controls.append($iconPause);
+                $loop.append($controls);
+
+                $loops.append($loop);
+                // $('#loops-drawer').html($loops);
+                // $('#bottom').toggleClass('showLoops');
             });
+
             isRecording = false;
         }
 
