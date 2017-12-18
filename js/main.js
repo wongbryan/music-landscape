@@ -51,7 +51,7 @@ function loop() {
 function init() {
     var container = document.getElementById('container');
     var canvas = document.getElementsByTagName('canvas')[0];
-    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
+    renderer = new THREE.WebGLRenderer({antialias: (isSafari) ? false:true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -61,7 +61,12 @@ function init() {
     // container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
-    camera.position.set(-50, 20, 50);
+
+    if(isSafari)
+        camera.position.set(0, 25, .1);
+    else
+        camera.position.set(-50, 20, 50);
+    
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -85,7 +90,7 @@ function init() {
         }
     );
 
-    var numClouds = 7 + Math.floor(Math.random() * 7);
+    var numClouds = (isSafari) ? 0:7 + Math.floor(Math.random() * 7);
     var numPivots = 3;
 
     for (var i = 0; i < numPivots; i++) {
@@ -112,17 +117,18 @@ function init() {
 
     shadowLight.position.set(150, 75, 150);
 
-    shadowLight.castShadow = true;
+    if(!isSafari && REPORT.maxCombinedTextureImageUnits>60){
+        shadowLight.castShadow = true;
+        shadowLight.shadow.camera.left = -75;
+        shadowLight.shadow.camera.right = 75;
+        shadowLight.shadow.camera.top = 75;
+        shadowLight.shadow.camera.bottom = -75;
+        shadowLight.shadow.camera.near = 1;
+        shadowLight.shadow.camera.far = 1000;
 
-    shadowLight.shadow.camera.left = -75;
-    shadowLight.shadow.camera.right = 75;
-    shadowLight.shadow.camera.top = 75;
-    shadowLight.shadow.camera.bottom = -75;
-    shadowLight.shadow.camera.near = 1;
-    shadowLight.shadow.camera.far = 1000;
-
-    shadowLight.shadow.mapSize.width = 1024;
-    shadowLight.shadow.mapSize.height = 1024;
+        shadowLight.shadow.mapSize.width = 1024;
+        shadowLight.shadow.mapSize.height = 1024;
+    }
 
     var shadowLight2 = shadowLight.clone();
     shadowLight2.castShadow = false;
@@ -240,7 +246,7 @@ function init() {
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);
 
-        let path = 'assets/sounds/' + k + '.wav';
+        let path = 'assets/sounds/' + k + '.mp3';
         let audio = CreateAudio(path);
         KEY_MAPPINGS[k].audio = audio;
 

@@ -1,3 +1,9 @@
+// Safari 3.0+ "[object HTMLElementConstructor]" 
+const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+// Internet Explorer 6-11
+const isIE = /*@cc_on!@*/false || !!document.documentMode;
+
 /* AUTHOR: Analytical Graphics, Inc.
 Test functions taken from 'webglreport':
 https://github.com/AnalyticalGraphicsInc/webglreport 

@@ -23,7 +23,14 @@ var CreateCloud = function(pivot, x, y, z){
 		var s = .1 + Math.random()*.9;
 		m.scale.set(s,s,s);
 
-		m.castShadow = true;
+		if (isSafari){
+			console.log('lol');
+			m.castShadow = false;
+		}
+		else
+			m.castShadow = true;
+
+		// m.castShadow = false;
 		m.receiveShadow = false;
 
 		mesh.add(m);
