@@ -125,6 +125,8 @@ function initRecorder() {
 
 }
 
+console.log(mobile);
+
 if(!mobile){
    initRecorder();
 }

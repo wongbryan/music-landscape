@@ -178,7 +178,7 @@ function init() {
     const COLS = 4;
     const SP = 4;
 
-    for (let i = 0; i < ACTIVE_KEYS.length; i++) {
+    for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         let k = ACTIVE_KEYS[i];
 
         KEY_MAPPINGS[k] = Object.assign({}, KEY_MAPPINGS[k], {
