@@ -114,15 +114,15 @@ function init() {
 
     shadowLight.castShadow = true;
 
-    shadowLight.shadow.camera.left = -100;
-    shadowLight.shadow.camera.right = 100;
-    shadowLight.shadow.camera.top = 100;
-    shadowLight.shadow.camera.bottom = -100;
+    shadowLight.shadow.camera.left = -75;
+    shadowLight.shadow.camera.right = 75;
+    shadowLight.shadow.camera.top = 75;
+    shadowLight.shadow.camera.bottom = -75;
     shadowLight.shadow.camera.near = 1;
     shadowLight.shadow.camera.far = 1000;
 
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
+    shadowLight.shadow.mapSize.width = 1024;
+    shadowLight.shadow.mapSize.height = 1024;
 
     var shadowLight2 = shadowLight.clone();
     shadowLight2.castShadow = false;
@@ -175,13 +175,12 @@ function init() {
     for (let i = 0; i < ACTIVE_KEYS.length; i++) {
         let k = ACTIVE_KEYS[i];
 
-        KEY_MAPPINGS[k] = {
+        KEY_MAPPINGS[k] = Object.assign({}, KEY_MAPPINGS[k], {
             fruit: null,
             text: null,
             border: null,
             audio: null,
-            web_audio_buffer: null
-        };
+        });
 
         let r, c, offsetX, maxRows = 3, maxCols;
 

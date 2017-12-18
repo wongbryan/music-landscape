@@ -2456,11 +2456,35 @@ const AUDIO_DATA = {
 
 const SOUND_MAPPINGS_1 = {
 
-
 }
 
 const KEY_MAPPINGS = {
-    // 'a' : { fruit: Fruit, text: Text, border: Border }
+    'q': {},
+    'w': {},
+    'e': {},
+    'r': {},
+    't': {},
+    'y': {},
+    'u': {},
+    'i': {},
+    'o': {},
+    'p': {},
+    'a': {},
+    's': {},
+    'd': {},
+    'f': {},
+    'g': {},
+    'h': {},
+    'j': {},
+    'k': {},
+    'l': {},
+    'z': {},
+    'x': {},
+    'c': {},
+    'v': {},
+    'b': {},
+    'n': {},
+    'm': {}
 };
 
 const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'];

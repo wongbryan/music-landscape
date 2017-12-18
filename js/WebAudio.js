@@ -45,10 +45,13 @@ var SoundRecorder;
 
         recorder = new Recorder(destination);
 
+        console.log(KEY_MAPPINGS);
         for (var key in KEY_MAPPINGS) {
+            // console.log('assign buffer');
             var index = ACTIVE_KEYS.indexOf(key);
             var buffer = bufferList[index];
             KEY_MAPPINGS[key].web_audio_buffer = buffer;
+            console.log(buffer);
         }
 
         function getRecordingStatus() {

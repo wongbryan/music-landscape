@@ -48,7 +48,7 @@ button {
   width: 100px;
   height: 50px;
   background-color: #f7faff;
-  transition: all 350ms ease-in-out;
+  transition: all 100ms ease;
   text-align: center; }
   .ui-button a {
     font-family: "Press Start 2P", monospace;
