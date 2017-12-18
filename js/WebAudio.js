@@ -87,9 +87,7 @@ var SoundRecorder;
                         $icon.removeClass('show');
                         $icon.addClass('hide');
                     });
-                }(i));
 
-                (function() {
                     $iconPause[0].addEventListener('click', () => {
                         SoundRecorder.audioRecordings[i].pause();
                         SoundRecorder.audioRecordings[i].currentTime = 0;
@@ -100,14 +98,13 @@ var SoundRecorder;
                     });
                 }(i));
 
-                $loop.append('<div class="title">Loop ' + i+1 + '</div>');
+                $loop.append('<div class="title">Loop ' + (i+1) + '</div>');
                 $controls.append($icon);
                 $controls.append($iconPause);
                 $loop.append($controls);
 
                 $loops.append($loop);
-                // $('#loops-drawer').html($loops);
-                // $('#bottom').toggleClass('showLoops');
+
             });
 
             isRecording = false;
