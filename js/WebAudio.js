@@ -1,6 +1,6 @@
 var SoundRecorder;
 
-(function () {
+function initRecorder() {
 
     try {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -123,4 +123,8 @@ var SoundRecorder;
 
     bufferLoader.load();
 
-})();
+}
+
+if(!mobile){
+   initRecorder();
+}
