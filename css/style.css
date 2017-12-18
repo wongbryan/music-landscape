@@ -132,7 +132,7 @@ button {
     font-size: 20rem;
     font-family: 'Avenir Next', sans-serif;
     z-index: 4; }
-  @media (max-width: 768) {
+  @media screen and (max-width: 768px) {
     #progress .percent {
       font-size: 10rem; } }
   #progress .bar {
@@ -208,9 +208,6 @@ button {
   width: 500px;
   transform: translate(-50%, -50%);
   z-index: 1; }
-  @media screen and (max-width: 768) {
-    #title {
-      width: 80%; } }
   #title #start, #title #mobile-play {
     bottom: 0;
     position: relative;
@@ -221,6 +218,9 @@ button {
   #title #mobile-play {
     display: none; }
 
+@media screen and (max-width: 768px) {
+  #title {
+    width: 80% !important; } }
 #cameraToggle {
   position: absolute;
   top: 0;

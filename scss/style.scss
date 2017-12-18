@@ -180,8 +180,7 @@ button {
 
   }
 
-  @media (max-width: 768){
-
+  @media screen and (max-width: 768px){
       .percent{
         font-size: 10rem;
       }
@@ -288,10 +287,6 @@ button {
   transform: translate(-50%, -50%);
   z-index: 1;
 
-  @media screen and (max-width: 768){
-    width: 80%;
-  }
-
   #start, #mobile-play{
     bottom: 0;
     position: relative;
@@ -306,6 +301,12 @@ button {
   #mobile-play{
 
     display: none;
+  }
+}
+
+@media screen and (max-width: 768px){
+  #title{
+    width: 80% !important;
   }
 }
 
