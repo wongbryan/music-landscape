@@ -76,7 +76,11 @@ var CreateAutoplay = function (audio, timestamps, camera) {
         AutoplayProps.paused = false;
 
 
-        $ui.addClass('show');
+        if(mobile){
+            document.querySelector('#title').style.opacity = 1;
+        }
+        else
+            $ui.addClass('show');
         return;
     }
 
