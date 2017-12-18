@@ -181,7 +181,7 @@ button {
 
   @media screen and (max-width: 768px){
       .percent{
-        font-size: 10rem;
+        font-size: 8rem;
       }
   }
 
@@ -293,12 +293,17 @@ button {
     transform: translateX(-50%);
   }
 
+  @media screen and (max-width: 768px){
+    #mobile-play{
+      margin-top: 30px;
+    }
+  }
+
   #start{
     display: block;
   }
 
   #mobile-play{
-
     display: none;
   }
 }
