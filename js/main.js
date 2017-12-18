@@ -394,10 +394,6 @@ function initRest() {
         }
     });
 
-    document.getElementById('play').addEventListener('click', () => {
-        SoundRecorder.playRecording();
-    });
-
     document.getElementById('loops').addEventListener('click', ()=>{
         $('#bottom').toggleClass('showLoops');
     });

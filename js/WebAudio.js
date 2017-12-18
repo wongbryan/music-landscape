@@ -113,10 +113,6 @@ var SoundRecorder;
             isRecording = false;
         }
 
-        function playRecording() {
-            audioRecordings[0].play();
-        }
-
         SoundRecorder = {
             recorder: recorder,
             context: context,
@@ -124,7 +120,6 @@ var SoundRecorder;
             isRecording: getRecordingStatus,
             record: record,
             stop: stop,
-            playRecording: playRecording,
             audioRecordings: audioRecordings
         }
     }

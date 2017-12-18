@@ -24,7 +24,7 @@ var CreateCloud = function(pivot, x, y, z){
 		m.scale.set(s,s,s);
 
 		m.castShadow = true;
-		m.receiveShadow = true;
+		m.receiveShadow = false;
 
 		mesh.add(m);
 	}
