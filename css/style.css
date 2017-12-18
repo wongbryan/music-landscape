@@ -122,13 +122,16 @@ button {
   left: 0;
   bottom: 0;
   right: 0;
-  background: #f6f6f6; }
+  background: #f6f6f6;
+  height: 100vh;
+  width: 100vw; }
   #progress .percent {
     color: #919191;
     text-align: center;
     top: 50%;
-    position: relative;
-    transform: translateY(-50%);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 20rem;
     font-family: 'Avenir Next', sans-serif;
     z-index: 4; }
