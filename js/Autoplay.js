@@ -7,7 +7,8 @@ var CreateAutoplay = function (audio, timestamps, camera) {
 
     function play() {
         $('#pause-overlay').removeClass('show');
-        $('.ui-bar').addClass('show');
+        if(!mobile)
+            $('.ui-bar').addClass('show');
         AutoplayProps.isPlaying = true;
         AutoplayProps.paused = false;
 
@@ -52,7 +53,8 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     }
 
     function stop() {
-        $('.ui-bar').removeClass('show');
+        if(!mobile)
+            $('.ui-bar').removeClass('show');
         $('#pause-overlay').removeClass('show');
 
         clearInterval(_interval);
