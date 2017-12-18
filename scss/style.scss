@@ -221,6 +221,52 @@ button {
   }
 }
 
+#info-overlay{
+
+  .content {
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .info {
+    h1{
+      font-family: $Press-Start-2P, monospace;
+      font-size: 3em;
+      color: #26272d;
+      margin: 0;
+    }
+
+    p{
+      font-family: $Fugue, sans-serif;
+      color: #919191;
+      font-size: 30px;
+      margin: 0;
+      margin-top: 50px;
+    }
+
+    a{
+      display: inline-block;
+      margin-top: 12px;
+      font-family: $Calibre, sans-serif;
+      font-size: 27px;
+      color: #919191;
+      font-weight: normal;
+      text-decoration: none;
+      &:hover{
+        color: #8a0e91;
+      }
+    }
+  }
+}
+
+.dark{
+  color: #26272d;
+}
+
 #title {
   position: absolute;
   margin: auto;
@@ -376,7 +422,7 @@ button {
 #pause-overlay {
 
   .time {
-    color: black;
+    color: #161719;
     font-family: $Fugue, sans-serif;
     font-size: 4rem;
   }

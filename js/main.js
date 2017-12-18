@@ -66,7 +66,7 @@ function init() {
         camera.position.set(0, 25, .1);
     else
         camera.position.set(-50, 20, 50);
-    
+
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -387,6 +387,7 @@ function initRest() {
     });
 
     document.querySelector('#info .info').addEventListener('click', (e) => {
+        $('#info .info').toggleClass('dark');
         $('#info-overlay').toggleClass('show');
     });
 
@@ -476,6 +477,7 @@ function initRest() {
                                     SoundRecorder.stop();
                                 }
                                 else{
+                                    // setTimeout(SoundRecorder.record, 200);
                                     SoundRecorder.record();
                                 }
                             }
