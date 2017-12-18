@@ -49,7 +49,8 @@ button {
   height: 50px;
   background-color: #f7faff;
   transition: all 100ms ease;
-  text-align: center; }
+  text-align: center;
+  margin-top: 15px; }
   .ui-button a {
     font-family: "Press Start 2P", monospace;
     text-decoration: none;
@@ -214,7 +215,7 @@ button {
     transform: translateX(-50%); }
   @media screen and (max-width: 768px) {
     #title #mobile-play {
-      margin-top: 30px; } }
+      margin-top: 20px; } }
   #title #start {
     display: block; }
   #title #mobile-play {

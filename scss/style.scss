@@ -69,6 +69,7 @@ button {
   background-color: #f7faff;
   transition: all 100ms ease;
   text-align: center;
+  margin-top: 15px;
 
   a {
     font-family: $Press-Start-2P, monospace;
@@ -295,7 +296,7 @@ button {
 
   @media screen and (max-width: 768px){
     #mobile-play{
-      margin-top: 30px;
+      margin-top: 20px;
     }
   }
 
