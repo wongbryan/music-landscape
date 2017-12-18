@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width">
 <head>
     <base href="/">
     <title>Landscape</title>
@@ -16,16 +17,22 @@
     <div class="percent">0%</div>
     <div class="bar"></div>
 </div>
+ <div id="title">
+    <img src="./assets/images/title.svg" alt="" />
+    <button id="start" class="ui-button"><a href="">start</a></button>
+    <button id="mobile-play" class="ui-button">
+        <a href="">dance!</a>
+    </button>
+</div>
+
+<div class="ui-bar ui-bar--top"></div>
+<div class="ui-bar ui-bar--bottom"></div>
+
 <div id="container">
     <canvas></canvas>
     <div id="info" class="ui">
         <span><i class="keyboard icon fa fa-keyboard-o"></i></span>
         <span><i class="info icon fa fa-info-circle"></i></span>
-    </div>
-
-    <div id="title">
-        <img src="./assets/images/title.svg" alt="" />
-        <button id="start" class="ui-button"><a href="">start</a></button>
     </div>
 
     <div id="bottom" class="ui">
@@ -51,8 +58,6 @@
         <ul class="buttons">
         </ul>
     </div>
-    <div class="ui-bar ui-bar--top"></div>
-    <div class="ui-bar ui-bar--bottom"></div>
 </div>
 
 
@@ -108,9 +113,9 @@
 <script src="bower_components/tween.js/index.js"></script>
 <script src="bower_components/physi.js/index.js"></script>
 <script src="bower_components/three.js-examples/examples/js/controls/OrbitControls.js"></script>
+<script src="js/Report.js"></script>
 <script src="js/data.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/Report.js"></script>
 <script src="js/Fruit.js"></script>
 <script src="js/Text.js"></script>
 <script src="js/Key.js"></script>

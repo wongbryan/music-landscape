@@ -22,3 +22,12 @@ dance.addEventListener('mouseout', ()=>{
 	var text = dance.getElementsByTagName('a')[0];
 	text.style.color = '#333333';
 });
+
+if(mobile){
+	var uielems = document.getElementsByClassName('ui');
+	for(var i=0; i<uielems.length; i++){
+		uielems[i].style.display = 'none';
+	}
+	document.getElementById('start').style.display = 'none';
+	document.getElementById('mobile-play').style.display = 'block';
+}

@@ -23,7 +23,7 @@ button {
 }
 
 #container {
-  position: relative;
+  position: absolute;
   height: 100vh;
   width: 100vw;
 }
@@ -100,11 +100,12 @@ button {
 }
 
 .ui-bar {
-  position: absolute;
+  position: fixed;
   height: 12vh;
-  width: 100vw;
+  width: 100%;
   background-color: black;
   transition: all .7s ease;
+  z-index: 1;
 
   &--top {
     top: 0;
@@ -176,7 +177,16 @@ button {
     font-size: 20rem;
     font-family: 'Avenir Next', sans-serif;
     z-index: 4;
+
   }
+
+  @media (max-width: 768){
+
+      .percent{
+        font-size: 10rem;
+      }
+  }
+
   .bar {
     position: absolute;
     bottom: 0;
@@ -268,21 +278,34 @@ button {
 }
 
 #title {
-  position: absolute;
+  transition: opacity .2s ease;
+  position: fixed;
   margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 50%;
+  left: 50%;
   height: 350px;
   width: 500px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 
-  #start {
-    display: block;
+  @media screen and (max-width: 768){
+    width: 80%;
+  }
+
+  #start, #mobile-play{
     bottom: 0;
-    position: absolute;
+    position: relative;
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  #start{
+    display: block;
+  }
+
+  #mobile-play{
+
+    display: none;
   }
 }
 

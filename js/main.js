@@ -258,6 +258,11 @@ function init() {
         initRest();
     });
 
+    document.querySelector('#mobile-play').addEventListener('click', () => {
+        document.querySelector('#title').style.opacity = 0;
+        Autoplay.play();
+    });
+
     composer = new THREE.EffectComposer(renderer);
     var renderPass = new THREE.RenderPass(scene, camera);
     // renderPass.renderToScreen = true;

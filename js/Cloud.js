@@ -23,8 +23,7 @@ var CreateCloud = function(pivot, x, y, z){
 		var s = .1 + Math.random()*.9;
 		m.scale.set(s,s,s);
 
-		if (isSafari){
-			console.log('lol');
+		if (isSafari || mobile){
 			m.castShadow = false;
 		}
 		else
