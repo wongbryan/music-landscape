@@ -28,4 +28,4 @@ var PixelShader = {
 			"gl_FragColor = texture2D(tDiffuse, coord);",
 		"}"
 	].join("\n")
-}
+};
