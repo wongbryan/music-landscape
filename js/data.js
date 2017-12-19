@@ -269,19 +269,7 @@ const MODEL_DATA = {
     }
 };
 
-const TEXTURE_DATA = {
-    'blueberry': null,
-    'apple': null,
-    'banana': null,
-};
-
 const FONTS_DATA = {
-    'helvetiker_bold': {
-        font: null,
-        size: 80,
-        height: 20,
-        curveSegments: 2
-    },
     'fugue': {
         font: null,
         size: 80,

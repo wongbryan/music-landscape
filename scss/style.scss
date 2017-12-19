@@ -325,6 +325,13 @@ button {
 
   #start{
     display: block;
+
+    &:hover{
+      a {
+        text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+        color: #23cfff;
+      }
+    }
   }
 
   #mobile-play{

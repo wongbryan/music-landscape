@@ -329,7 +329,6 @@ var CreateCloud = function(pivot, x, y, z){
 		else
 			m.castShadow = true;
 
-		// m.castShadow = false;
 		m.receiveShadow = false;
 
 		mesh.add(m);
@@ -620,19 +619,7 @@ const MODEL_DATA = {
     }
 };
 
-const TEXTURE_DATA = {
-    'blueberry': null,
-    'apple': null,
-    'banana': null,
-};
-
 const FONTS_DATA = {
-    'helvetiker_bold': {
-        font: null,
-        size: 80,
-        height: 20,
-        curveSegments: 2
-    },
     'fugue': {
         font: null,
         size: 80,
@@ -3002,10 +2989,6 @@ for (var obj in MODEL_DATA) {
     Loader.loadModel(obj);
 }
 
-for (var key in TEXTURE_DATA) {
-    Loader.loadTexture(key);
-}
-
 for (var key in FONTS_DATA) {
     Loader.loadFont(key);
 }
@@ -4408,6 +4391,7 @@ const DANCE_COLORS = [
 var color = '#333333';
 var dance = document.getElementById('dance');
 var $ui = $('#cameraToggle, #info, #bottom');
+var start = document.getElementById('start');
 
 dance.addEventListener('mouseover', ()=>{
 	var index = Math.floor(Math.random()*(DANCE_COLORS.length-1));

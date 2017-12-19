@@ -237,6 +237,9 @@ button {
       margin-top: 20px; } }
   #title #start {
     display: block; }
+    #title #start:hover a {
+      text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+      color: #23cfff; }
   #title #mobile-play {
     display: none; }
 

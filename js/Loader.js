@@ -79,10 +79,6 @@ for (var obj in MODEL_DATA) {
     Loader.loadModel(obj);
 }
 
-for (var key in TEXTURE_DATA) {
-    Loader.loadTexture(key);
-}
-
 for (var key in FONTS_DATA) {
     Loader.loadFont(key);
 }
