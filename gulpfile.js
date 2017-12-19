@@ -13,7 +13,11 @@ gulp.task('lib', function () {
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/tween.js/index.js',
         'bower_components/physi.js/index.js',
-        'bower_components/three.js-examples/examples/js/controls/OrbitControls.js'
+        'bower_components/three.js-examples/examples/js/controls/OrbitControls.js',
+        'bower_components/three.js-examples/examples/js/shaders/CopyShader.js',
+        'bower_components/three.js-examples/examples/js/postprocessing/EffectComposer.js',
+        'bower_components/three.js-examples/examples/js/postprocessing/RenderPass.js',
+        'bower_components/three.js-examples/examples/js/postprocessing/ShaderPass.js',
     ])
         .pipe(concat('lib.js'))
         .pipe(uglify())
@@ -28,19 +32,21 @@ gulp.task('js', function () {
     return gulp.src('js/*.js')
         .pipe(order([
             'js/recorder.js',
+            'js/WaveShader.js',
+            'js/PixelShader.js',
             'js/Report.js',
-            'js/Autoplay.js',
             'js/data.js',
-            'js/Loader.js',
             'js/ui.js',
             'js/Fruit.js',
             'js/Text.js',
             'js/Key.js',
+            'js/Cloud.js',
             'js/CameraController.js',
             'js/Audio.js',
-            'js/WebAudio.js',
+            'js/Autoplay.js',
+            'js/Loader.js',
             'js/BufferLoader.js',
-            'js/Cloud.js',
+            'js/WebAudio.js',
             'js/main.js'
         ]))
         .pipe(concat('bundle.js'))

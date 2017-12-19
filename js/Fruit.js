@@ -14,7 +14,7 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 	mesh.scale.set(scale, scale, scale);
 
 	var force = new THREE.Vector3(500, 2200, 500).multiplyScalar(force),
-	offset = new THREE.Vector3(1, 5, 2);
+	offset = new THREE.Vector3(0, 5, 0);
 
 	function applyImpulse(mag=1){
 

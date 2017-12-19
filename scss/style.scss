@@ -161,28 +161,28 @@ button {
 }
 
 #progress {
-  position: fixed;
+  position: absolute;
   z-index: 2;
-  background: #f6f6f6;
+  background: #0e0e0f;
   height: 100vh;
   width: 100vw;
 
   .percent {
-    color: #919191;
+    color: #f9fdff;
     text-align: center;
     top: 50%;
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 20rem;
-    font-family: 'Avenir Next', sans-serif;
+    font-size: 15rem;
+    font-family: $Press-Start-2P, monospace;
     z-index: 4;
 
   }
 
   @media screen and (max-width: 768px){
       .percent{
-        font-size: 8rem;
+        font-size: 6rem;
       }
   }
 
@@ -190,9 +190,10 @@ button {
     position: absolute;
     bottom: 0;
     height: 0%;
-    background: #ebebeb;
+    background: #fec4ff;
     z-index: 3;
     width: 100%;
+    transition: all .5s ease;
   }
 }
 
@@ -239,6 +240,7 @@ button {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    line-height: 70px;
   }
 
   .info {
@@ -247,6 +249,27 @@ button {
       font-size: 3em;
       color: #26272d;
       margin: 0;
+      span:first-child{
+        color: #ff960c;
+      }
+      span:nth-child(2){
+        color: #23cfff;
+      }
+      span:nth-child(3){
+        color: #ff237f;
+      }
+      span:nth-child(4){
+        color: #26272d;
+      }
+      span:nth-child(5){
+        color: #6f1df2;
+      }
+      span:nth-child(6){
+        color: #28ff28;
+      }
+       span:nth-child(7){
+        color: #ff960c;
+      }
     }
 
     p{

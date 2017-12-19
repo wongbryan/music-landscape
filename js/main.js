@@ -62,10 +62,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
 
-    if(isSafari)
-        camera.position.set(0, 25, .1);
-    else
-        camera.position.set(-50, 20, 50);
+    camera.position.set(-50, 20, 50);
 
     camera.controller = CameraController(camera);
 
