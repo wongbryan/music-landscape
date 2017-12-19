@@ -175,6 +175,7 @@ button {
   top: 50%;
   transform: translateY(-50%);
   line-height: 70px; }
+
 #info-overlay .info h1 {
   font-family: "Press Start 2P", monospace;
   font-size: 3em;
@@ -194,12 +195,14 @@ button {
     color: #28ff28; }
   #info-overlay .info h1 span:nth-child(7) {
     color: #ff960c; }
+
 #info-overlay .info p {
   font-family: "Fugue", sans-serif;
   color: #919191;
   font-size: 30px;
   margin: 0;
   margin-top: 50px; }
+
 #info-overlay .info a {
   display: inline-block;
   margin-top: 12px;
@@ -240,6 +243,7 @@ button {
 @media screen and (max-width: 768px) {
   #title {
     width: 80%; } }
+
 #cameraToggle {
   position: absolute;
   top: 0;
@@ -336,6 +340,7 @@ button {
   color: #161719;
   font-family: "Fugue", sans-serif;
   font-size: 4rem; }
+
 #pause-overlay .instructions {
   color: #919191;
   font-family: "Press Start 2P", monospace;
@@ -360,10 +365,9 @@ button {
     opacity: 1; }
   to {
     opacity: 0; } }
+
 .hide {
   display: none; }
 
 .show {
   display: block; }
-
-/*# sourceMappingURL=style.css.map */

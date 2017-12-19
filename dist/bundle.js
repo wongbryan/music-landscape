@@ -30,7 +30,8 @@ var CreateAutoplay = function (audio, timestamps, camera) {
 
     function play() {
         $('#pause-overlay').removeClass('show');
-        $('.ui-bar').addClass('show');
+        if(!mobile)
+            $('.ui-bar').addClass('show');
         AutoplayProps.isPlaying = true;
         AutoplayProps.paused = false;
 
@@ -75,7 +76,8 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     }
 
     function stop() {
-        $('.ui-bar').removeClass('show');
+        if(!mobile)
+            $('.ui-bar').removeClass('show');
         $('#pause-overlay').removeClass('show');
 
         clearInterval(_interval);
@@ -97,7 +99,11 @@ var CreateAutoplay = function (audio, timestamps, camera) {
         AutoplayProps.paused = false;
 
 
-        $ui.addClass('show');
+        if(mobile){
+            document.querySelector('#title').style.opacity = 1;
+        }
+        else
+            $ui.addClass('show');
         return;
     }
 
@@ -317,8 +323,14 @@ var CreateCloud = function(pivot, x, y, z){
 		var s = .1 + Math.random()*.9;
 		m.scale.set(s,s,s);
 
-		m.castShadow = true;
-		m.receiveShadow = true;
+		if (isSafari || mobile){
+			m.castShadow = false;
+		}
+		else
+			m.castShadow = true;
+
+		// m.castShadow = false;
+		m.receiveShadow = false;
 
 		mesh.add(m);
 	}
@@ -2469,7 +2481,8 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
-                pixelate: .4
+                pixelate: .4,
+                cameraToggle: 2
             },
             '149.4': {
                 mag: .4,
@@ -2715,7 +2728,8 @@ const AUDIO_DATA = {
                 mag: 1.4,
                 trig: false,
                 lightkeys: 26,
-                pixelate: .6
+                pixelate: .6,
+                cameraToggle: 1
             },
             '167.3': {
                 mag: 1.4,
@@ -2793,11 +2807,35 @@ const AUDIO_DATA = {
 
 const SOUND_MAPPINGS_1 = {
 
-
 }
 
 const KEY_MAPPINGS = {
-    // 'a' : { fruit: Fruit, text: Text, border: Border }
+    'q': {},
+    'w': {},
+    'e': {},
+    'r': {},
+    't': {},
+    'y': {},
+    'u': {},
+    'i': {},
+    'o': {},
+    'p': {},
+    'a': {},
+    's': {},
+    'd': {},
+    'f': {},
+    'g': {},
+    'h': {},
+    'j': {},
+    'k': {},
+    'l': {},
+    'z': {},
+    'x': {},
+    'c': {},
+    'v': {},
+    'b': {},
+    'n': {},
+    'm': {}
 };
 
 const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'];
@@ -2817,7 +2855,7 @@ var CreateFruit = function(morphGeom, material, scale = .5, force = 1, sound){
 	mesh.scale.set(scale, scale, scale);
 
 	var force = new THREE.Vector3(500, 2200, 500).multiplyScalar(force),
-	offset = new THREE.Vector3(1, 5, 2);
+	offset = new THREE.Vector3(0, 5, 0);
 
 	function applyImpulse(mag=1){
 
@@ -3031,7 +3069,7 @@ function loop() {
 function init() {
     var container = document.getElementById('container');
     var canvas = document.getElementsByTagName('canvas')[0];
-    renderer = new THREE.WebGLRenderer({antialias: true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
+    renderer = new THREE.WebGLRenderer({antialias: (isSafari) ? false:true, logarithmicDepthBuffer: 'logzbuf', canvas: canvas});
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -3041,7 +3079,9 @@ function init() {
     // container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, .01, 1000);
+
     camera.position.set(-50, 20, 50);
+
     camera.controller = CameraController(camera);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -3065,7 +3105,7 @@ function init() {
         }
     );
 
-    var numClouds = 7 + Math.floor(Math.random() * 7);
+    var numClouds = (isSafari) ? 0:7 + Math.floor(Math.random() * 7);
     var numPivots = 3;
 
     for (var i = 0; i < numPivots; i++) {
@@ -3092,17 +3132,18 @@ function init() {
 
     shadowLight.position.set(150, 75, 150);
 
-    shadowLight.castShadow = true;
+    if(!isSafari && REPORT.maxCombinedTextureImageUnits>60){
+        shadowLight.castShadow = true;
+        shadowLight.shadow.camera.left = -75;
+        shadowLight.shadow.camera.right = 75;
+        shadowLight.shadow.camera.top = 75;
+        shadowLight.shadow.camera.bottom = -75;
+        shadowLight.shadow.camera.near = 1;
+        shadowLight.shadow.camera.far = 1000;
 
-    shadowLight.shadow.camera.left = -100;
-    shadowLight.shadow.camera.right = 100;
-    shadowLight.shadow.camera.top = 100;
-    shadowLight.shadow.camera.bottom = -100;
-    shadowLight.shadow.camera.near = 1;
-    shadowLight.shadow.camera.far = 1000;
-
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
+        shadowLight.shadow.mapSize.width = 1024;
+        shadowLight.shadow.mapSize.height = 1024;
+    }
 
     var shadowLight2 = shadowLight.clone();
     shadowLight2.castShadow = false;
@@ -3152,16 +3193,15 @@ function init() {
     const COLS = 4;
     const SP = 4;
 
-    for (let i = 0; i < ACTIVE_KEYS.length; i++) {
+    for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         let k = ACTIVE_KEYS[i];
 
-        KEY_MAPPINGS[k] = {
+        KEY_MAPPINGS[k] = Object.assign({}, KEY_MAPPINGS[k], {
             fruit: null,
             text: null,
             border: null,
             audio: null,
-            web_audio_buffer: null
-        };
+        });
 
         let r, c, offsetX, maxRows = 3, maxCols;
 
@@ -3221,7 +3261,7 @@ function init() {
         KEY_MAPPINGS[k].text = text;
         scene.add(text.mesh);
 
-        let path = 'assets/sounds/' + k + '.wav';
+        let path = 'assets/sounds/' + k + '.mp3';
         let audio = CreateAudio(path);
         KEY_MAPPINGS[k].audio = audio;
 
@@ -3231,6 +3271,11 @@ function init() {
         camera.controller.shiftPos(2);
         $('#controls').addClass('started');
         initRest();
+    });
+
+    document.querySelector('#mobile-play').addEventListener('click', () => {
+        document.querySelector('#title').style.opacity = 0;
+        Autoplay.play();
     });
 
     composer = new THREE.EffectComposer(renderer);
@@ -3362,6 +3407,7 @@ function initRest() {
     });
 
     document.querySelector('#info .info').addEventListener('click', (e) => {
+        $('#info .info').toggleClass('dark');
         $('#info-overlay').toggleClass('show');
     });
 
@@ -3375,29 +3421,7 @@ function initRest() {
         }
     });
 
-    document.getElementById('play').addEventListener('click', () => {
-        SoundRecorder.playRecording();
-    });
-
-    document.getElementById('loops').addEventListener('click', () => {
-        let $loops = $('<div>');
-        SoundRecorder.audioRecordings.forEach((rec,i) => {
-            let $loop = $('<div>', {class: 'loop'});
-            let $controls = $('<div>', {class: 'controls'});
-            let $icon = $('<i>', {class: 'fa fa-play'});
-            (function() {
-                $icon[0].addEventListener('click', () => {
-                    SoundRecorder.audioRecordings[i].play();
-                });
-            }(i));
-            $loop.append('<div class="title">Loop ' + i + '</div>');
-            $controls.append($icon);
-            $loop.append($controls);
-
-            $loops.append($loop);
-        });
-
-        $('#loops-drawer').html($loops);
+    document.getElementById('loops').addEventListener('click', ()=>{
         $('#bottom').toggleClass('showLoops');
     });
 
@@ -3408,7 +3432,6 @@ function initRest() {
 
         }
     })
-
 
     document.addEventListener('keydown', (e) => {
         if (!e.metaKey) {
@@ -3474,6 +3497,7 @@ function initRest() {
                                     SoundRecorder.stop();
                                 }
                                 else{
+                                    // setTimeout(SoundRecorder.record, 200);
                                     SoundRecorder.record();
                                 }
                             }
@@ -3882,6 +3906,18 @@ module.exports = InlineWorker;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1])(1)
 });
+// Safari 3.0+ "[object HTMLElementConstructor]" 
+const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+// Internet Explorer 6-11
+const isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+const mobile = (function() {
+  var check = false;
+  (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+  return check;
+})();
+
 /* AUTHOR: Analytical Graphics, Inc.
 Test functions taken from 'webglreport':
 https://github.com/AnalyticalGraphicsInc/webglreport 
@@ -4385,6 +4421,15 @@ dance.addEventListener('mouseout', ()=>{
 	var text = dance.getElementsByTagName('a')[0];
 	text.style.color = '#333333';
 });
+
+if(mobile){
+	var uielems = document.getElementsByClassName('ui');
+	for(var i=0; i<uielems.length; i++){
+		uielems[i].style.display = 'none';
+	}
+	document.getElementById('start').style.display = 'none';
+	document.getElementById('mobile-play').style.display = 'block';
+}
 var WaveShader = {
 	uniforms: {
 		"tDiffuse": { value: null },
@@ -4431,7 +4476,7 @@ var WaveShader = {
 }
 var SoundRecorder;
 
-(function () {
+function initRecorder() {
 
     try {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -4455,7 +4500,7 @@ var SoundRecorder;
     
     for (var i = 0; i < ACTIVE_KEYS.length; i++) {
         var key = ACTIVE_KEYS[i];
-        var path = AUDIO_ASSETS_PATH + key + '.wav';
+        var path = AUDIO_ASSETS_PATH + key + '.mp3';
         sound_paths.push(path);
     }
 
@@ -4501,12 +4546,44 @@ var SoundRecorder;
                 audio.src = url;
                 audio.loop = true;
                 audioRecordings.push(audio);
-            });
-            isRecording = false;
-        }
 
-        function playRecording() {
-            audioRecordings[0].play();
+                let i = audioRecordings.length-1;
+
+                let $loops = $('#loops-drawer');
+                
+                let $loop = $('<div>', {class: 'loop'});
+                let $controls = $('<div>', {class: 'controls'});
+                let $icon = $('<i>', {class: 'fa fa-play show'});
+                let $iconPause = $('<i>', {class: 'fa fa-pause hide'});
+                (function() {
+                    $icon[0].addEventListener('click', () => {
+                        SoundRecorder.audioRecordings[i].play();
+                        $iconPause.removeClass('hide');
+                        $iconPause.addClass('show');
+                        $icon.removeClass('show');
+                        $icon.addClass('hide');
+                    });
+
+                    $iconPause[0].addEventListener('click', () => {
+                        SoundRecorder.audioRecordings[i].pause();
+                        SoundRecorder.audioRecordings[i].currentTime = 0;
+                        $icon.removeClass('hide');
+                        $icon.addClass('show');
+                        $iconPause.removeClass('show');
+                        $iconPause.addClass('hide');
+                    });
+                }(i));
+
+                $loop.append('<div class="title">Loop ' + (i+1) + '</div>');
+                $controls.append($icon);
+                $controls.append($iconPause);
+                $loop.append($controls);
+
+                $loops.append($loop);
+
+            });
+
+            isRecording = false;
         }
 
         SoundRecorder = {
@@ -4516,11 +4593,14 @@ var SoundRecorder;
             isRecording: getRecordingStatus,
             record: record,
             stop: stop,
-            playRecording: playRecording,
             audioRecordings: audioRecordings
         }
     }
 
     bufferLoader.load();
 
-})();
+}
+
+if(!mobile){
+   initRecorder();
+}

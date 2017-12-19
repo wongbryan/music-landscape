@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width">
 <head>
     <base href="/">
     <title>Landscape</title>
+    <link rel="stylesheet" type="text/css" href="assets/fonts/Arcade-Classic-web/stylesheet.css"/>
     <link rel="stylesheet" type="text/css" href="assets/fonts/Calibre-web/stylesheet.css"/>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/fonts/Fugue-web/stylesheet.css"/>
@@ -15,70 +17,87 @@
     <div class="percent">0%</div>
     <div class="bar"></div>
 </div>
-<div id="info" class="ui">
-    <span><i class="keyboard icon fa fa-keyboard-o"></i></span>
-    <span><i class="info icon fa fa-info-circle"></i></span>
-</div>
-<div id="dj" class="ui">
-    <button id="record">
-        <div class="icon"></div>
-    </button>
-    <button id="play">
-        <i class="icon fa fa-play"></i>
-    </button>
-    <button id="loops">
-        <i class="icon fa fa-bars"></i>
-    </button>
-</div>
-
-<div id="title">
+ <div id="title">
     <img src="./assets/images/title.svg" alt="" />
     <button id="start" class="ui-button"><a href="">start</a></button>
+    <button id="mobile-play" class="ui-button">
+        <a href="">dance!</a>
+    </button>
 </div>
 
-<div id="buttonMask" class="ui">
-    <ul class="buttonContainer">
-        <li id="dance" class="ui-button"><a href="">dance!</a></li>
-    </ul>
-</div>
-<div id="cameraToggle" class="ui">
-    <span class="title"><i class="icon fa fa-video-camera"></i></span>
-    <ul class="buttons">
-    </ul>
-</div>
-<div id="container">
-    <canvas></canvas>
-</div>
-
-
-<!-- OVERLAYS -->
 <div class="ui-bar ui-bar--top"></div>
 <div class="ui-bar ui-bar--bottom"></div>
+
+<div id="container">
+    <canvas></canvas>
+    <div id="info" class="ui">
+        <span><i class="keyboard icon fa fa-keyboard-o"></i></span>
+        <span><i class="info icon fa fa-info-circle"></i></span>
+    </div>
+
+    <div id="bottom" class="ui">
+        <div id="dj">
+            <button id="record">
+                <div class="icon"></div>
+            </button>
+            <button id="loops">
+                <i class="icon fa fa-bars"></i>
+            </button>
+        </div>
+        <div id="buttonMask">
+            <ul class="buttonContainer">
+                <li id="dance" class="ui-button"><a href="">dance!</a></li>
+            </ul>
+        </div>
+        <div id="loops-drawer">
+        </div>
+    </div>
+
+    <div id="cameraToggle" class="ui">
+        <span class="title"><i class="icon fa fa-video-camera"></i></span>
+        <ul class="buttons">
+        </ul>
+    </div>
+</div>
+
+
+<!-- OVERLAYS / OTHER ELEMENTS -->
 <div id="keyboard-overlay" class="ui-overlay">
     <div class="keyboard content"></div>
 </div>
 <div id="info-overlay" class="ui-overlay">
     <div class="info content">
-
+        <h1>A <span>n</span><span>o</span><span>n</span><span>-</span><span>G</span><span>M</span><span>O</span> online launchpad.</h1>
+        <p>Created by Bryan Wong, Chang Liu, April Ding, Megan Shi, Bryan Ong and Lauren Yeung.</p>
+        <a target="_blank" href="https://soundcloud.com/nice-feelings/fresh">Song: "Fresh" by Nice Feelings</a>
     </div>
 </div>
+<div id="pause-overlay" class="ui-overlay">
+    <div class="content">
+        <div class="time">
+            <span class="curr"></span> / <span class="total"></span>
+        </div>
+        <div class="instructions">
+            Press <b>SPACE</b> to resume or <b>ESC</b> to go back.
+        </div>
+    </div>
+</div>
+
 </body>
 <script type="vsh" id="vertexShader">
-	void main(){
-		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
-	}
+    void main(){
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+    }
 
 </script>
 <script type="fsh" id="fragmentShader">
-	void main(){
-		vec4 color = vec4(1., 0., 0., 0.);
-		gl_FragColor = color;
-	}
+    void main(){
+        vec4 color = vec4(1., 0., 0., 0.);
+        gl_FragColor = color;
+    }
 
 </script>
 <script src="dist/lib.js"></script>
 <script src="dist/bundle.js"></script>
 </body>
-
-
 </html>

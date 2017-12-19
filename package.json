@@ -1,0 +1,12 @@
+{
+  "name": "",
+  "version": "",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-order": "^1.1.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify-es": "^0.1.9"
+  }
+}
