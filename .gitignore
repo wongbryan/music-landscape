@@ -3,3 +3,10 @@ node_modules/*
 .idea/
 .sass-cache/*
 bower_components/*
+js/*
+index-dev.html
+bower.json
+scss/*
+package.json
+package-lock.json
+gulpfile.js
