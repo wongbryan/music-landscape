@@ -449,7 +449,7 @@ function initRest() {
                     source.start(0);
                 }
 
-                if(objs.label){
+                if(objs.label && $('#keyboard-overlay').hasClass('show')){
                     var overlayKey = document.getElementById(key);
                     var color = DANCE_COLORS[Math.floor(Math.random()*DANCE_COLORS.length)];
                     overlayKey.style.backgroundColor = color;
