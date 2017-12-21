@@ -4,7 +4,7 @@ Physijs.scripts.worker = 'lib/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
 var scene, ground_material, ground;
-var camera, scene, renderer, controls;
+var camera, scene, renderer;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
 var AutoplayProps = {
@@ -33,7 +33,6 @@ function update() {
         clouds[i].update();
     }
 
-    controls.update();
     wavePass.uniforms.time.value += .05;
     TWEEN.update();
 }
@@ -75,8 +74,6 @@ function init() {
 	var sound = new THREE.PositionalAudio(Listener);
 	
 	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
-
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     scene = new Physijs.Scene;
     scene.setGravity(new THREE.Vector3(0, -60, 0));
