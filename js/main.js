@@ -3,7 +3,7 @@
 Physijs.scripts.worker = 'lib/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
-var box, scene, ground_material, ground, light;
+var scene, ground_material;
 var camera, scene, renderer, controls;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
@@ -287,7 +287,6 @@ function init() {
     composer.addPass(pixelPass);
     
     composer.wavify = function(time){
-        console.log(time);
         postProcessing = true;
         wavePass.renderToScreen = true;
         time*=1000;
