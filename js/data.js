@@ -44,6 +44,14 @@ const KEYCODES = {
     191: "/",
 };
 
+const DANCE_COLORS = [
+'#ff960c',
+'#23cfff',
+'#ff237f',
+'#28ff28',
+'#6f1df2' 
+];
+
 function keyToCode(key) {
     return Object.keys(KEYCODES)[Object.values(KEYCODES).indexOf(key)];
 }
@@ -2447,32 +2455,84 @@ const SOUND_MAPPINGS_1 = {
 }
 
 const KEY_MAPPINGS = {
-    'q': {},
-    'w': {},
-    'e': {},
-    'r': {},
-    't': {},
-    'y': {},
-    'u': {},
-    'i': {},
-    'o': {},
-    'p': {},
-    'a': {},
-    's': {},
-    'd': {},
-    'f': {},
-    'g': {},
-    'h': {},
-    'j': {},
-    'k': {},
-    'l': {},
-    'z': {},
-    'x': {},
-    'c': {},
-    'v': {},
-    'b': {},
-    'n': {},
-    'm': {}
+    'q': {
+        label: 'kick 1',
+    },
+    'w': {
+        label: 'kick 2',
+    },
+    'e': {
+        label: 'kick 3',
+    },
+    'r': {
+        label: 'kick 4',
+    },
+    't': {
+        label: 'perc 1',
+    },
+    'y': {
+        label: 'perc 2',
+    },
+    'u': {
+        label: 'bell',
+    },
+    'i': {
+        label: 'perc 3',
+    },
+    'o': {
+        label: 'perc 4',
+    },
+    'p': {
+        label: 'snare',
+    },
+    'a': {
+        label: 'powerup',
+    },
+    's': {
+        label: 'drop',
+    },
+    'd': {
+        label: 'mystic 1',
+    },
+    'f': {
+        label: 'mystic 2',
+    },
+    'g': {
+        label: 'stars',
+    },
+    'h': {
+        label: 'synth hit',
+    },
+    'j': {
+        label: 'shake',
+    },
+    'k': {
+        label: 'hihat 1',
+    },
+    'l': {
+        label: 'hihat 2',
+    },
+    'z': {
+        label: 'synth 1',
+    },
+    'x': {
+        label: 'synth 2',
+    },
+    'c': {
+        label: 'synth 3',
+    },
+    'v': {
+        label: 'synth 4',
+    },
+    'b': {
+        label: 'synth 5',
+    },
+    'n': {
+        label: 'synth 6',
+    },
+    'm': {
+        label: 'synth 7',
+    }
 };
 
 const ACTIVE_KEYS = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'];

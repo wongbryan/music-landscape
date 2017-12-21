@@ -1,11 +1,3 @@
-const DANCE_COLORS = [
-'#ff960c',
-'#23cfff',
-'#ff237f',
-'#28ff28',
-'#6f1df2' 
-];
-
 var color = '#333333';
 var dance = document.getElementById('dance');
 var $ui = $('#cameraToggle, #info, #bottom');
