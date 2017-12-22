@@ -3,8 +3,8 @@
 Physijs.scripts.worker = 'lib/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
-var scene, ground_material;
-var camera, scene, renderer, controls;
+var scene, ground_material, ground;
+var camera, scene, renderer;
 var fruits = [], clouds = [], pivots = [];
 var Autoplay, Listener;
 var AutoplayProps = {
@@ -33,7 +33,6 @@ function update() {
         clouds[i].update();
     }
 
-    controls.update();
     wavePass.uniforms.time.value += .05;
     TWEEN.update();
 }
@@ -76,8 +75,6 @@ function init() {
 	
 	Autoplay = CreateAutoplay(sound, AUDIO_DATA['fresh'].timestamps, camera);
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-
     scene = new Physijs.Scene;
     scene.setGravity(new THREE.Vector3(0, -60, 0));
     scene.addEventListener(
@@ -87,7 +84,7 @@ function init() {
         }
     );
 
-    var numClouds = (isSafari) ? 0:7 + Math.floor(Math.random() * 7);
+    var numClouds = (isSafari || mobile) ? 0:7 + Math.floor(Math.random() * 7);
     var numPivots = 3;
 
     for (var i = 0; i < numPivots; i++) {
@@ -380,11 +377,13 @@ function initRest() {
         if (i === 10 || i === 19) {
             $overlay.append('<br/>');
         }
-        $overlay.append(`<div class="key">${letter}</div>`)
+        let label = KEY_MAPPINGS[letter].label;
+        $overlay.append(`<div class="key" id=${letter}>${label}</div>`)
     });
 
     document.querySelector('#info .keyboard').addEventListener('click', (e) => {
         $('#keyboard-overlay').toggleClass('show');
+        $('#info .keyboard').toggleClass('dark');
     });
 
     document.querySelector('#info .info').addEventListener('click', (e) => {
@@ -448,6 +447,17 @@ function initRest() {
                     source.buffer = objs.web_audio_buffer;
                     source.connect(SoundRecorder.recorder.node);
                     source.start(0);
+                }
+
+                if(objs.label && $('#keyboard-overlay').hasClass('show')){
+                    var overlayKey = document.getElementById(key);
+                    var color = DANCE_COLORS[Math.floor(Math.random()*DANCE_COLORS.length)];
+                    overlayKey.style.backgroundColor = color;
+                    overlayKey.style.color = 'white';
+                    setTimeout(()=>{
+                        overlayKey.style.backgroundColor = 'white';
+                        overlayKey.style.color = '#7c7d7f';
+                    }, 100);
                 }
 
             } else {

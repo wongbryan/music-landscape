@@ -225,8 +225,11 @@ button {
       background: white;
       margin: 5px;
       line-height: 100px;
-      text-transform: uppercase;
-      font-family: sans-serif;
+      text-transform: lowercase;
+      font-family: $Calibre, sans-serif;
+      color: #7c7d7f;
+      font-size: 20px;
+      font-weight: normal;
     }
   }
 }
@@ -296,7 +299,7 @@ button {
 }
 
 .dark{
-  color: #26272d;
+  color: #3a3b42 !important;
 }
 
 #title {
