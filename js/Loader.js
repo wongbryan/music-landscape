@@ -11,6 +11,8 @@ var Loader = (function () {
     const audioLoader = new THREE.AudioLoader(manager);
     const $progress = $('#progress');
 
+    var reduceableModels = ['banana', 'raspberry', 'pumpkin'];
+
     manager.onProgress = function (item, loaded, total) {
         let percent = Math.ceil(loaded / total * 100);
 
@@ -30,8 +32,21 @@ var Loader = (function () {
     };
 
     this.loadModel = function(file) {
+
+        var path;
+
+        var reduceable = false;
+        if(reduceableModels.includes(file))
+            reduceable = true;
+
+        if ( (mobile || isSafari) && reduceable )
+            path = ASSETS_PATH + file + '-reduced.json';
+
+        else
+            path = ASSETS_PATH + file + '.json';
+        
         loader.load( 
-            ASSETS_PATH + file + '.json',
+            path,
 
             function(geometry, materials){
                 MODEL_DATA[file].geometry = geometry;
@@ -76,7 +91,9 @@ var Loader = (function () {
 }());
 
 for (var obj in MODEL_DATA) {
+
     Loader.loadModel(obj);
+
 }
 
 for (var key in FONTS_DATA) {

@@ -84,7 +84,7 @@ function init() {
         }
     );
 
-    var numClouds = (isSafari) ? 0:7 + Math.floor(Math.random() * 7);
+    var numClouds = (isSafari || mobile) ? 0:7 + Math.floor(Math.random() * 7);
     var numPivots = 3;
 
     for (var i = 0; i < numPivots; i++) {
