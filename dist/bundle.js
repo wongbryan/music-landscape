@@ -221,7 +221,7 @@ var CameraController = function(camera){
 	var positions = [
         new THREE.Vector3(-50, 20, 50),
 		new THREE.Vector3(0, 3.5, 18),
-		new THREE.Vector3(0, 25, 0.1),
+		new THREE.Vector3(0, 23, 0.1),
 	];
 
 	function shiftPos(index){
