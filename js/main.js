@@ -262,12 +262,8 @@ function init() {
     // renderPass.renderToScreen = true;
     composer.addPass(renderPass);
 
-    var noise = new THREE.TextureLoader().load('assets/images/noise.png');
-	noise.wrapT = noise.wrapS = THREE.RepeatWrapping;
-
 	var uniforms = {
 		tDiffuse: {value: null},
-		noise: {value: noise},
 		magnitude: {value : 0.0},
 		speed: {value : .5},
 		time: {value : 0},

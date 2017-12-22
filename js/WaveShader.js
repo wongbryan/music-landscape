@@ -1,7 +1,6 @@
 var WaveShader = {
 	uniforms: {
 		"tDiffuse": { value: null },
-		"noise": { value: null },
 		"magnitude": { value: null },
 		"time": { value: 0 },
 		"speed": { value: null },
@@ -18,7 +17,6 @@ var WaveShader = {
 
 	fragmentShader: [
 		"uniform highp sampler2D tDiffuse;",
-		"uniform sampler2D noise;",
 		"uniform float magnitude;",
 		"uniform float time;",
 		"uniform float speed;",
@@ -28,12 +26,11 @@ var WaveShader = {
 
 		"void main(){",
 
-			"/*get displacement w perlin noise*/",
-			"vec4 map = texture2D(noise, vUv + time*speed*.01);",
-			"map -= .5;",
+			"vec2 map = vUv;",
 
 			"/*add sin movement to displacement for slight wave effect*/",
-			"map.xy *= sin(vUv.y*100.+time*speed);",
+			"map.xy += sin(vUv.y*100.+time*speed);",
+			"map.xy += cos(vUv.x*10.+time*speed);",
 			"map.xy *= scale * .8 * magnitude;",
 
 			"vec4 color = texture2D(tDiffuse, vec2(vUv.x - map.x, vUv.y - map.y));",
