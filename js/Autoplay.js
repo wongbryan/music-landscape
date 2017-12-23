@@ -85,48 +85,52 @@ var CreateAutoplay = function (audio, timestamps, camera) {
     }
 
     function checkTimestamps(cur) {
-        for (var key in timestamps) {
-            if (Math.round(10 * cur) / 10 == Number.parseFloat(key)) {
-                if (timestamps[key].trig) {
-                    continue;
-                }
-                if (timestamps[key].cameraToggle != undefined) {
-                    camera.controller.shiftPos(timestamps[key].cameraToggle);
-                }
+        var num = Math.round(10 * cur) / 10;
+        var data = timestamps[num.toString()];
 
-                var mag = timestamps[key].mag;
-                bounceAll(fruits, mag);
+        if(data != undefined){
 
-                var lightkeys = timestamps[key].lightkeys;
-
-                if (lightkeys) {
-                    for (var i = 0; i < lightkeys; i++) {
-                        var index;
-                        index = (lightkeys == 26) ? i : Math.floor(Object.keys(KEY_MAPPINGS).length * Math.random());
-                        var button = Object.keys(KEY_MAPPINGS)[index];
-                        KEY_MAPPINGS[button].border.play();
-
-                        KEY_MAPPINGS[button].text.play();
-                    }
-                }
-
-                if(timestamps[key].pixelate != undefined){
-                	var time = timestamps[key].pixelate;
-                	composer.pixelate(time);
-                }
-
-                if(timestamps[key].wavify != undefined){
-                	var time = timestamps[key].wavify;
-                	composer.wavify(time);
-                }
-
-                if(timestamps[key].spin != undefined){
-                	var time = timestamps[key].spin;
-                	camera.controller.spin(time);
-                }
-
-                timestamps[key].trig = true;
+            if (data.trig) {
+                return;
             }
+
+            if (data.cameraToggle != undefined) {
+                camera.controller.shiftPos(data.cameraToggle);
+            }
+
+            var mag = data.mag;
+            bounceAll(fruits, mag);
+
+            var lightkeys = data.lightkeys;
+
+            if (lightkeys) {
+                for (var i = 0; i < lightkeys; i++) {
+                    var index;
+                    index = (lightkeys == 26) ? i : Math.floor(Object.keys(KEY_MAPPINGS).length * Math.random());
+                    var button = Object.keys(KEY_MAPPINGS)[index];
+                    KEY_MAPPINGS[button].border.play();
+
+                    KEY_MAPPINGS[button].text.play();
+                }
+            }
+
+            if(data.pixelate != undefined){
+                var time = data.pixelate;
+                composer.pixelate(time);
+            }
+
+            if(data.wavify != undefined){
+                var time = data.wavify;
+                composer.wavify(time);
+            }
+
+            if(data.spin != undefined){
+                var time = data.spin;
+                camera.controller.spin(time);
+            }
+
+            data.trig = true;
+
         }
     }
 
