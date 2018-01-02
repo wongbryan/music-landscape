@@ -204,9 +204,10 @@ button {
   color: #919191;
   font-size: 30px;
   margin: 0;
-  margin-top: 50px; }
+  margin-top: 50px;
+  line-height: 30px; }
   #info-overlay .info p a:first-child {
-    color: #ff60b6; }
+    color: #23cfff; }
   #info-overlay .info p a:nth-child(2) {
     color: #ffc028; }
   #info-overlay .info p a:nth-child(3) {
@@ -214,9 +215,11 @@ button {
   #info-overlay .info p a:nth-child(4) {
     color: #28ff28; }
   #info-overlay .info p a:nth-child(5) {
-    color: #23cfff; }
+    color: #ff60b6; }
   #info-overlay .info p a:nth-child(6) {
     color: #ff960c; }
+  #info-overlay .info p a:nth-child(7) {
+    color: #2330ff; }
 
 #info-overlay .info a {
   display: inline-block;

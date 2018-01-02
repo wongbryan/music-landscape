@@ -281,8 +281,9 @@ button {
       font-size: 30px;
       margin: 0;
       margin-top: 50px;
+      line-height: 30px;
       a:first-child{
-        color: #ff60b6;
+        color: #23cfff;
       }
       a:nth-child(2){
         color: #ffc028;
@@ -294,10 +295,13 @@ button {
         color: #28ff28;
       }
       a:nth-child(5){
-        color: #23cfff;
+        color: #ff60b6;
       }
       a:nth-child(6){
         color: #ff960c;
+      }
+      a:nth-child(7){
+         color: #2330ff;
       }
     }
 
