@@ -200,16 +200,28 @@ button {
     color: #ff960c; }
 
 #info-overlay .info p {
-  font-family: "Fugue", sans-serif;
+  font-family: "Calibre", sans-serif;
   color: #919191;
   font-size: 30px;
   margin: 0;
   margin-top: 50px; }
+  #info-overlay .info p a:first-child {
+    color: #ff60b6; }
+  #info-overlay .info p a:nth-child(2) {
+    color: #ffc028; }
+  #info-overlay .info p a:nth-child(3) {
+    color: #6f1df2; }
+  #info-overlay .info p a:nth-child(4) {
+    color: #28ff28; }
+  #info-overlay .info p a:nth-child(5) {
+    color: #23cfff; }
+  #info-overlay .info p a:nth-child(6) {
+    color: #ff960c; }
 
 #info-overlay .info a {
   display: inline-block;
   margin-top: 12px;
-  font-family: "Calibre", sans-serif;
+  font-family: "Fugue", sans-serif;
   font-size: 27px;
   color: #919191;
   font-weight: normal;
