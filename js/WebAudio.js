@@ -77,30 +77,50 @@ function initRecorder() {
                 
                 let $loop = $('<div>', {class: 'loop'});
                 let $controls = $('<div>', {class: 'controls'});
-                let $icon = $('<i>', {class: 'fa fa-play show'});
+                let $iconPlay = $('<i>', {class: 'fa fa-play show'});
+                let $iconUpload = $('<i>', {class: 'fa fa-cloud-upload show'});
                 let $iconPause = $('<i>', {class: 'fa fa-pause hide'});
+
+                let link = document.createElement('a'); // TEMP while the SC API sux ass
+
                 (function() {
-                    $icon[0].addEventListener('click', () => {
+                    $iconPlay[0].addEventListener('click', () => {
                         SoundRecorder.audioRecordings[i].play();
                         $iconPause.removeClass('hide');
                         $iconPause.addClass('show');
-                        $icon.removeClass('show');
-                        $icon.addClass('hide');
+                        $iconPlay.removeClass('show');
+                        $iconPlay.addClass('hide');
                     });
+
+                    link.href = url;
+                    link.download = "sik beat #" + (i+1);
+                    link.innerHTML = '';
+                    link.style.textDecoration = 'none';
+                    link.style.color = 'black';
+                    link.appendChild($iconUpload[0]);
+
+                    // $iconUpload[0].addEventListener('click', () => {
+                        // SC.upload({
+                        //     file: blob, // a Blob of your WAV, MP3...
+                        //     title: 'This is my sound'
+                        // });
+                    // });
 
                     $iconPause[0].addEventListener('click', () => {
                         SoundRecorder.audioRecordings[i].pause();
                         SoundRecorder.audioRecordings[i].currentTime = 0;
-                        $icon.removeClass('hide');
-                        $icon.addClass('show');
+                        $iconPlay.removeClass('hide');
+                        $iconPlay.addClass('show');
                         $iconPause.removeClass('show');
                         $iconPause.addClass('hide');
                     });
                 }(i));
 
                 $loop.append('<div class="title">Loop ' + (i+1) + '</div>');
-                $controls.append($icon);
+                $controls.append($iconPlay);
                 $controls.append($iconPause);
+                // $controls.append($iconUpload);
+                $controls.append(link);
                 $loop.append($controls);
 
                 $loops.append($loop);
