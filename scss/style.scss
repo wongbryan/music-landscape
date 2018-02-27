@@ -52,7 +52,15 @@ button {
     }
 
     .controls{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       transition: all .2s;
+
+      i.fa {
+        margin: 10px;
+      }
+
       &:hover{
         cursor: pointer;
         opacity: .5;

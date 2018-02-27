@@ -359,6 +359,19 @@ function init() {
     scene.add(camera.pivot);
     pivots.push(camera.pivot);
 
+    // SC.initialize({
+    //     client_id: '4fe4e9b1f91147d23bcfe87a889ec45e',
+    //     redirect_uri: 'http://localhost:8080/index-dev.html'
+    // });
+    //
+    // // initiate auth popup
+    // SC.connect().then(function() {
+    //     console.log('connect');
+    //     return SC.get('/me');
+    // }).then(function(me) {
+    //     alert('Hello, ' + me.username);
+    // });
+
     window.addEventListener('resize', resize);
     loop();
 }
